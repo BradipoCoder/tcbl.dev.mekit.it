@@ -1,0 +1,270 @@
+<?php
+
+/**
+ * Implements hook_block_info();
+ */
+function scroll_home_block_info() {
+  $blocks = array();
+
+  $blocks['scroll_home'] = array(
+    'info' => t('Scroll Home'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view();
+ * @param $delta 
+ *    the name of the requested block
+ */
+function scroll_home_block_view($delta = ''){
+  $block = array();
+  switch ($delta) {
+    case 'scroll_home':
+      $n = 0;
+      //$nodes = nodequeue_load_nodes(1, $backward = FALSE, $from = 0, $count = 5, $published_only = TRUE);
+
+      $node_list = get_list_of_nodes_to_render();
+      $nodes = node_load_multiple($node_list);
+
+      foreach ($nodes as $key => $node) {
+        $n++;
+        $renderable_node = node_view($node, 'teaser');
+
+        $class = false;
+        if ($n == 1){ $class = 'first'; }
+        if ($n == count($nodes)) { $class = 'last';}
+
+        $block['content']['node-' . $node->nid] = array(
+          '#theme' => 'scroll_home_wrapper',
+          '#nid' => $node->nid,
+          '#node' => $renderable_node,
+          '#n' => $n,
+          '#class' => $class,
+        );
+      }
+
+      $block['content']['#attached']['js'][] = drupal_get_path('module', 'scroll_home') . '/scroll_home.js';
+
+      $block['subject'] = t('Scroll Home');
+    break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_block_configure();
+ * @param $delta 
+ *    the name of the requested block
+ */
+function scroll_home_block_configure($delta){
+  switch ($delta) {
+    case 'scroll_home':
+      // Text field form element
+
+      //$table = tabella_voci_menu();
+      //dpm($table);
+
+      $markup = '<p>Il seguente elenco visualizza i nodi che verranno posizionati in homepage. <br />';
+      $markup .= 'Questo elenco segue l\'ordine delle voci di menu presenti nel menu principale (' . l('Main-menu', 'admin/structure/menu/manage/main-menu') . ')<br />';
+      $markup .= 'Solo i link inseriti nel formato standard <em>"node/10"</em> verranno visualizzati.</p>';
+
+      $form['help'] = array(
+        '#type' => 'item',
+        '#title' => 'Help',
+        '#markup' => $markup,
+      );
+
+      $form['tabella-voci'] = array(
+        '#prefix' => '<div id="tabella-voci-menu-2">',
+        '#suffix' => '</div>',
+        '#tree' => TRUE,
+        '#theme' => 'table',
+        '#header' => array(t('Title'), t('Path'), t('Active')),
+        '#rows' => array(),
+      );
+
+      $voci = get_voci_menu();
+      //dpm($voci);
+
+      if ($voci) {
+
+        foreach ($voci as $key => $voce) {
+          $titolo = array(
+            '#data' =>'ciao',
+          );
+          $active = array(
+            '#id' => 'voce-' . $voce['nid'] . '-active',
+            '#type' => 'checkbox',
+            '#default_value' => $voce['active'],
+          );
+
+          $form['tabella-voci'][$voce['nid']] = array(
+            'active' => &$active,
+          );
+
+          $form['tabella-voci']['#rows'][] = array(
+            array('data' => $voce['title']),
+            array('data' => $voce['path']),
+            array('data' => &$active),
+          );
+
+          unset($active); //unset variable passed by reference
+        }  
+      }
+
+      return $form;
+    break;
+  }
+}
+
+/**
+ * Implements hook_block_save();
+ */
+function scroll_home_block_save($delta, $edit = array()) {
+  switch ($delta) {
+    case 'scroll_home':
+
+      //dpm($edit['tabella-voci']);
+      if (isset($edit['tabella-voci'])){
+        $voci = $edit['tabella-voci'];
+        foreach ($voci as $key => $voce) {
+          $data[$key] = $voce['active'];
+        }
+
+        variable_set('SCROLL_HOME_DATA', $data);
+      }      
+
+    break;
+  }
+}
+
+/**
+ * Get Voci del menu 'main-menu'
+ */
+function get_voci_menu(){
+
+  // Supporto per la lingua
+  if (module_exists('i18n_menu')){
+    $voci = i18n_menu_translated_tree('main-menu');
+  } else {
+    $voci = menu_tree('main-menu');
+  }
+
+  $saved_data = VARIABLE_GET('SCROLL_HOME_DATA', FALSE);
+
+  $data = false;
+
+  foreach ($voci as $key => $voce) {
+    if (isset($voce['#href'])){
+      if ($voce['#href'] !== '<front>'){
+        
+        $explode = explode ( '/' , $voce['#href']);
+
+        if ($explode){
+          $lenght = count($explode);
+          if (isset($explode[$lenght-2]) && $explode[$lenght-2] == 'node'){
+            $data[$key]['path'] = $voce['#href'];
+            $nid = $explode[$lenght-1];
+            $data[$key]['nid'] = $nid;
+            $data[$key]['title'] = $voce['#title'];
+            $data[$key]['active'] = true;
+
+            if ($saved_data){
+              if (isset($saved_data[$nid])){
+                if ($saved_data[$nid] == 0){
+                  $data[$key]['active'] = false;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return $data;
+}
+
+/**
+ * Restituisce l'elenco dei nodi, come salvato nel database, in realazione al menu
+ */
+
+function get_list_of_nodes_to_render(){
+  $voci = get_voci_menu();
+  $nids = false;
+  if ($voci){
+    foreach ($voci as $key => $voce) {
+      if ($voce['active'] == true){
+        $nids[] = $voce['nid'];
+      }
+    }
+  } else {
+    drupal_set_message('<p>Non esistono voci nel main-menu: il modulo scroll-home non può funzionare', 'warning');
+  }
+  return $nids;
+}
+
+/**
+ * Implements template_preprocess_page();
+ */
+function scroll_home_preprocess_page(&$variables){
+  //tolgo il messaggio che manca il contenuto pubblicato in home page.
+  if (isset($variables['page']['content']['system_main']['default_message'])){
+    unset($variables['page']['content']['system_main']['default_message']);
+  }
+}
+
+/**
+ * Implements hook_preprocess_menu_link();
+ */
+function scroll_home_preprocess_menu_link(&$vars){
+  if (isset($vars['element']['#original_link']['menu_name'])){
+    if ($vars['element']['#original_link']['menu_name'] == 'main-menu'){
+
+      $link_path = $vars['element']['#original_link']['link_path'];
+      if (strrpos($link_path,'/')) {
+        $vars['element']['#attributes']['class'][] = 'scroll-home-li';
+        $vars['element']['#localized_options']['attributes']['class'][] = 'scroll-home-link';
+
+        $nid = substr($link_path,strrpos($link_path,'/') + 1);
+        $vars['element']['#attributes']['class'][] = 'scroll-home-li-' . $nid;
+        $vars['element']['#localized_options']['attributes']['nid'] = $nid;
+        $vars['element']['#localized_options']['attributes']['class'][] = 'scroll-home-menu-link-' . $nid;
+      }
+
+      if ($link_path == '<front>') {
+        $vars['element']['#attributes']['class'][] = 'scroll-home-li';
+        $vars['element']['#localized_options']['attributes']['class'][] = 'scroll-home-link';
+        
+        $vars['element']['#attributes']['class'][] = 'scroll-home-li-home';
+        $vars['element']['#localized_options']['attributes']['nid'] = 'home';
+        $vars['element']['#localized_options']['attributes']['class'][] = 'scroll-home-link-home';
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function scroll_home_theme(){
+  return array(
+    'form_table_theme_name' => array(
+      'render element' => 'element'
+    ),
+    'scroll_home_wrapper' => array(
+      // use a template and give the template's name.
+      'template' => 'scroll-home-wrapper',
+      'variables' => array(
+        'nid' => NULL,
+        'node' => NULL,
+        'n' => NULL,
+        'class' => NULL
+      ),
+      'pattern' => 'scroll-home-wrapper__',
+    )
+  );
+}

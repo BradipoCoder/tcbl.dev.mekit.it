@@ -1,0 +1,9 @@
+name = Gluu SSO
+description = This module provides SSO functionality for gluu Server.
+core = 7.x
+package = DITF-MR
+
+version = "7.x-1.0"
+core = "7.x"
+# project = "DITF-MR Gluu SSO"
+datestamp = "1487758752"

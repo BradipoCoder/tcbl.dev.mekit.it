@@ -1,0 +1,10 @@
+name = K Admin menu
+description = K Admin bar for drupal sites
+package = Mekit
+core = 7.x
+version = 7.x-1.x-dev
+
+dependencies[] = menu
+
+;stylesheets[all][] = less/basic.css.less
+stylesheets[all][] = css/basic.css

@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the P Bundles feature.
+ */
+
+include_once 'p_bundles.features.inc';

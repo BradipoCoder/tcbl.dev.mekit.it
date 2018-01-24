@@ -1,0 +1,48 @@
+<?php
+
+/**
+ * Implements hook_menu();
+ */
+function error_pages_menu() {
+  $items['error-404'] = array(
+    'page callback' => 'error_pages_404',
+    'access callback' => TRUE,
+  );
+  $items['error-403'] = array(
+    'page callback' => 'error_pages_403',
+    'access callback' => TRUE,
+  );
+  return $items;
+}
+
+/**
+ * Page callback 404
+ */
+function error_pages_404() {
+  return theme('error_404');
+}
+
+/**
+ * Page callback 403
+ */
+function error_pages_403() {
+  return theme('error_403');
+}
+
+/**
+ * Implements hook_theme($existing, $type, $theme, $path);
+ */
+function error_pages_theme($existing, $type, $theme, $path){
+  return array(
+    'error_404' => array(
+      'template' => 'error-404',
+      'variables' => array(),
+      'pattern' => 'error-404__',
+    ),
+    'error_403' => array(
+      'template' => 'error-403',
+      'variables' => array(),
+      'pattern' => 'error-404__',
+    ),
+  );
+}

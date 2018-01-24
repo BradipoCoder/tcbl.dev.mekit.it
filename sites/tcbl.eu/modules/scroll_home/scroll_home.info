@@ -1,0 +1,8 @@
+name = Scroll Home
+description = Posiziona i nodi in home page a seconda delle voci di menu
+package = SmileLab
+core = 7.x
+version = 7.x-1.x-dev
+
+dependencies[] = menu
+dependencies[] = block

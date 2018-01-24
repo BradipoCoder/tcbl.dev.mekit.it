@@ -1,0 +1,13 @@
+<?php
+
+function paragraphs_pro_field_widget_paragraphs_embed_form_alter(&$element, &$form_state, $context){
+  // Remove the description
+  $blocks = element_children($element);
+  foreach ($blocks as $key => $bl_key) {
+    if ($bl_key !== 'add_more'){
+      if (isset($element[$bl_key]['paragraph_bundle_title'])){
+        unset($element[$bl_key]['paragraph_bundle_title']);
+      }
+    }
+  }
+}

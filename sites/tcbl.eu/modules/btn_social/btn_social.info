@@ -1,0 +1,5 @@
+name = Bottoni social
+description = Funzioni utili per la condivisione sui social network
+package = Mekit
+core = 7.x
+version = 7.x-1.x-dev

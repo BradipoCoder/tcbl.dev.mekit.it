@@ -1,0 +1,131 @@
+.kadmin-wrapper {
+  z-index: 10000;
+  font-family: 'Helvetica', Arial;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  background: #e0dfdc;
+  color: #333333;
+  border-bottom: 1px solid #bcbab3;
+}
+.kadmin-wrapper a {
+  font-weight: 400;
+  color: #333333;
+}
+.kadmin-wrapper a:hover {
+  text-decoration: none;
+  background: #c8c6c1;
+}
+.kadmin-wrapper a.active {
+  color: #fff;
+  background: #555555;
+}
+body.kadmin-open {
+  padding-top: 30px !important;
+}
+.kadmin-nav ul {
+  position: relative;
+  list-style: none;
+  display: inline-table;
+  padding: 0;
+  margin: 0;
+}
+.kadmin-nav ul:after {
+  content: "";
+  clear: both;
+  display: block;
+}
+.kadmin-nav ul ul {
+  background: #ecebea;
+  box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.2);
+  border: 1px solid #bcbab3;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  position: absolute;
+  top: 100%;
+  padding: 0;
+  display: none;
+  margin-top: -1px;
+}
+.kadmin-nav ul ul li {
+  float: none;
+  position: relative;
+}
+.kadmin-nav ul ul li a {
+  padding: 10px 20px;
+  min-width: 160px;
+}
+.kadmin-nav ul ul ul {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  border-top-right-radius: 5px;
+  margin-left: 0;
+}
+.kadmin-nav ul ul ul ul {
+  border-top-left-radius: 5px;
+}
+.kadmin-nav ul li:hover > ul {
+  display: block;
+}
+.kadmin-nav ul li {
+  float: left;
+}
+.kadmin-nav ul li a {
+  display: block;
+}
+.kadmin-nav i {
+  margin-right: 5px;
+}
+.kadmin-nav a {
+  display: inline-block;
+  padding: 8px 10px 9px 10px;
+  font-size: 13px;
+  line-height: 13px;
+}
+@media only screen and (max-width: 1023px) {
+  .kadmin-wrapper {
+    overflow-y: hidden;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    -webkit-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    text-size-adjust: none;
+    height: 45px;
+  }
+  .kadmin-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+  .kadmin-nav ul a {
+    padding: 15px;
+    font-size: 15px;
+    line-height: 15px;
+  }
+  body.kadmin-open {
+    padding-top: 45px !important;
+  }
+}
+/* User */
+li.ka-li-user a {
+  border-left: 1px solid #bcbab3;
+}
+/* Home */
+li.ka-li-front a {
+  border-right: 1px solid #bcbab3;
+  margin-right: -1px;
+}
+li.ka-li-front a i,
+li.ka-li-logout a i {
+  margin-right: 0;
+}
+i.ka-fa-triangle {
+  float: right;
+  margin-right: -10px;
+}
+.kadmin #branding {
+  padding: 15px 40px 5px 40px;
+  background: #ededed;
+}

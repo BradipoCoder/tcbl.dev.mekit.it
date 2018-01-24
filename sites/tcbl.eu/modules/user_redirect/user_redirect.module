@@ -1,0 +1,8 @@
+<?php
+
+/**
+ * Implements hook_user_login(&$edit, $account)
+ */
+function user_redirect_user_login(&$edit, $account) {
+  $edit['redirect'] = 'node';
+}

@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * Implements hook_preprocess_menu_link(&$variables);
+ */
+function google_publisher_preprocess_menu_link(&$variables) {
+  if($variables['element']['#original_link']['menu_name'] == 'menu-social'){
+    $href = $variables['element']['#original_link']['link_path'];
+    $pos = strpos($href, 'plus.google');
+    if ($pos !== false){
+      // add tag rel='publisher'
+      $variables['element']['#localized_options']['attributes']['rel'] = 'publisher';
+      //dpm($variables);
+    }
+  }
+}

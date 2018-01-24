@@ -1,0 +1,290 @@
+<?php
+
+/** 
+ * TO DO:
+ * Responsive
+ * Visibility
+ * Css static build
+ *
+ * Permission needed to see the toolbar: "Use the administration pages and help"
+ */
+
+function kadmin_preprocess_html(&$vars){
+  if (user_access('access kadmin')){
+    $vars['classes_array'][] = 'kadmin';
+    $vars['classes_array'][] = 'kadmin-open';
+  }
+}
+
+/**
+ * Implements hook_page_build().
+ *
+ * Add admin navbar to the page_top region automatically.
+ */
+function kadmin_page_build(&$page){
+  if (user_access('access kadmin')){
+    $menu = _kadmin_load_mgmt_menu();
+    $data = array(
+      '#theme' => 'kadmin',
+      '#content' => $menu,
+    );
+    $page['page_top']['kadmin'] = $data;
+    drupal_add_js(drupal_get_path('module', 'kadmin') . '/js/kadmin.js');
+  }
+}
+
+/**
+ * Costruisce ed implementa il menu managment
+ */
+function _kadmin_load_mgmt_menu(){
+  $tree = menu_tree_all_data('management');
+  $data = FALSE;
+  if (!empty($tree)){
+    $first = array_keys($tree)[0];
+    if (!empty($tree[$first]['below'])){
+      $list = $tree[$first]['below'];
+      // Insert user menu
+      _kadmin_insert_user_menu_items($list);
+
+      // Create a better array for insert custom menu
+      $list = _kadmin_better_menu_array($list);
+
+      // Insert Content Types menu links
+      _kadmin_insert_cts_menu_items($list);
+
+      $data['menu'] = array(
+        '#prefix' => '<ul class="kadmin-menu">',
+        '#suffix' => '</ul>',
+      );
+
+      foreach ($list as $key => $link) {
+        // Creo la voce di menu
+        $data['menu'][$key] = _create_menu($link);
+      }
+    } else {
+      drupal_set_message('KAdmin bar non può funzionare se la prima voce del menu ' . l('Management', 'admin/structure/menu/manage/management') . ' non è la prima dell\'elenco.', 'warning');
+    }
+    
+
+  }
+  return $data;
+}
+
+/**
+ * Crea una voce di menu e le sue sottovoci
+ */
+function _create_menu($link, array $options = array()){
+  $data = false;
+  if (isset($link['link'])){
+    $l = $link['link'];
+    if($l['hidden'] == 0){
+
+      if($l['link_title'] == 'Home'){
+        if (module_exists('icon_menu')){
+          $l['link_title'] = '';
+          $l['mlid'] = 'front';
+        }
+      }
+
+      $data = array(
+        '#prefix' => '<li class="ka-li ka-li-' . $l['mlid'] . '">',
+        '#suffix' => '</li>',
+        'link' => array(
+          '#theme' => 'link',
+          '#text' => $l['link_title'],
+          '#path' => $l['link_path'],
+          '#options' => array(
+            'attributes' => array(),
+            'html' => FALSE,
+          ),
+        ),
+      );
+
+      if (isset($l['options']['attributes'])){
+        $data['link']['#options']['attributes'] = $l['options']['attributes'];
+      }
+
+      // Aggiungo classe attiva
+      if (isset($l['href']) && ($l['href'] == $_GET['q'] ||
+        ($l['href'] == '<front>' && drupal_is_front_page()))) {
+        $data['link']['#options']['attributes']['class'][] = 'active';
+        $data['link']['#active_trail'] = TRUE;
+      }
+
+      // Aggiungo Icona
+      if (isset($l['options']['icon'])){
+        $data['link']['#options']['icon'] = $l['options']['icon'];
+      }
+
+      // Sotto menu
+      if (!empty($link['below'])){
+        $sub_li = $link['below'];
+
+        $show = FALSE;
+        foreach ($sub_li as $key => $li) {
+
+          // Creo la voce di menu
+          $data['sub'][$key] = _create_menu($li);
+
+          if (isset($data['sub'][$key]['link']['#active_trail'])){
+            $data['link']['#active_trail'] = TRUE;
+            $data['link']['#options']['attributes']['class'][] = 'active';
+          }
+          if($data['sub'][$key]){
+            $show = TRUE;
+          }
+        }
+
+        // Show the sub menu if something is visible
+        if ($show){
+          $data['sub']['#prefix'] = '<ul>';
+          $data['sub']['#suffix'] = '</ul>';
+
+          // Add a triangle on the parent
+          if ($l['depth'] !== '2'){
+            $data['link']['#text'] .= '<i class="fa fa-caret-right ka-fa-triangle"></i>';
+            $data['link']['#options']['html'] = TRUE;
+          }
+        }
+      }
+    }
+  }
+  return $data;
+}
+
+/** 
+ * Aggiunge le voci di menù dell'utente (nome utente e logout)
+ */
+function _kadmin_insert_user_menu_items(&$vars){
+  global $user;
+  $icon = array(
+    'bundle' => 'fontawesome',
+    'position' => 'title_before',
+    'breadcrumb' => 0,
+    'title_wrapper' => 0,
+    'title_wrapper_element' => 'span',
+    'title_wrapper_class' => 'title',
+  );
+  // User Menu
+  $umenu = menu_tree_all_data('user-menu');
+  $first = array_keys($umenu)[0];
+  if (isset($user->name)){
+    $umenu[$first]['link']['link_title'] = $user->name;
+    $umenu[$first]['link']['mlid'] = 'user';
+  }
+
+  // Log Out
+  if (count($umenu) > 1){
+    $second = array_keys($umenu)[1];
+    if (module_exists('icon_menu')){
+      $umenu[$second]['link']['link_title'] = '';
+    }
+    $umenu[$second]['link']['mlid'] = 'logout';
+    $umenu[$second]['link']['options']['icon'] = $icon;
+    $umenu[$second]['link']['options']['icon']['icon'] = 'sign-out';
+  }
+  $vars = array_merge($vars, $umenu);
+}
+
+function _kadmin_insert_cts_menu_items(&$vars){
+  $cts = node_type_get_names();
+
+  foreach ($cts as $m_name => $ct_name) {
+    $below[$m_name] = array(
+      'link' => array(
+        'link_title' => $ct_name,
+        'link_path' => 'admin/structure/types/manage/' . $m_name,
+        'depth' => 4,
+        'hidden' => FALSE,
+        'mlid' => 'ct-' . $ct_name,
+        'href' => 'admin/structure/types/manage/' . $m_name,
+      ),
+    );
+    $below[$m_name]['below'] = array(
+      'manage_fields' => array(
+        'link' => array(
+          'link_title' => 'Manage fields',
+          'link_path' => 'admin/structure/types/manage/' . $m_name . '/fields',
+          'depth' => 4,
+          'hidden' => FALSE,
+          'mlid' => 'ct-' . $ct_name . '-fields',
+          'href' => 'admin/structure/types/manage/' . $m_name . '/fields',
+        ),
+      ),
+      'manage_display' => array(
+        'link' => array(
+          'link_title' => 'Manage display',
+          'link_path' => 'admin/structure/types/manage/' . $m_name . '/display',
+          'depth' => 4,
+          'hidden' => FALSE,
+          'mlid' => 'ct-' . $ct_name . '-display',
+          'href' => 'admin/structure/types/manage/' . $m_name . '/display',
+        ),
+      ),
+    );
+  }
+
+  $vars['admin_structure']['below']['admin_structure_types']['below'] = $below;
+}
+
+/**
+ * Crae un array utilizzabile per il menu
+ */
+function _kadmin_better_menu_array($vars){
+  $data = array();
+  foreach ($vars as $key => $link) {
+    _kadmin_create_simple_path($data, $link);
+  }
+  return $data;
+}
+
+/**
+ * Funzione ricorsiva che sostituisce le chiavi dell'array con un path + semplice
+ */
+function _kadmin_create_simple_path(&$list, $link){
+  if ($link['link']['link_path'] == '<front>'){
+    $sb = 'front';
+  } else {
+    $sb = str_replace('/', '_', $link['link']['router_path']);
+  }
+  if (isset($list[$sb])){
+    $n = 0;
+    while (isset($list[$sb])) {
+      $sb = $sb . '_' . $n;
+    }
+  }
+  $list[$sb] = $link;
+  if (!empty($link['below'])){
+    $list[$sb]['below'] = array();
+    foreach ($link['below'] as $key => $sub_link) {
+      _kadmin_create_simple_path($list[$sb]['below'], $sub_link);
+    }
+  }
+}
+
+/**
+ * Implementes hook_theme();
+ */
+function kadmin_theme(){
+  return array(
+    'kadmin' => array(
+      // use a template and give the template's name.
+      'template' => 'kadmin',
+      'variables' => array(
+        'content' => NULL,
+      ),
+      'pattern' => 'kadmin__',
+    ),
+  );
+}
+
+/**
+ * Implements hook_permission().
+ */
+function kadmin_permission() {
+  return array(
+    'access kadmin' => array(
+      'title' => t('Use the KAdmin menu'),
+    ),
+  );
+}

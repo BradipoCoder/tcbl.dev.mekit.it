@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * Implements hook_preprocess_node();
+ * TO DO: Settings field (per ogni campo proverà a generare l'immagine se è settata)
+ * TO DO: Settings view mode
+ * TO DO: Pagina che le genera tutte
+ */
+function metatag_debug_preprocess_node(&$vars){
+  if (user_is_logged_in()){
+    if ($vars['view_mode'] == 'full'){
+      if (isset($vars['field_img'][0]['uri'])){
+        $uri = $vars['field_img'][0]['uri'];
+        $vars['content']['debug'] = array(
+          '#prefix' => '<div class="metatag-debug hide">',
+          '#suffix' => '</div><!-- Share Img Generator -->',
+          'img' => array(
+            '#theme' => 'image_style',
+            '#style_name' => 'share',
+            '#path' => $uri,
+            '#weight' => 100,
+          ),
+        );
+      }
+    }
+  }
+}

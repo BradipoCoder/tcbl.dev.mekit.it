@@ -1,0 +1,153 @@
+<?php
+/**
+ * To DO: Settare lo stile di immagine per l'immagine di condivisione
+ */
+
+/**
+ * Implements hook_menu();
+ */
+function default_meta_menu(){
+  $items = array();
+
+  $items['admin/config/search/default-meta'] = array(
+    'title' => 'Meta Tag Default',
+    'description' => 'Configurazione per i default meta tag',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('default_meta_form'),
+    'access arguments' => array('administer users'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+/**
+ * Form builder
+ */
+function default_meta_form($form, &$form_state){
+  $fid = variable_get('DEFAULT_IMG' , false);
+  if ($fid){
+    $fid = intval($fid);
+  }
+
+  $form['img'] = array(
+    '#type' => 'managed_file',
+    '#name' => 'default_img',
+    '#title' => t('Immagine di default'),
+    '#size' => 40,
+    '#description' => 'Questa immagine verrà utilizzata con il seguente token: [default-meta:def-img]',
+    '#upload_location' => 'public://img/default',
+    '#default_value' => $fid,
+    '#upload_validators' => array(
+      'file_validate_extensions' => array('gif png jpg jpeg'),
+      // Pass the maximum file size in bytes
+      'file_validate_size' => array(1024*1024*1024), //non funziona, indagare
+    ),
+  );
+
+  $form['txt'] = array(
+    '#title' => t('Descrizione di default'),
+    '#type' => 'textarea',
+    '#description' => 'Questo testo potrà essere richiamato con il seguente token: [default-meta:def-txt]',
+    '#default_value' => variable_get('DEFAULT_TXT' , ''),
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save settings'),
+  );
+
+  return $form;
+}
+
+/**
+ * Save configuration settings
+ */
+function default_meta_form_submit($form, &$form_state){
+  if (isset($form_state['values']['txt'])){
+    variable_set('DEFAULT_TXT', $form_state['values']['txt']);
+  }
+
+  if ($form_state['values']['img']) {
+    variable_set('DEFAULT_IMG', $form_state['values']['img']);
+
+    // Load the file via file.fid.
+    $file = file_load($form_state['values']['img']);
+    // Change status to permanent.
+    $file->status = FILE_STATUS_PERMANENT;
+    // Save.
+    file_save($file);
+    // Record that the module (in this example, user module) is using the file. 
+    file_usage_add($file, 'default_img', 'default_img', 1);
+
+    $uri = $file->uri;
+    variable_set('DEFAULT_IMG_URI', $uri);
+    // The file load in default_meta_tokens brake drupal
+    // I save the URI to solve this
+  }
+  
+  drupal_set_message(t('The settings have been saved'));
+}
+
+
+/**
+ * Implements hook_token_info().
+ */
+function default_meta_token_info() {
+
+  $types['default-meta'] = array(
+    'name' => t("Default Meta Tag"),
+    'description' => t("Meta Tag di default"),
+  );
+  
+  // Immagine
+  $default_meta['def-img'] = array(
+    'name' => t("Immagine standard"),
+    'description' => t("Immagine standard per la condivisione sui social"),
+  );
+
+  // Immagine
+  $default_meta['def-txt'] = array(
+    'name' => t("Descrizione standard"),
+    'description' => t("Descrizione standard per la condivisione sui social"),
+  );
+  
+  return array(
+    'types' => $types,
+    'tokens' => array(
+      'default-meta' => $default_meta,
+    ),
+  );
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function default_meta_tokens($type, $tokens, array $data = array(), array $options = array()) {
+  $url = 'Immagine mancante';
+  $uri = variable_get('DEFAULT_IMG_URI' , false);
+
+  if ($uri){
+    $url = file_create_url($uri);
+  }
+  
+  $txt = variable_get('DEFAULT_TXT', 'Testo di descrizione di default mancante');
+
+  $replacements = array();
+  
+  if ($type == 'default-meta') {
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case 'def-img':
+          $replacements[$original] = $url;
+        break;
+        case 'def-txt':
+          $replacements[$original] = $txt;
+        break;
+      }
+    }
+  }
+  
+  return $replacements;
+}
+

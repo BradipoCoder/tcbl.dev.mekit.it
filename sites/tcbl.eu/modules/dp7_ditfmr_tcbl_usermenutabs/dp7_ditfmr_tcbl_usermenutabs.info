@@ -1,0 +1,9 @@
+name = User Menu tabs
+description = This module changes the behaviour of the tabs on user page.
+core = 7.x
+package = DITF-MR
+
+version = "7.x-0.1"
+core = "7.x"
+#project = "DITF-MR TCBL User Menu tabs"
+datestamp = "1496386770"

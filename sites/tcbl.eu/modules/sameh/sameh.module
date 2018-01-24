@@ -1,0 +1,23 @@
+<?php
+
+/**
+ *  TO USE: jQuery('#node-8 .same-h').sameh();
+ */
+
+/**
+ * Implements hook_preprocess_html
+ */
+function sameh_preprocess_html(&$variables){
+  $path = libraries_get_path('jquery.sameh') . '/jquery.sameh.js';
+  drupal_add_js( $path , array('group' => JS_LIBRARY, 'weight' => 3));
+}
+
+/**
+ * add a js
+ */
+function add_same_h_by_selector($selector){
+  $js_same = "jQuery('" . $selector . " .same-h').sameh();";
+  $js ="jQuery('" . $selector . "').imagesLoaded(function() {" . $js_same . "});";
+  $opts = array('type' => 'inline', 'scope' => 'footer', 'weight' => 5);
+  drupal_add_js($js, $opts);
+}

@@ -1,0 +1,22 @@
+<?php
+
+function webform_alter_submit_form_alter(&$form, &$form_state, $form_id){
+  
+  if (isset($form_state['webform'])) {  
+    if ($form_id == 'webform_client_form_22') :
+      $form['actions']['submit']['#attributes']['class'][] = 'btn-green';
+    else :
+      $form['actions']['submit']['#attributes']['class'][] = 'btn-primary';  
+    endif;
+  }
+
+  // Occhio, alcuni bottoni vengono colorati da bootstrap nel file button.vars.php
+  // Forse il modo per togliere quelle classi e lavorare sulla funzione process
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter(&$form, &$form_state, $form_id)
+ */
+//function webform_alter_submit_form_webform_client_form_3_alter(&$form, &$form_state, $//form_id){
+//  
+//}

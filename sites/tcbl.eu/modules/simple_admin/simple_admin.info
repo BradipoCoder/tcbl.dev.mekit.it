@@ -1,0 +1,7 @@
+name = Simple Admin
+description = Crea un blocco per l'amministrazione semplice del sito
+package = SmileLab
+core = 7.x
+version = 7.x-1.x-dev
+
+dependencies[] = block

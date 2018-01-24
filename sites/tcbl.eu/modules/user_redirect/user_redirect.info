@@ -1,0 +1,7 @@
+name = User Redirect
+description = Reindirizza gli utenti appena loggati in Homepage
+package = SmileLab
+core = 7.x
+version = 7.x-1.x-dev
+
+dependencies[] = user

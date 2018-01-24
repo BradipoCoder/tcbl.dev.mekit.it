@@ -1,0 +1,307 @@
+<?php
+
+/**
+ * Implements hook_menu()
+ */
+function styleguide_menu(){
+  $items = array();
+
+  $items['styleguide'] = array(
+    'title' => 'Styleguide',
+    'description' => 'Pagina di esempio styleguide',
+    'page callback' => '_styleguide_page',
+    'access arguments' => array('administer nodes'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+function _styleguide_page(){
+
+  $utilities = array(
+    'imgs' => _get_placeholder_imgs(),
+    'lorem' => _styleguide_lorem(),
+  );
+
+  $data = array(
+    '#theme' => 'styleguide_page',
+    '#content' => array(
+      'typo' => array(
+        '#theme' => 'styleguide_typo',
+        '#content' => $utilities,
+      ),
+      'buttons' => _styleguide_create_buttons(),
+      'grid' => array(
+        '#theme' => 'styleguide_grid',
+        '#content' => $utilities,
+      ),
+      'spacing' => array(
+        '#theme' => 'styleguide_spacing',
+        '#content' => $utilities,
+      ),
+    ),
+  );
+
+  $bread = array(
+    '0' => 'Home',
+    '1' => l('Breadcrumb', '<front>'),
+  );
+  drupal_set_breadcrumb($bread);
+
+  return $data;
+}
+
+
+// ** CONTENT **
+// -------------
+
+function _styleguide_create_buttons(){
+
+  $types = _get_styleguide_buttons_types();
+
+  foreach ($types as $color => $btn) {
+    $btn_c[$color] = array(
+      '#prefix' => '<div class="margin-b-05">',
+      '#suffix' => '</div>',
+    );
+    foreach ($btn as $key => $variant){
+      $variant['class'][] = 'btn';
+      $opt = array(
+        'attributes' => array(
+          'class' => $variant['class'],
+        ),
+      );
+      $btn_c[$color][$key] = array(
+        '#markup' => l($variant['name'], 'styleguide/more', $opt) . ' ',
+      );
+    }
+  }
+
+  $data[1] = array(
+    '#prefix' => '<div class="row">',
+    '#suffix' => '</div>',
+    'left' => array(
+      '#prefix' => '<div class="col-sm-6">',
+      '#suffix' => '</div>',
+      'content' => array(
+        'primary' => $btn_c['primary'],
+        'info' => $btn_c['info'],
+        'default' => $btn_c['default'],
+      ),
+    ),
+    'right' => array(
+      '#prefix' => '<div class="col-sm-6">',
+      '#suffix' => '</div>',
+      'content' => array(
+        'success' => $btn_c['success'],
+        'warning' => $btn_c['warning'],
+        'danger' => $btn_c['danger'],
+      ),
+    ),
+  );
+
+  $dimensions = array(
+    '.btn-xs' => array(
+      'class' => 'btn-xs'
+    ),
+    '.btn-sm' => array(
+      'class' => 'btn-sm', 
+    ),
+    'standard' => array(
+      'class' => '',
+    ),
+    '.btn-lg' => array(
+      'class' => 'btn-lg'
+    ),
+  );
+
+  foreach ($dimensions as $key => $btn) {
+    $classes = array();
+    $classes[] = 'btn';
+    $classes[] = 'btn-default';
+    $classes[] = $btn['class'];
+    $opt = array(
+      'attributes' => array(
+        'class' => $classes,
+      ),
+    );
+    $btns[$key] = array(
+      '#markup' => l($key, '<front>', $opt) . ' ',
+    );
+  }
+
+  $data[2] = array(
+    '#prefix' => '<div class="row">',
+    '#suffix' => '</div>',
+    'left' => array(
+      '#prefix' => '<div class="col-sm-6 margin-b-2">',
+      '#suffix' => '</div>',
+      'content' => $btns,
+    ),
+  );
+
+  return $data;
+}
+
+function _get_styleguide_buttons_types(){
+  $types = array(
+    'default' => array(
+      'plane' => array(
+        'name' => '.btn-default',
+        'class' => array(
+          'btn-default',
+        ),
+      ),
+      'active' => array(
+        'name' => '.btn-default (active)',
+        'class' => array(
+          'btn-default',
+          'active',
+        ),
+      ),
+    ),
+    'primary' => array(
+      'plane' => array(
+        'name' => '.btn-primary',
+        'class' => array(
+          'btn-primary',
+        ),
+      ),
+      'active' => array(
+        'name' => '.btn-primary (active)',
+        'class' => array(
+          'btn-primary',
+          'active',
+        ),
+      ),
+    ),
+    'info' => array(
+      'plane' => array(
+        'name' => '.btn-info',
+        'class' => array(
+          'btn-info',
+        ),
+      ),
+      'active' => array(
+        'name' => '.btn-info (active)',
+        'class' => array(
+          'btn-info',
+          'active',
+        ),
+      ),
+    ),
+    'success' => array(
+      'plane' => array(
+        'name' => '.btn-success',
+        'class' => array(
+          'btn-success',
+        ),
+      ),
+      'active' => array(
+        'name' => '.btn-success (active)',
+        'class' => array(
+          'btn-success',
+          'active',
+        ),
+      ),
+    ),
+    'warning' => array(
+      'plane' => array(
+        'name' => '.btn-warning',
+        'class' => array(
+          'btn-warning',
+        ),
+      ),
+      'active' => array(
+        'name' => '.btn-warning (active)',
+        'class' => array(
+          'btn-warning',
+          'active',
+        ),
+      ),
+    ),
+    'danger' => array(
+      'plane' => array(
+        'name' => '.btn-danger',
+        'class' => array(
+          'btn-danger',
+        ),
+      ),
+      'active' => array(
+        'name' => '.btn-danger (active)',
+        'class' => array(
+          'btn-danger',
+          'active',
+        ),
+      ),
+    ),
+  );
+  return $types;
+}
+
+function _styleguide_lorem(){
+  $lorem[2]['#markup'] = '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi egestas ipsum nec blandit molestie. Morbi sem arcu, dictum id elementum ut, ultricies ut sem.</p><p>Nulla facilisi. Nulla ut ante eu urna maximus aliquet vel sed nisl. Sed consequat malesuada velit, vitae porttitor tellus luctus nec. Sed in facilisis mi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Cras tempus iaculis efficitur. Aenean nec vehicula justo.</p>';
+
+  $lorem[1]['#markup'] = '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi egestas ipsum nec blandit molestie. Morbi sem arcu, dictum id elementum ut, ultricies ut sem.</p>';
+  return $lorem;
+}
+
+/**
+ * Avaible themes
+ * abstract - animals - business - cats 
+ * city - food - nightlife - fashion
+ * people - nature - sports
+ * technics - transport
+*/
+function _get_placeholder_imgs(){
+  $theme = 'sports';
+  for ($i=1; $i < 10 ; $i++) { 
+    $imgs[] = _get_placeholder_img($i, $theme);
+  }
+  return $imgs;
+}
+
+function _get_placeholder_img($i, $theme){
+  $data = '<img class="img-responsive" src="http://lorempixel.com/1000/600/' . $theme . '/' . $i . '"/>';
+  return $data;
+}
+
+// ** THEME **
+// -----------
+
+/**
+ * Implements hook_theme().
+ */
+function styleguide_theme(){
+  return array(
+    'styleguide_page' => array(
+      'template' => 'styleguide-page',
+      'variables' => array(
+        'content' => NULL,
+      ),
+      'pattern' => 'styleguide-page__',
+    ),
+    'styleguide_spacing' => array(
+      'template' => 'styleguide-spacing',
+      'variables' => array(
+        'content' => NULL,
+      ),
+      'pattern' => 'styleguide-spacing__',
+    ),
+    'styleguide_typo' => array(
+      'template' => 'styleguide-typo',
+      'variables' => array(
+        'content' => NULL,
+      ),
+      'pattern' => 'styleguide-typo__',
+    ),
+    'styleguide_grid' => array(
+      'template' => 'styleguide-grid',
+      'variables' => array(
+        'content' => NULL,
+      ),
+      'pattern' => 'styleguide-grid__',
+    ),
+  );
+}

@@ -1,0 +1,63 @@
+name = Mekit Managment Menu
+description = Crea un menu migliore corredato di icone FontAwesome
+core = 7.x
+package = Mekit
+version = 7.x-1.0
+; project = mekit_mgmt_menu
+dependencies[] = features
+dependencies[] = menu
+features[features_api][] = api:2
+features[menu_custom][] = management
+
+features[menu_links][] = management_:admin/config/content/formats/%
+
+;Home
+features[menu_links][] = management_home:<front>
+
+;Content types (aggiunto manualmente)
+features[menu_links][] = management_structure:admin/contenttypes
+
+;Views (aggiunto manualmente)
+features[menu_links][] = management_structure:admin/views
+
+;Content
+features[menu_links][] = management_content:admin/content
+features[menu_links][] = management_add-content:node/add
+
+;Structure
+features[menu_links][] = management_structure:admin/structure
+
+;Apparence
+features[menu_links][] = management_appearance:admin/appearance
+
+;People
+features[menu_links][] = management_people:admin/people
+
+;Modules
+features[menu_links][] = management_modules:admin/modules
+
+;Configuration
+features[menu_links][] = management_configuration:admin/config
+
+;Reports
+features[menu_links][] = management_reports:admin/reports
+
+;Less (aggiunto manualmente)
+features[menu_links][] = management_reports:admin/less
+
+;Performance (aggiunto manualmente)
+features[menu_links][] = management_reports:admin/performance
+
+;DISABLED
+;Dashboard
+features[menu_links][] = management_dashboard:admin/dashboard
+
+;Help
+features[menu_links][] = management_help:admin/help
+
+;MOVED
+;node hierarchy
+features[menu_links][] = management_node-hierarchy:admin/stucture/nodehierarchy
+
+
+

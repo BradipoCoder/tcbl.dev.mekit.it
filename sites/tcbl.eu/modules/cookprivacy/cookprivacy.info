@@ -1,0 +1,5 @@
+name = Cookie e privacy
+description = Informativa sulla privacy e utilizzo dei cookie
+package = Mekit
+core = 7.x
+version = 7.x-1.x-dev

@@ -1,0 +1,5 @@
+name = Same Height
+description = Incorpora il plugin jquery.sameh.js
+package = SmileLab
+core = 7.x
+version = 7.x-1.x-dev

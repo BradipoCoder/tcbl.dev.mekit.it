@@ -1,0 +1,350 @@
+<?php
+
+/**
+ * Implements hook_menu()
+ */
+function favicons_menu(){
+  $items = array();
+
+  $items['admin/appearance/favicons'] = array(
+    'title' => 'Favicons',
+    'description' => 'Favicons',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('fav_settings_form'),
+    'access arguments' => array('administer administer themes'),
+    'type' => MENU_LOCAL_TASK,
+  );
+  return $items;
+}
+
+/**
+ * Favicons configuration
+ * settings form.
+ */
+function fav_settings_form($form, &$form_state){
+
+  // Favicon path
+  global $base_url;
+  $default_theme = variable_get('theme_default','false');
+  $theme_path = drupal_get_path('theme',$default_theme);
+  $favicon_rel_path = $theme_path . '/favicons/';
+  $favicon_path = $base_url . '/' . $favicon_rel_path;
+  drupal_set_title('Favicons');
+
+  // Favicons Settings
+  $f_settings = variable_get('favicons_settings', array('ms_tile_color' => '#192030'));
+
+  if (is_dir($favicon_rel_path)){
+    
+    $form['favicons-form'] = array(
+      'ms_tile_color' => array(
+        '#title' => 'Msapplication Tile Color',
+        '#type' => 'textfield',
+        '#size' => 10,
+        '#default_value' => $f_settings['ms_tile_color'],
+        '#description' => 'Riportare il colore scelto come sfondo nel generatore',
+      ),
+    );
+
+    $form['table-favicons'] = array(
+      '#prefix' => '<div id="table-favicons">',
+      '#suffix' => '</div>',
+      '#tree' => TRUE,
+      '#theme' => 'table',
+      '#header' => array(t('Status'), t('Type'), t('Attributes')),
+      '#rows' => array(),
+      '#attributes' => array(
+        'class' => array('system-status-report'),
+      ),
+    );
+
+    $form['description'] = array(
+      '#markup' => '<p>I file non trovati non verranno inseriti come tag nell\'head della pagina.</p>',
+    );
+
+    $types = get_favicon_types($favicon_path);
+    if($types){
+      foreach ($types as $key => $type) {
+        $attributes = implode($type['attributes'], ' | ');
+
+        $exists = _fav_check_if_exists($type, $favicon_rel_path);
+        if ($exists){
+          $active = '<i class="fa fa-check"></i>';
+          $class = 'ok';
+        } else {
+          $active = '<i class="fa fa-close"></i>';
+          $class = 'warning';
+        }
+
+        $form['table-favicons']['#rows'][] = array(
+          'data' => array(
+            'data' => $active,
+            $type['tag'],
+            $attributes,
+          ),
+          'class' => array($class),
+        );
+      }
+    }
+
+    //Submit button
+    $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Save settings'),
+    );
+  }
+
+  return $form;
+}
+
+/**
+ * Save configuration settings.
+ */
+function fav_settings_form_submit($form, &$form_state) {
+  $settings = variable_get('favicons_settings', array('ms_tile_color' => '#192030'));
+  $settings['ms_tile_color'] = $form_state['values']['ms_tile_color'];
+  //dpm($form_state['values']['ms_tile_color']);
+  variable_set('favicons_settings', $settings);
+  drupal_set_message(t('The settings have been saved'));
+}
+
+/**
+ * Controlla se esiste un file
+ */
+function _fav_check_if_exists($type, $favicon_rel_path){
+  $exists = FALSE;
+
+  if (isset($type['attributes']['href'])){
+    $file_path = $favicon_rel_path . $type['attributes']['href'];
+    if (file_exists($file_path)){
+      $exists = TRUE;
+    }
+  }
+
+  if (isset($type['file'])){
+    $file_path = $favicon_rel_path . $type['file'];
+    if (file_exists($file_path)){
+      $exists = TRUE;
+    }
+  }
+
+  if (isset($type['attributes']['name']) && $type['attributes']['name'] == 'msapplication-TileColor'){
+    $exists = TRUE;
+  }
+
+  return $exists;
+}
+
+/**
+ * Implements hook_preprocess_html();
+ */
+function favicons_preprocess_html(&$variables){
+  global $base_url;
+  global $user;
+
+  $default_theme = variable_get('theme_default','false');
+  $theme_path = drupal_get_path('theme',$default_theme);
+
+  $favicon_rel_path = $theme_path . '/favicons/';
+  $favicon_path = $base_url . '/' . $favicon_rel_path;
+
+  // Better IF for Admin
+  if (!is_dir($favicon_rel_path) && ($user->uid == 1)) {  
+    $message = 'Missing favicons path: <em>' . $favicon_path . '</em><br />';
+    $message .= 'Generate them at: <a href="http://realfavicongenerator.net/" title="Real Favicon Generator">Real Favicon Generator</a>.<br/>';
+    $message .= 'Then visit ' . l('admin/appearance/favicons', 'admin/appearance/favicons') . '.';
+    drupal_set_message($message, 'error');
+  } 
+
+  // Aggiungo le favicons se esiste la cartella
+  if (is_dir($favicon_rel_path)){
+    $types = get_favicon_types($favicon_path);
+
+    foreach ($types as $key => $type) {
+      $exists = _fav_check_if_exists($type, $favicon_rel_path);
+
+      if (isset($type['attributes']['href'])){
+        $type['attributes']['href'] = $base_url . '/' . $favicon_rel_path . $type['attributes']['href'];
+      }
+
+      if ($exists){
+        $element = array(
+          '#type' => 'html_tag',
+          '#tag' => $type['tag'],
+          '#attributes' => $type['attributes'],
+        );
+        drupal_add_html_head($element, 'favicon-' . $key);
+      }
+    }
+  } 
+}
+
+/**
+ * Implements hook_html_head_alter();
+ * Rimuovo la favicon impostata da drupal
+ */
+function favicons_html_head_alter(&$head_elements) {
+  // remove unneeded links
+  $remove = array(
+    '/^drupal_add_html_head_link:shortcut icon:/', // Favicon
+  );
+  foreach ($remove as $item) {
+    foreach (preg_grep($item, array_keys($head_elements)) as $key) {
+      unset($head_elements[$key]);
+    }
+  }
+}
+
+/**
+ * Stabilisce tutti i tipi di favicon da incorporare
+ * http://realfavicongenerator.net/
+ */
+function get_favicon_types($favicon_path){
+
+  $settings = variable_get('favicons_settings', array('ms_tile_color' => '#192030'));
+
+  $types[] = array(
+    'tag' => 'link',
+    'attributes' => array(
+      'rel' => 'apple-touch-icon',
+      'sizes' => '57x57',
+      'href' => 'apple-touch-icon-57x57.png',
+    ),
+  );
+
+  $types[] = array(
+    'tag' => 'link',
+    'attributes' => array(
+      'rel' => 'apple-touch-icon',
+      'sizes' => '60x60',
+      'href' => 'apple-touch-icon-60x60.png',
+    ),
+  );
+
+  $types[] = array(
+    'tag' => 'link',
+    'attributes' => array(
+      'rel' => 'apple-touch-icon',
+      'sizes' => '72x72',
+      'href' => 'apple-touch-icon-72x72.png',
+    ),
+  );
+
+  $types[] = array(
+    'tag' => 'link',
+    'attributes' => array(
+      'rel' => 'apple-touch-icon',
+      'sizes' => '76x76',
+      'href' => 'apple-touch-icon-76x76.png',
+    ),
+  );
+
+  $types[] = array(
+    'tag' => 'link',
+    'attributes' => array(
+      'rel' => 'apple-touch-icon',
+      'sizes' => '114x114',
+      'href' => 'apple-touch-icon-114x114.png',
+    ),
+  );
+
+  $types[] = array(
+    'tag' => 'link',
+    'attributes' => array(
+      'rel' => 'apple-touch-icon',
+      'sizes' => '120x120',
+      'href' => 'apple-touch-icon-120x120.png',
+    ),
+  );
+
+  $types[] = array(
+    'tag' => 'link',
+    'attributes' => array(
+      'rel' => 'apple-touch-icon',
+      'sizes' => '144x144',
+      'href' => 'apple-touch-icon-144x144.png',
+    ),
+  );
+
+  $types[] = array(
+    'tag' => 'link',
+    'attributes' => array(
+      'rel' => 'apple-touch-icon',
+      'sizes' => '152x152',
+      'href' => 'apple-touch-icon-152x152.png',
+    ),
+  );
+
+  $types[] = array(
+    'tag' => 'link',
+    'attributes' => array(
+      'rel' => 'apple-touch-icon',
+      'sizes' => '180x180',
+      'href' => 'apple-touch-icon-180x180.png',
+    ),
+  );
+
+  // --
+
+  $types[] = array(
+    'tag' => 'link',
+    'attributes' => array(
+      'rel' => 'icon',
+      'type' => 'image/png',
+      'sizes' => '16x16',
+      'href' => 'favicon-16x16.png',
+    ),
+  );
+
+  $types[] = array(
+    'tag' => 'link',
+    'attributes' => array(
+      'rel' => 'icon',
+      'type' => 'image/png',
+      'sizes' => '32x32',
+      'href' => 'favicon-32x32.png',
+    ),
+  );
+
+  $types[] = array(
+    'tag' => 'link',
+    'attributes' => array(
+      'rel' => 'icon',
+      'type' => 'image/png',
+      'sizes' => '96x96',
+      'href' => 'favicon-96x96.png',
+    ),
+  );
+
+  // --
+
+  $types[] = array(
+    'tag' => 'link',
+    'attributes' => array(
+      'rel' => 'manifest',
+      'href' => 'manifest.json',
+    ),
+  );
+
+  // --
+
+  $types[] = array(
+    'tag' => 'meta',
+    'attributes' => array(
+      'name' => 'msapplication-TileColor',
+      'content' => $settings['ms_tile_color'],
+    ),
+  );
+
+  $types[] = array(
+    'tag' => 'meta',
+    'attributes' => array(
+      'name' => 'msapplication-TileImage',
+      'content' => $favicon_path . 'mstile-144x144.png',
+    ),
+    'file' => 'mstile-144x144.png', // Added for check
+  );
+
+  return $types;
+}
+

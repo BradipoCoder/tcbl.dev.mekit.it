@@ -1,0 +1,232 @@
+<?php
+
+/**
+ * Implements hook_preprocess_page()
+ */
+function cookprivacy_preprocess_page(&$vars){
+  _cookprivacy_add_cookie();
+}
+
+/**
+ * Aggiunge il messaggio e il javascript necessario al funzionamento dei cookie
+ * @return [type] [description]
+ */
+function _cookprivacy_add_cookie(){
+  $opt = array(
+    'attributes' => array(
+      'class' => array('btn', 'btn-xs', 'btn-default'),
+    ),
+  );
+
+  $msg = 'I cookie ci aiutano a fornire i nostri servizi. Utilizzando tali servizi, accetti l\'utilizzo dei cookie da parte nostra.';
+  $msg .= '&nbsp;<span>' . l('Informativa', 'cookie', $opt) . '</span>';
+
+  $opt['attributes']['id'] = 'cookie-agree';
+
+  $msg .= ' <span>' . l('Ok', 'cookie', $opt) . '</span>';
+
+  $data = array(
+    '#prefix' => '<div class="wrapper-cookie messages hide">',
+    '#suffix' => '</div>',
+    'msg' => array(
+      '#prefix' => '<div class="alert alert-block alert-info">',
+      '#suffix' => '</div>',
+      '#markup' => $msg,
+    ),
+  );
+
+  drupal_add_js(array('cookprivacy' => array('msg' => render($data),)),array('type' => 'setting'));
+
+  $js = libraries_get_path('cookie') . '/js.cookie.js';
+  drupal_add_js($js , array('group' => JS_LIBRARY, 'weight' => 1));
+
+  $path = drupal_get_path('module', 'cookprivacy') . '/js/cook-privacy.js';
+  drupal_add_js($path , array('group' => JS_LIBRARY, 'weight' => 3));
+}
+
+/**
+ * Implements hook_menu()
+ * @return [type] [description]
+ */
+function cookprivacy_menu() {
+  $items['privacy'] = array(
+    'title' => 'Informativa sulla privacy',
+    'page callback' => 'cp_privacy_page',
+    'access arguments' => array('access content'),
+  );
+  $items['cookie'] = array(
+    'title' => 'Informativa sui cookie',
+    'page callback' => 'cp_cookie_page',
+    'access arguments' => array('access content'),
+  );
+
+  $items['admin/config/system/cookprivacy'] = array(
+    'title' => t('Cookie and privacy settings'),
+    'description' => t('Settings for cookie and privacy'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('cookprivacy_settings_form'),
+    'access arguments' => array('administer children settings'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+ * Cookprivacy settings
+ * @param  [type] $form        [description]
+ * @param  [type] &$form_state [description]
+ * @return [type]              [description]
+ */
+function cookprivacy_settings_form($form, &$form_state) {
+
+  $settings = variable_get('cookprivacy', false);
+
+  $opt = array(
+    'attributes' => array(
+      'target' => '_blank',
+    ),
+  );
+  $desc = 'Visit the ' . l('/cookie', 'cookie', $opt) . ' and ' . l('/privacy', 'privacy', $opt) . ' pages to see the policy.';
+
+  $form = array(
+    'titolo' => array(
+      '#markup' => '<h3>' . t('Cookie and privacy settings') . '</h3>',
+    ),
+    'owner' => array(
+      '#title' => t('Owner'),
+      '#description' => 'Es. Mekit.it or Mario Rossi',
+      '#type' => 'textfield',
+      '#size' => 100,
+      '#required' => TRUE,
+    ),
+    'mail' => array(
+      '#title' => t('E-mail'),
+      '#description' => 'Es. mario.rossi@mail.it',
+      '#type' => 'textfield',
+      '#size' => 100,
+      '#required' => TRUE,
+    ),
+    'website' => array(
+      '#title' => t('Website'),
+      '#description' => 'Es. www.website.it',
+      '#type' => 'textfield',
+      '#size' => 100,
+      '#required' => TRUE,
+    ),
+    'social_integration' => array(
+      '#title' => t('This website has social buttons'),
+      '#description' => t('If this website has some social buttons like Facebook Like Button check this option.'),
+      '#type' => 'checkbox',
+      '#default_value' => FALSE,
+    ),
+    'help' => array(
+      '#markup' => '<p>' . $desc . '</p>',
+    ),
+  );
+
+  // Default values
+  if (isset($settings['owner'])){
+    $form['owner']['#default_value'] = $settings['owner'];
+  }
+  if (isset($settings['mail'])){
+    $form['mail']['#default_value'] = $settings['mail'];
+  }
+  if (isset($settings['website'])){
+    $form['website']['#default_value'] = $settings['website'];
+  }
+  if (isset($settings['social_integration'])){
+    $form['social_integration']['#default_value'] = $settings['social_integration'];
+  }
+
+  //Submit button
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save settings'),
+  );
+
+  return $form;
+}
+
+/**
+ * Salvataggio dei settaggi per cookprivacy
+ * @param  [type] $form        [description]
+ * @param  [type] &$form_state [description]
+ */
+function cookprivacy_settings_form_submit($form, &$form_state) {
+  $settings = variable_get('cookprivacy', array());
+  $settings['owner'] = $form_state['values']['owner'];
+  $settings['mail'] = $form_state['values']['mail'];
+  $settings['website'] = $form_state['values']['website'];
+  $settings['social_integration'] = $form_state['values']['social_integration'];
+  variable_set('cookprivacy', $settings);
+  drupal_set_message(t('The settings have been saved'));
+}
+
+function cp_privacy_page(){
+  $settings = cp_get_settings();
+
+  $data = array(
+    '#theme' => 'cp_privacy',
+    '#company' => $settings['owner'],
+    '#website' => $settings['website'],
+    '#content' => array(),
+  );
+  return $data;
+}
+
+function cp_cookie_page(){
+  $settings = cp_get_settings();
+
+  $data = array(
+    '#theme' => 'cp_cookie',
+    '#social_integration' => $settings['social_integration'],
+    '#owner' => $settings['owner'],
+    '#mail' => $settings['mail'],
+  );
+  return $data;
+}
+
+function cp_get_settings(){
+  $settings = variable_get('cookprivacy', false);
+  if (!$settings){
+    _cookprivacy_warning();
+    $settings['social_integration'] = FALSE;
+    $settings['website'] = 'www.website.it';
+    $settings['owner'] = 'Company';
+    $settings['mail'] = 'mail@mail.it';
+  }
+  return $settings;
+}
+
+function _cookprivacy_warning(){
+  $warning = 'The cookprivacy settings aren\'t set. Visit the ' . l('cookprivacy settings page', 'admin/config/system/cookprivacy') . '  to set them';
+  drupal_set_message($warning, 'warning');
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cookprivacy_theme(){
+  return array(
+    'cp_privacy' => array(
+      // use a template and give the template's name.
+      'template' => 'cp-privacy',
+      'variables' => array(
+        'content' => array(),
+        'company' => NULL,
+        'website' => NULL,
+      ),
+      'pattern' => 'cp-privacy__',
+    ),
+    'cp_cookie' => array(
+      // use a template and give the template's name.
+      'template' => 'cp-cookie',
+      'variables' => array(
+        'social_integration' => false,
+        'owner' => NULL,
+        'mail' => NULL,
+      ),
+      'pattern' => 'cp-cookie__',
+    ),
+  );
+}

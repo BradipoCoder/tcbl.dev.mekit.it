@@ -1,0 +1,44 @@
+/* less/lightslider.less */
+
+.lSAction>a{
+  background-image: none;
+  opacity: 1;
+  width: 50px;
+  height: 50px;
+  margin-top: -25px;
+  line-height: 50px;
+  text-align: center;
+}
+
+.lSPrev,
+.lSNext{
+  background: fade(#fff, 80%);
+  //border: 1px solid @gray-lighter;
+}
+
+.lSAction>.lSNext{
+  right: 0;
+}
+
+.lSAction>.lSPrev{
+  left: 0;
+}
+
+.lSSlideOuter .lSPager.lSpg>li a{
+  height: 15px;
+  width: 15px;
+  background-color: @gray-lighter;
+}
+
+.lSSlideOuter .lSPager.lSpg>li.active a,
+.lSSlideOuter .lSPager.lSpg>li:hover a{
+  background-color: @primary-dark; 
+}
+
+.lSSlideWrapper{
+  .margin-b(1);
+}
+
+.lSSlideOuter .lSPager.lSpg{
+  .margin-b(1);
+}

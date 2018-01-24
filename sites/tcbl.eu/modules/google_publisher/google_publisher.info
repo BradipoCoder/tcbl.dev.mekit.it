@@ -1,0 +1,7 @@
+name = Google Publisher
+description = Nel menu social, aggiunge il tag rel="publisher" al link Google+
+package = SmileLab
+core = 7.x
+version = 7.x-1.x-dev
+
+dependencies[] = menu

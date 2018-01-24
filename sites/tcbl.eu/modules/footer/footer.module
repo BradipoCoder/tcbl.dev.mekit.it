@@ -1,0 +1,287 @@
+<?php
+
+/**
+ * Implements hook_block_info();
+ */
+function footer_block_info() {
+  $blocks = array();
+
+  $blocks['footer'] = array(
+    'info' => t('Footer'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view();
+ * @param $delta 
+ *    the name of the requested block
+ */
+function footer_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'footer':
+      
+      $block['subject'] = 'Footer';
+
+      /* immagine */
+      $fid = variable_get('FOOTER_IMAGE' , false);
+      if ($fid) {
+        $file = file_load($fid);
+        
+        $image['#theme'] = 'image';
+        $image['#path'] = $file->uri;
+
+      } else {
+        $image = false;
+      }
+
+      //calcolo il numero di colonne
+      $menu_attivi = variable_get('FOOTER_MENU', false);
+      $columns = 2; //immagine + contatti
+      if ($menu_attivi){
+        foreach ($menu_attivi as $key => $value) {
+          //per ogni menu attivo, aggiungo una colonna
+          if ($value !== 0) {
+            $columns++;
+          }
+        }
+      }
+      $columns = 12 / $columns;
+      
+
+      /* sezione contatti */
+      $contatti = variable_get('FOOTER_CONTATTI', FALSE);
+      $contatti_title = variable_get('FOOTER_CONTATTI_TITLE', FALSE);
+
+      /* menu social */
+      $menu_social = false;
+      if (isset($menu_attivi['menu-social']) && $menu_attivi['menu-social'] !== 0){
+
+        if (module_exists('i18n_menu')) {
+          $menu_social = i18n_menu_translated_tree('menu-social');
+        } else {
+          $menu_social = menu_tree('menu-social');
+        }
+      }
+      $menu_social_title = variable_get('FOOTER_SOCIAL_TITLE', false);
+      
+      /* main menu */
+      $main_menu = false;
+      if (isset($menu_attivi['main-menu']) && $menu_attivi['main-menu'] !== 0){
+        // Supporto per la traduzione
+        if (module_exists('i18n_menu')){
+          $main_menu = i18n_menu_translated_tree('main-menu');
+        } else {
+          $main_menu = menu_tree('main-menu');
+        }
+      }
+      $main_menu_title = variable_get('FOOTER_MAIN_TITLE', false);
+
+      $theme_default = variable_get('theme_default', false);
+      if ($theme_default) {
+        $theme_settings = variable_get('theme_' . $theme_default . '_settings', false);
+        $site_name = variable_get('site_name', false);
+        
+        $brand_classes = false;
+        $site_slogan = false;
+        if ($theme_settings['toggle_slogan']){
+          $site_slogan = variable_get('site_slogan', false);
+          $brand_classes = 'with-slogan';
+        }
+      }
+      
+      $block['content'] = array(
+        '#theme' => 'footer',
+        '#image' => $image,
+        '#site_name' => $site_name,
+        '#site_slogan' => $site_slogan,
+        '#brand_classes' => $brand_classes,
+        '#columns' => $columns,
+        '#contatti_title' => $contatti_title,
+        '#contatti' => $contatti['value'],
+        '#menu_social' => $menu_social,
+        '#menu_social_title' => $menu_social_title,
+        '#main_menu' => $main_menu,
+        '#main_menu_title' => $main_menu_title,
+        '#common_link' => get_common_link(),
+      );
+      
+    break;
+  }
+  return $block;
+}
+
+function get_common_link(){
+  $site_name = variable_get('site_name');
+
+  $common_link = '<p>&copy; Copyright ' . date('Y') . ' ' . $site_name . ' - All rights reserved | ';
+  $common_link .= l('Web Design by Mekit', 'http://www.mekit.it') . ' | ';
+  $common_link .= l('Admin', 'user') . '</p>'; 
+
+  return $common_link;
+}
+
+/**
+ * Implements hook_block_configure();
+ * @param $delta 
+ *    the name of the requested block
+ */
+function footer_block_configure($delta) {
+  switch ($delta) {
+    case 'footer':
+
+      $form['v_tabs']['#type'] = 'vertical_tabs';
+
+      $form['options'] = array(
+        '#type' => 'fieldset', 
+        '#title' => t('Opzioni'),
+        '#weight' => -1, 
+        '#collapsible' => FALSE, 
+        '#collapsed' => FALSE,
+        '#group' => 'v_tabs'
+      );
+
+      $options = variable_get('FOOTER_MENU', array('main-menu' => 0, 'menu-social' => 'menu-social'));
+      $form['options']['footer_menu'] = array(
+        '#type' => 'checkboxes',
+        '#options' => array(
+          'main-menu' => 'Main Menu',
+          'menu-social' => 'Menu Social'
+        ),
+        '#title' => t('Spuntare i menu da visualizzare'),
+        '#default_value' => $options
+      );
+
+      $form['options']['footer_main_title'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titolo main menu'),
+        '#description' => 'Inserire il titolo del main-menu.',
+        '#default_value' => variable_get('FOOTER_MAIN_TITLE', ''),
+      );
+
+      $form['options']['footer_social_title'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titolo menu social'),
+        '#description' => 'Inserire il titolo del menu social.',
+        '#default_value' => variable_get('FOOTER_SOCIAL_TITLE', ''),
+      );
+
+      $form['image'] = array(
+        '#type' => 'fieldset', 
+        '#title' => t('Logo'),
+        '#weight' => -1, 
+        '#collapsible' => FALSE, 
+        '#collapsed' => FALSE,
+        '#group' => 'v_tabs'
+      );
+
+      // Immagine footer
+      $form['image']['footer_image'] = array(
+        '#type' => 'managed_file',
+        '#name' => 'footer_image',
+        '#title' => t('Logo per il footer'),
+        //'#required' => true,
+        '#size' => 40,
+        '#description' => 'Inserire il logo per il footer.',
+        '#upload_location' => 'public://img/footer',
+        '#default_value' => variable_get('FOOTER_IMAGE' , false),
+        '#upload_validators' => array(
+          'file_validate_extensions' => array('gif png jpg jpeg'),
+          // Pass the maximum file size in bytes
+          'file_validate_size' => array(1024*1024*1024),
+        ),
+      );
+
+      $form['contatti'] = array(
+        '#type' => 'fieldset', 
+        '#title' => t('Contatti'),
+        '#weight' => -1, 
+        '#collapsible' => FALSE, 
+        '#collapsed' => FALSE,
+        '#group' => 'v_tabs'
+      );
+
+      $contatti = variable_get('FOOTER_CONTATTI', false);
+      if (!$contatti) {
+        $contatti['value'] = '<p>Contatti</p>';
+        $contatti['format'] = 'filtered_html';
+      }
+
+      $form['contatti']['footer_contatti_title'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Titolo contatti'),
+        '#description' => 'Inserire il titolo della sezione contatti.',
+        '#default_value' => variable_get('FOOTER_CONTATTI_TITLE', ''),
+      );
+
+      $form['contatti']['footer_contatti'] = array(
+        '#type' => 'text_format',
+        '#title' => t('Contatti'),
+        '#default_value' => $contatti['value'],
+        '#format' => $contatti['format']
+      );
+
+      return $form;
+    break;
+  }
+}
+
+/**
+ * Implements hook_block_save();
+ */
+function footer_block_save($delta, $edit = array()) {
+  switch ($delta) {
+    case 'footer':
+      //dpm($edit);
+      variable_set('FOOTER_MENU',           $edit['footer_menu']);
+      variable_set('FOOTER_MAIN_TITLE',     $edit['footer_main_title']);
+      variable_set('FOOTER_SOCIAL_TITLE',   $edit['footer_social_title']);
+      variable_set('FOOTER_IMAGE',          $edit['footer_image']);
+      variable_set('FOOTER_CONTATTI',       $edit['footer_contatti']);
+      variable_set('FOOTER_CONTATTI_TITLE', $edit['footer_contatti_title']);
+
+      // Load the file via file.fid.
+      $file = file_load($edit['footer_image']);
+      
+      if ($file){
+        // Change status to permanent.
+        $file->status = FILE_STATUS_PERMANENT;
+        // Save.
+        file_save($file);
+        // Record that the module (in this example, user module) is using the file. 
+        file_usage_add($file, 'footer', 'user', 1);
+      } 
+
+    break;
+  }
+}
+
+/**
+ * Implementes hook_theme();
+ */
+function footer_theme(){
+  return array(
+    'footer' => array(
+      // use a template and give the template's name.
+      'template' => 'footer',
+      'variables' => array(
+        'columns' => NULL,
+        'image' => NULL,
+        'site_name' => NULL,
+        'site_slogan' => NULL,
+        'brand_classes' => NULL,
+        'contatti_title' => NULL,
+        'contatti' => NULL,
+        'menu_social' => NULL,
+        'menu_social_title' => NULL,
+        'main_menu' => NULL,
+        'main_menu_title' => NULL,
+        'common_link' => NULL,
+      ),
+      'pattern' => 'footer__',
+    )
+  );
+}

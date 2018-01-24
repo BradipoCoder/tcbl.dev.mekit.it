@@ -1,0 +1,317 @@
+/* less/custom.less */
+
+// ** MIXIN **
+// -----------
+
+.bottom-triangle(@color) {
+  position: relative;
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 50%;
+    bottom: 0px;
+    margin-left: -16px;
+    border-style: solid;
+    border-width: 0px 16px 16px 16px;
+    border-color: transparent transparent @color transparent;
+  }
+}
+.top-triangle(@color) {
+  position: relative;
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 0px;
+    margin-left: -16px;
+    border-style: solid;
+    border-width: 16px 16px 0px 16px;
+    border-color: @color transparent transparent transparent;
+  }
+}
+// ** BG COLORS **
+// ---------------
+
+body {
+  background: @primary-dark;
+}
+
+/* editor */
+body.cke_editable, body.mceContentBody{
+  background: #fff;
+  padding: 15px;
+}
+
+.wrapper-simple-admin,
+.wrapper-bottom,
+.wrapper-content {
+  background: #fff;
+}
+.over-parallax {
+  background: fade(#000, 50%);
+  .bottom-triangle(#fff);
+}
+.page-node-3 .wrapper-content,
+.wrapper-posts,
+.wrapper-webform,
+.wrapper-scroll-home-node-3 {
+  background: @gray-lightest;
+}
+.wrapper-webform {
+  .clearfix();
+  .top-triangle(#fff);
+}
+.bg-green,
+.page-node-5 .wrapper-content,
+.wrapper-scroll-home-node-5 {
+  background: @brand-primary;
+}
+// ** MAIN CONTAINER **
+// --------------------
+
+// Padding vertical in every page
+.main-container {
+  .padding-t(2);
+  .padding-b(4);
+}
+// Scroll home correction
+.front .main-container {
+  .padding-v(0);
+}
+.page-node-47 .main-container,
+.page-node-4 .main-container,
+.node-type-member .main-container,
+.node-type-service .main-container,
+.node-type-post .main-container {
+  .padding-b(0);
+}
+// ** LOGO ** //
+// -------------
+
+.footer .logo img,
+.navbar-header .logo img {
+  max-width: 200px;
+}
+// ** TABS **
+// ----------
+
+.tabs--secondary,
+.tabs--primary {
+  .margin-b(1);
+  text-align: center;
+}
+// ** PAGER **
+// -----------
+.nhc-pager {
+  .margin-v(1);
+}
+// ** HOVER BOX **
+// ---------------
+
+.wrapper-hover-box {
+  position: relative;
+}
+.hover-box__hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: fade(#000, 50%);
+
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background: fade(@primary-dark, 80%);
+    .transition(all ease-out .7s);
+  }
+
+  &:hover {
+    &:before {
+      height: 100%;
+    }
+  }
+}
+.hover-box__wrapper {
+  display: block;
+  padding: 0px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.hover-box__title {
+  display: inline-block;
+  .size(2);
+  padding: @size;
+  .h1 {
+    color: #fff;
+  }
+}
+// ** FX **
+// --------
+
+.fx-img-zoom-simple,
+.fx-img-zoom .field-item {
+  position: relative;
+  overflow: hidden;
+  img {
+    .transition(all ease-out .7s);
+  }
+  &:hover img {
+    .scale(1.05, 1.05);
+  }
+}
+// ** PARAGRAPHS **
+// ----------------
+
+.paragraphs-item-imgs,
+.wrapper-p-img {
+  img {
+    border: 1px solid @gray-lighter;
+  }
+}
+// ** NODE SERVICE **
+// ------------------
+
+.wrapper-service-img {
+  position: relative;
+
+  img {
+    width: 100%;
+  }
+
+  .field-name-title-field {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    margin-top: -20px;
+    z-index: 2;
+  }
+
+  .service-over {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: fade(#000, 30%);
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  h1 {
+    @media (min-width: @screen-md-min) {
+      font-size: @font-size-h1 * 1.5;
+    }
+  }
+}
+// ** NODE MEMBER **
+// -----------------
+
+.node-member.node-full {
+  .field-name-field-img {
+    max-width: 120px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+.node-member.node-teaser,
+.node-member.node-child {
+  .field-name-field-img {
+    max-width: 120px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+// ** ARCHIVE **
+// -------------
+
+.wrapper-menu-cat {
+  .margin-t(0.5);
+  .margin-b(3);
+}
+.menu-cat {
+  list-style: none;
+  padding-left: 0;
+
+  li {
+    margin: 5px 10px;
+    display: inline-block;
+  }
+
+  .a-cat {
+    display: inline-block;
+    padding: 10px 20px;
+    color: @gray;
+
+    &.cat-active {
+      border-bottom: 3px solid @brand-primary;
+      color: @primary-dark;
+      font-weight: 600;
+    }
+
+    span {
+      position: relative;
+      top: -1px;
+      font-size: 13px;
+    }
+  }
+}
+.page-node-3 {
+  .field-name-field-short {
+    .margin-b(0);
+  }
+}
+// ** BNT CUSTOM SOCIAL **
+// -----------------------
+
+.btn-custom-social {
+  a {
+    display: inline-block;
+    max-width: 25px;
+    margin: 5px;
+  }
+}
+.wrapper-social-toggle {
+  z-index: 100;
+  position: relative;
+
+  .btn-custom-social {
+    opacity: 0;
+    position: absolute;
+    padding: 10px 10px 3px 10px;
+    bottom: -65px;
+    right: 0;
+    background: #fff;
+    border: 1px solid @gray-lighter;
+    .border-bottom-radius(@border-radius-small);
+    .box-shadow(0px 3px 3px 0px rgba(0, 0, 0, 0.2));
+    .transition(all ease-in-out .2s);
+
+    &.visible {
+      opacity: 1;
+    }
+  }
+}
+// ** ROW IMGS **
+// --------------
+
+.row-imgs {
+  margin-left: -@grid-gutter-width * 0.25;
+  margin-right: -@grid-gutter-width * 0.25;
+
+  .col-sm-6 {
+    padding-left: @grid-gutter-width * 0.25;
+    padding-right: @grid-gutter-width * 0.25;
+  }
+}
+// ** MEDIA QUERY EXAMPLE **
+// -------------------------
+// @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max){}

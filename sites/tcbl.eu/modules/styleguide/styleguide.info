@@ -1,0 +1,5 @@
+name = Styliguide
+description = Abilita il supporto per la temizzazione
+package = Mekit
+core = 7.x
+version = 7.x-1.x-dev

@@ -1,0 +1,5 @@
+name = Metatag Debug
+description = Genera le immagini condivisione in formato Share (vengono generate prima che il social network le richieda)
+package = SmileLab
+core = 7.x
+version = 7.x-1.x-dev

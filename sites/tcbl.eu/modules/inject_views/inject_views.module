@@ -1,0 +1,139 @@
+<?php
+
+/**
+ * Implements hook_preprocess_node()
+ * Inject specific views
+ */
+function inject_views_preprocess_node(&$vars){
+  if ($vars['view_mode'] == 'full'){
+    $settings = _inject_views_get_saved_settings($vars['nid']);
+    if ($settings && $settings['wi_active']){
+      $exp = explode(':', $settings['wi_view']);
+      $view_name = $exp[0];
+      $view_display = $exp[1];
+      $vars['content']['wi'] = array(
+        '#markup' => views_embed_view($view_name, $view_display),
+        '#weight' => 12,
+      );
+    }
+  }
+}
+
+/**
+ * Implements hook_form_node_form_alter()
+ */
+function inject_views_form_node_form_alter(&$form, $form_state){
+
+  $settings = _inject_views_default_node_settings();
+
+  // Update settings if saved
+  if (isset($form['#node'])){
+    $node = $form['#node'];
+    if (isset($node->nid)){
+      $nid = $node->nid;
+      $settings = _inject_views_update_settings($nid, $settings);
+    }
+  }
+
+  $form['views_inject'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Views injection'),
+    '#group' => 'additional_settings',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#weight' => 11,
+    '#access' => user_access('administer views injection in node'),
+  );
+
+  $form['views_inject']['wi_active'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Activate views injection'),
+    '#default_value' => $settings['wi_active'],
+  );
+
+  $views_options = _inject_views_options_list();
+
+  $form['views_inject']['wi_view'] = array(
+    '#type' => 'select',
+    '#title' => t('Select an active views from the list'),
+    '#empty_option' => t('-- No view selected --'),
+    '#options' => $views_options,
+    '#default_value' => $settings['wi_view'],
+  );
+
+  $form['#submit'][] = 'inject_views_form_submit';
+}
+
+/**
+ * Implements hook_form_submit
+ */
+function inject_views_form_submit($form, $form_state){
+  $values = $form_state['values'];
+
+  $saved = variable_get('inject_views', array());
+  $nid = $values['nid'];
+
+  // Every fields
+  $saved[$nid]['wi_active'] = $values['wi_active'];
+  $saved[$nid]['wi_view']   = $values['wi_view'];
+
+  variable_set('inject_views', $saved);
+}
+
+/**
+ * Implements hook_permission()
+ */
+function inject_views_permission(){
+  return array(
+    'administer views injection in node' => array(
+      'title' => t('Administer views injection in node edit form'),
+    ),
+  );
+}
+
+// ** LOGIC **
+// -----------
+
+function _inject_views_options_list(){
+  $options = views_get_views_as_options(false, 'enabled', NULL, TRUE);
+  return $options;
+}
+
+/**
+ * Ritorna i valori di default per il nodo
+ */
+function _inject_views_default_node_settings(){
+  // Default settings for each node
+  $data = array(
+    'wi_active' => false,
+    'wi_view' => 0,
+  );
+  return $data;
+}
+
+/**
+ * Ritorna i valori di impostazione se sono stati salvati
+ */
+function _inject_views_update_settings($nid, $options){
+  $settings = variable_get('inject_views', array());  
+  if (isset($settings[$nid])) {
+    $settings = $settings[$nid];
+    foreach ($settings as $key => $value) {
+      $options[$key] = $value;
+    }
+  }
+  return $options;
+}
+
+function _inject_views_get_saved_settings($nid){
+  $settings = variable_get('inject_views', array()); 
+  $options = false;
+  if (isset($settings[$nid])) {
+    $settings = $settings[$nid];
+    foreach ($settings as $key => $value) {
+      $options[$key] = $value;
+    }
+  }
+  return $options;
+}
+

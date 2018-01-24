@@ -1,0 +1,5 @@
+name = Kill nbsp
+description = Aggiunge un filtro che sostituisce nbsp con uno spazio semplice
+package = SmileLab
+core = 7.x
+version = 7.x-1.x-dev

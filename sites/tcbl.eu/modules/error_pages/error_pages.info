@@ -1,0 +1,5 @@
+name = Error Pages
+description = Crea due pagine temizzabili per gli errori 403 e 404
+package = SmileLab
+core = 7.x
+version = 7.x-1.x-dev

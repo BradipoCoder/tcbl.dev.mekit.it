@@ -1,0 +1,183 @@
+<?php
+
+/**
+ * Implements hook_block_info();
+ */
+function simple_admin_block_info() {
+  $blocks = array();
+
+  $blocks['s_admin'] = array(
+    'info' => t('Simple Admin'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view();
+ * @param $delta 
+ *    the name of the requested block
+ */
+function simple_admin_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 's_admin':
+      
+      $block['subject'] = 'Simple Admin';
+
+      $block['content'] = array(
+        '#markup' => '<p>Ciao, qui ci saranno i tasti</p>'
+      );
+
+      $menu_name = variable_get('S_ADMIN_MENU', false);
+      $buttons = false;
+
+      // menu utente
+      global $user;
+
+      $hello = false;
+      $log_out = false;
+      if($user->uid !== 0){
+        $hello = array(
+          '#theme' => 'link',
+          '#text' => '<i class="fa fa-user"></i> ' . $user->name,
+          '#path' => 'user',
+          '#options' => array(
+            'attributes' => array(
+              'class' => array('small')
+            ),
+            'html' => true,
+          ),
+        );
+
+        $log_out = array(
+          '#theme' => 'link',
+          '#text' => '<i class="fa fa-power-off"></i> Log out',
+          '#path' => 'user/logout',
+          '#options' => array(
+            'attributes' => array(
+              'class' => array('small')
+            ),
+            'html' => true,
+          ),
+        );
+      }
+
+      // voci del menu
+      if ($menu_name){
+        $menu = menu_tree($menu_name);
+        
+        $buttons = array();
+        foreach ($menu as $key => $voce) {
+          if (is_numeric($key)){
+            if ($voce['#title']){
+
+              $buttons[$key] = array(
+                '#theme' => 'link',
+                '#text' => $voce['#title'],
+                '#path' => $voce['#href'],
+                '#options' => array(
+                  'attributes' => array(
+                    'class' => array(
+                      'small'
+                    )
+                  ),
+                  'html' => false,
+                )
+              );
+
+              if (isset($voce['#localized_options']['icon'])){
+                $buttons[$key]['#options']['icon'] = $voce['#localized_options']['icon'];
+                $buttons[$key]['#options']['html'] = true;
+                $buttons[$key]['#text'] = ' ' . $voce['#title'];
+              }
+
+              if (!in_array('last', $voce['#attributes']['class'])){
+                $buttons[$key]['#suffix'] = ' | ';
+              }
+
+            }
+          }
+        }
+
+      } else {
+        drupal_set_message('Siple admin: menu non selezionato.', 'error');
+      }
+
+      $block['content'] = array(
+        '#theme' => 'sadmin',
+        '#buttons' => $buttons,
+        '#user_buttons' => $hello,
+        '#log_out' => $log_out,
+      );
+      
+    break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_block_configure();
+ * @param $delta 
+ *    the name of the requested block
+ */
+function simple_admin_block_configure($delta) {
+  switch ($delta) {
+    case 's_admin':
+      
+      $menu = get_avaible_menu();
+
+      $default_menu = variable_get('S_ADMIN_MENU', '0');
+
+      // Menu del sito
+      $form['s_admin_menu'] = array(
+       '#type' => 'select',
+       '#title' => t('Seleziona un menu di amministrazione'),
+       '#options' => $menu,
+       '#default_value' => $default_menu,
+       '#required' => 1,
+       '#description' => t('Seleziona un menu di amministrazione.'),
+      );
+
+      return $form;
+    break;
+  }
+}
+
+/**
+ * Implements hook_block_save();
+ */
+function simple_admin_block_save($delta, $edit = array()) {
+  switch ($delta) {
+    case 's_admin':
+      //dpm($edit);
+      variable_set('S_ADMIN_MENU', $edit['s_admin_menu']);
+    break;
+  }
+}
+
+/**
+ * Implementes hook_theme();
+ */
+function simple_admin_theme(){
+  return array(
+    'sadmin' => array(
+      // use a template and give the template's name.
+      'template' => 'sadmin',
+      'variables' => array(
+        'user_buttons' => NULL,
+        'buttons' => NULL,
+        'log_out' => NULL,
+      ),
+      'pattern' => 'sadmin__',
+    )
+  );
+}
+
+function get_avaible_menu(){
+  $menu['0'] = ' -- ';
+  $menu += menu_get_menus();
+  return $menu;
+}
+

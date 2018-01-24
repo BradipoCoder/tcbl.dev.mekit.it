@@ -1,0 +1,5 @@
+name = Webform Alter Submit button
+description = Add btn-primary class to webform submit button
+package = Mekit
+core = 7.x
+version = 7.x-1.x-dev

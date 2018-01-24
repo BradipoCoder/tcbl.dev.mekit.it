@@ -1,0 +1,87 @@
+<?php
+
+function _add_custom_btn_social(&$vars, $url = FALSE, $classes = FALSE){
+  global $language;
+  global $base_url;
+  global $theme_path;
+ 
+  if (!$url){
+    $url = url('node/' . $vars['nid'], array('absolute' => TRUE, 'language' => $language));  
+  }
+
+  $list = _btn_social_custom_list();
+  foreach ($list as $key => $btn) {
+    
+    $src = $base_url . '/' . $theme_path . '/social/' . $key . '.png';
+
+    $img = array(
+      '#markup' => '<img src="' . $src . '" class="img-responsive"/>',
+    );
+
+    $opt = array(
+      'html' => TRUE,
+      'attributes' => array(
+        'class' => array(
+          'btn-a-' . $key,
+          'link-to-social',
+        ),
+        'data-toggle' => 'tooltip',
+        'data-placement' => 'bottom',
+        'title' => t('Share on') . ' ' . $btn['name'],
+      ),
+    );
+
+    // TO DO JS
+
+    $content[$key] = array(
+      '#markup' => l(render($img), $btn['share'] . $url, $opt),
+    );
+  }
+
+  
+  if (!$classes){
+    $classes = '';  
+  }
+
+  $vars['content']['social'] = array(
+    '#theme' => 'btn_social',
+    '#content' => $content,
+    '#class' => $classes,
+    '#weight' => 50,
+  );
+
+  global $base_url;
+  $js = $base_url . '/' . drupal_get_path('module', 'btn_social') . '/btn-social.js';
+  drupal_add_js($js, array('type' => 'external', 'scope' => 'footer'));
+}
+
+function _btn_social_custom_list(){
+  $list = array(
+    'fb' => array(
+      'name' => 'Facebook',
+      'share' => 'https://www.facebook.com/sharer/sharer.php?u=',
+    ),
+    'tw' => array(
+      'name' => 'Twitter',
+      'share' => 'https://twitter.com/home?status=',
+    ),
+  );
+  return $list;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function btn_social_theme() {
+  return array(
+    'btn_social' => array(
+      // use a template and give the template's name.
+      'template' => 'btn-social',
+      'variables' => array(
+        'content' => array(),
+        'class' => false,
+      ),
+      'pattern' => 'btn-social__',
+    )
+  );
+}

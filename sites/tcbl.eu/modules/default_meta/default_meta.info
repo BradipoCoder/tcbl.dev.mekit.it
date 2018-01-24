@@ -1,0 +1,5 @@
+name = Default Meta Tag
+description = Immagine di default, testo di default
+package = SmileLab
+core = 7.x
+version = 7.x-1.x-dev
