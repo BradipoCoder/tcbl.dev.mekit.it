@@ -93,7 +93,7 @@ function gluuSSO_loginSSO() {
 				$user = user_save('', $fields);
 				$account['uid'] = $user->uid;
 			}
-			{ # Newsletter hinzufügen
+			{ # Newsletter hinzufÃ¼gen
 				$snid = db_insert('simplenews_subscriber')
 					->fields(array(
 						'activated' => '1',
