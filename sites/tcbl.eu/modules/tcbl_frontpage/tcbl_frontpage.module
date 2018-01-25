@@ -4,8 +4,7 @@
  * @param array $vars
  */
 function tcbl_frontpage_preprocess_page(&$vars) {
-
-  if(!isset($vars["is_front"]) || $vars["is_front"] == false){
+  if(!isset($vars["is_front"]) || $vars["is_front"] != true){
     return;
   }
 
