@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @param array $vars
+ */
+function tcbl_frontpage_preprocess_page(&$vars) {
+
+  if(!isset($vars["is_front"]) || $vars["is_front"] == false){
+    return;
+  }
+
+  $vars["page"]["content"]["front"] = [
+    '#markup' => '<h1 class="text-center">TCBL - WIP</h1>'
+  ];
+
+}

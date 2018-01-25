@@ -1,0 +1,5 @@
+name = TCBL Frontpage
+description = Front page module
+package = TCBL
+core = 7.x
+
