@@ -1,21 +1,22 @@
+;;;;;;;;;;;;;;;;;;;;;
+;; Definition
+;;;;;;;;;;;;;;;;;;;;;
 name = TCBL theme
-description = A TCBL theme to create new Mekit subtheme.
+description = Theme for TBCL based on the Mekit subtheme
 core = 7.x
 base theme = mekit
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Regions
 ;;;;;;;;;;;;;;;;;;;;;
-
 regions[wide_top]       = 'Wide top'
 regions[help]           = 'Help'
 regions[content]        = 'Content'
 regions[wide_bottom]    = 'Wide bottom'
-regions[bottom]			    = 'Bottom'
+regions[bottom]			= 'Bottom'
 regions[footer]         = 'Footer'
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Stylesheets
 ;;;;;;;;;;;;;;;;;;;;;
-
 stylesheets[all][] = less/style.less
