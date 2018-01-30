@@ -1,0 +1,48 @@
+<?php
+
+require_once ("TcblFeed/FeedFactory.php");
+require_once ("TcblFeed/FeedItem.php");
+
+/**
+ * Implements hook_block_info().
+ */
+function tcbl_feed_block_info() {
+  return [
+    'tcbl_feed' => [
+      'info' => t("TCBL feed"),
+      'cache' => DRUPAL_NO_CACHE,/*DRUPAL_CACHE_GLOBAL*/
+    ]
+  ];
+}
+
+/**
+ * Implements hook_block_view().
+ *
+ * @param string
+ * @returns array
+ */
+function tcbl_feed_block_view($delta = '') {
+  $answer = [];
+
+  if ($delta != 'tcbl_feed') {
+    return $answer;
+  }
+
+  $answer['subject'] = t('TCBL Feeds');
+  $answer['content'] = t('No feeds available.');
+
+  $options = [
+    "fake_feeds" => [
+      "generate" => true,
+      "count" => 5,
+    ],
+  ];
+  $feeds = \TcblFeed\FeedFactory::getFeeds($options);
+
+  if(count($feeds)) {
+    $answer['content'] = t('Number of feeds: ' . count($feeds));
+  }
+
+  return $answer;
+}
+
