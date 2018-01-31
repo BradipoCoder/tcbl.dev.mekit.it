@@ -263,7 +263,8 @@ function _get_placeholder_imgs(){
 }
 
 function _get_placeholder_img($i, $theme){
-  $data = '<img class="img-responsive" src="http://lorempixel.com/1000/600/' . $theme . '/' . $i . '"/>';
+  $data = '<img class="img-responsive" src="http://lorempixel.com/400/300/' . $theme . '/' . $i . '"/>';
+  $data = '<div class="well"><code>fake-image</code></div>';
   return $data;
 }
 

@@ -18,7 +18,7 @@ require('include/paragraphs.php');
  */
 function tcbl_preprocess_html(&$variables) {
   $fonts = array(
-    0 => 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,600,600i|Titillium+Web:600',
+    0 => 'https://fonts.googleapis.com/css?family=Raleway:400,400i,600,600i',
   );
 
   foreach ($fonts as $key => $css) {

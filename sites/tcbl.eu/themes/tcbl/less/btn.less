@@ -9,52 +9,52 @@
 // ** BTN OUTLINE **
 // -----------------
 
-.button-variant(@color; @background; @border) {
-  color: @color;
-  background: none;
-  border-color: @border;
-  .transition(all ease-in-out .2s);
-  //text-transform: uppercase;
-  //font-family: @headings-font-family;
-
-  &:hover,
-  &:focus,
-  &:active,
-  .open .dropdown-toggle& {
-    color: darken(@color, 20%);
-    background: none;
-    border-color: darken(@border, 20%);
-  }
-
-  &.active{
-    background: @color;
-    color: #fff;
-    border-color: @color;
-  }
-
-  &:active,
-  &.active,
-  .open .dropdown-toggle& {
-    background-image: none;
-  }
-  &.disabled,
-  &[disabled],
-  fieldset[disabled] & {
-    &,
-    &:hover,
-    &:focus,
-    &:active,
-    &.active {
-      background-color: @background;
-          border-color: @border;
-    }
-  }
-
-  .badge {
-    color: @background;
-    background-color: @color;
-  }
-}
+//.button-variant(@color; @background; @border) {
+//  color: @color;
+//  background: none;
+//  border-color: @border;
+//  .transition(all ease-in-out .2s);
+//  //text-transform: uppercase;
+//  //font-family: @headings-font-family;
+//
+//  &:hover,
+//  &:focus,
+//  &:active,
+//  .open .dropdown-toggle& {
+//    color: darken(@color, 20%);
+//    background: none;
+//    border-color: darken(@border, 20%);
+//  }
+//
+//  &.active{
+//    background: @color;
+//    color: #fff;
+//    border-color: @color;
+//  }
+//
+//  &:active,
+//  &.active,
+//  .open .dropdown-toggle& {
+//    background-image: none;
+//  }
+//  &.disabled,
+//  &[disabled],
+//  fieldset[disabled] & {
+//    &,
+//    &:hover,
+//    &:focus,
+//    &:active,
+//    &.active {
+//      background-color: @background;
+//          border-color: @border;
+//    }
+//  }
+//
+//  .badge {
+//    color: @background;
+//    background-color: @color;
+//  }
+//}
 
 // ** BTN **
 // ---------
@@ -70,4 +70,13 @@
 .btn{
   .border-top-radius(0);
   .border-bottom-radius(0);
+}
+
+.btn{
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: @font-weight-bold;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: @font-size-small;
 }

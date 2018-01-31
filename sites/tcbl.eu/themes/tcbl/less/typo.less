@@ -10,13 +10,17 @@
 
 .link-color(@color){
   a{
-    color: @color;
-    &:hover,
-    &:focus,
-    &:active{
-      color: darken(@color,10%);
-    }
-  } 
+    .color-and-hover(@color);
+  }  
+}
+
+.color-and-hover(@color){
+  color: @color;
+  &:hover,
+  &:focus,
+  &:active{
+    color: darken(@color,10%);
+  }  
 }
 
 // ** HEADINGS **
@@ -27,25 +31,30 @@ h1, h2, h3, h4, h5, h6,
   .link-color(@headings-color);
 }
 
+.h1-big{
+  font-size: @font-size-h1 * 1.5;
+  font-weight: @font-weight-bold;
+  font-style: italic;
+}
+
 h1, .h1{
   .margin-b(1.5);
+  .text-color(@brand-primary);
+  font-style: italic;
+}
+
+h2, .h2{
+  .text-color(@brand-primary);
+}
+
+h3, .h3{
+  .text-color(@primary-light);
+  font-style: italic;
 }
 
 h4, .h4{
   .margin-t(1);
 }
-
-h3, .h3,
-h5, .h5{
-  font-family: @font-family-sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  .text-color(@gray);
-}
-
-// h4, .h4{
-//   .text-color(@brand-primary);
-// }
 
 // ** BOLD AND LINKS **
 // --------------------
@@ -92,37 +101,12 @@ hr{
   border-top: 2px solid @gray-lighter;
 }
 
-.hr-green{
-  .margin-t(0);
-  border-top: 20px solid @primary;
-}
-
-// ** CAT LINK **
-// --------------
-
-.cat-link{
-  background: @brand-primary;
-  padding: 3px 10px 4px 10px;
-  margin-right: 10px;
-  color: #fff;
-  &:hover,
-  &:focus,
-  &:active{
-    background: darken(@brand-primary, 5%);
-    color: #fff;
-  }
-}
-
-.wrapper-cat-date{
-  font-size: @font-size-small;
-}
-
 // ** NEGATIVE **
 // --------------
 
 .negative{
   h1, h2, h3, h4, h5, h6,
-  .h1, .h2, .h3, .h4, .h5, .h6{
+  .h1, .h1-big, .h2, .h3, .h4, .h5, .h6{
     .text-color(#fff);
   }
 
@@ -192,9 +176,10 @@ hr{
 .field-name-body,
 .field-name-field-short,
 .copy{
-  .link-color(@primary-dark);
+  .link-color(@primary-light);
   a{
-    font-weight: 600;
+    font-weight: @font-weight-bold;
+    text-decoration: underline; 
   }
 }
 
