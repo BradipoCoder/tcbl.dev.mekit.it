@@ -5,6 +5,28 @@
  * content.php
  */
 
+function _tcbl_add_header(&$vars){
+  // Page title
+  $vars['page_title'] = false;
+  $node = menu_get_object();
+  if ($node){
+    $vars['page_title'] = $node->title;
+  }
+
+  // Date
+  $vars['date'] = false;
+  if ($node && $node->type == 'blog'){
+    if (isset($node->field_submitted['und'][0])){
+      $date = field_view_field('node', $node, 'field_submitted', 'default');
+      $vars['date'] = $date;
+    }
+  }
+}
+
+
+// ** DROP ? **
+// ------------
+
 function _tcbl_add_button(&$vars){
   if (isset($vars['content']['field_button'][0]['#markup']) && $vars['content']['field_button'][0]['#markup'] !== ''){
     $opt = array(

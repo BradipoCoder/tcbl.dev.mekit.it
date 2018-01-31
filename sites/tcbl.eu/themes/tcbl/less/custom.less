@@ -35,7 +35,7 @@
 // ---------------
 
 body {
-  background: @primary-dark;
+  background: #fff;
 }
 
 /* editor */
@@ -65,16 +65,13 @@ body.cke_editable, body.mceContentBody{
   .padding-t(2);
   .padding-b(4);
 }
-// Scroll home correction
-.front .main-container {
-  .padding-v(0);
-}
-.page-node-47 .main-container,
-.page-node-4 .main-container,
-.node-type-member .main-container,
-.node-type-service .main-container,
-.node-type-post .main-container {
-  .padding-b(0);
+
+.wrapper-pink-header{
+  .padding-v(0.75);
+
+  .field-name-field-submitted{
+    font-weight: @font-weight-bold;
+  }
 }
 
 // ** LOGO ** //
@@ -84,11 +81,35 @@ body.cke_editable, body.mceContentBody{
   position: relative;
   .logo{
     position: absolute;
-    top: 24px;
+    top: 12px;
     left: 12px;
-    max-width: 208px;
     margin: 0;
   }
+}
+
+.img-logo{
+  width: 210px;    
+}
+
+// ** NAVBAR **
+// ------------
+
+@media (min-width: @grid-float-breakpoint){
+  .navbar-nav{
+    margin-top: 68px;  
+  }
+
+  .navbar-nav > li > a {
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+
+  .caret{
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    margin-left: -4px;
+  } 
 }
 
 // ** TABS **

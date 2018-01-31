@@ -53,8 +53,17 @@
 <?php endif; ?>
 
 <div class="wrapper-content">
+  <?php if (!empty($breadcrumb) || $page_title): ?>
+    <div class="wrapper-pink-header bg-pink negative">
+      <div class="container">
+        <?php print $breadcrumb;?>
+        <h1 class="margin-v-0"><?php print $page_title; ?></h1>
+        <?php print render($date); ?>
+      </div>
+    </div>
+  <?php endif; ?>
   <div class="main-container <?php print $container_class; ?>">  
-    <?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
+    
     <a id="main-content"></a>
     
     <?php if ($messages) : ?>

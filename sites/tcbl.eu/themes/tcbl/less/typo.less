@@ -162,19 +162,19 @@ hr{
 // ** NAV BAR **
 // -------------
 
-// .navbar-default{
-//   .navbar-nav li a{
-//     text-transform: uppercase;
-//     font-weight: 600;
-//     font-size: @font-size-small;
-//   }
-// }
+.navbar-default{
+  .navbar-nav li a{
+    text-transform: uppercase;
+    font-style: italic;
+    font-weight: @font-weight-bold;
+    letter-spacing: 1px;
+    font-size: @font-size-small * 0.8;  
+  }
+}
 
 // ** LINK INSIDE COPY **
 // ----------------------
 
-.field-name-body,
-.field-name-field-short,
 .copy{
   .link-color(@primary-light);
   a{
@@ -185,9 +185,9 @@ hr{
 
 .negative{
   .link-color(#fff);
-  a{
-    text-decoration: underline;
-  }
+  //a{
+  //  text-decoration: underline;
+  //}
 }
 
 // ** WEBFORM **
@@ -228,7 +228,17 @@ hr{
 // ----------------
 
 .breadcrumb{
-  text-align: center;
   font-size: @font-size-small;
-  .margin-b(1);
+  font-style: italic;
+  font-weight: @font-weight-bold;
+  margin: 0;
+  .margin-b(0.25);
+
+  > li + li:before{
+    color: #fff;  
+  }
+
+  > .active{
+    color: #fff;
+  }
 }

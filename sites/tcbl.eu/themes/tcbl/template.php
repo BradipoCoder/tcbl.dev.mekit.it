@@ -35,7 +35,7 @@ function tcbl_preprocess_page(&$vars){
   // Logo
   $path = drupal_get_path('theme', 'tcbl') . '/img/';
   $vars['logo'] = array(
-    '#markup' => '<img src="/' . $path . 'tcbl-logo.png" class="img-responsive"/>',
+    '#markup' => '<img src="/' . $path . 'tcbl-logo.svg" class="img-logo"/>',
   );
 
   // Container class
@@ -43,6 +43,8 @@ function tcbl_preprocess_page(&$vars){
   if ($vars['is_front']){
     $vars['container_class'] = 'container-fluid';
   }
+
+  _tcbl_add_header($vars);
 }
 
 // ** ADMIN **
