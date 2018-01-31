@@ -20,7 +20,18 @@ class FeedFactory {
   protected static $feeds_cache_file_uri = 'public://tcbl_feeds/feeds.ser';
 
 
-
+  /**
+   * @param array $options
+   */
+  public static function generateFeeds($options = [])
+  {
+    if(isset($options["fake_feeds"]["generate"]) && $options["fake_feeds"]["generate"])
+    {
+      FeedFactory::generateFakeFeeds($options);
+    } else {
+      FeedFactory::generateFeedsFromExternalSources($options);
+    }
+  }
 
   /**
    * @param array $options
@@ -49,7 +60,31 @@ class FeedFactory {
   {
     $feeds = [];
 
+    $fileRealPath = drupal_realpath(FeedFactory::$feeds_cache_file_uri);
+    if($fileRealPath && file_exists($fileRealPath))
+    {
+      $flatData = file_get_contents($fileRealPath);
+      if($flatData && !empty($flatData))
+      {
+        $feeds = unserialize($flatData);
+      }
+    }
+
     return $feeds;
+  }
+
+  /**
+   * Generate feed elements using plugins to read external sources
+   *
+   * @param array $options
+   *
+   */
+  protected static function generateFeedsFromExternalSources($options = [])
+  {
+    //@TBW
+    $feeds = [];
+
+    FeedFactory::writeFeedsFile($feeds);
   }
 
   /**
@@ -68,17 +103,25 @@ class FeedFactory {
       $item = new FeedItem();
       $item->setType("facebook");
       $item->setTitle("Item #".$i);
-      $item->setContent("something...");
-      $item->setDate(new \DateTime());
+      $item->setMessage("something...");
+      $item->setCreationDate(new \DateTime());
       $item->setUrl("https://mekit.it");
       array_push($feeds, $item);
     }
 
-    //write file to FS
+    FeedFactory::writeFeedsFile($feeds);
+  }
+
+  /**
+   * Serializes and writes out the feeds
+   *
+   * @param $feeds
+   */
+  protected static function writeFeedsFile($feeds)
+  {
     $flatData = serialize($feeds);
     $feedDir = dirname(FeedFactory::$feeds_cache_file_uri);
     file_prepare_directory($feedDir, FILE_CREATE_DIRECTORY&&FILE_MODIFY_PERMISSIONS);
     file_save_data($flatData, FeedFactory::$feeds_cache_file_uri,FILE_EXISTS_REPLACE);
   }
-
 }
