@@ -32,10 +32,17 @@ function tcbl_preprocess_html(&$variables) {
 }
 
 function tcbl_preprocess_page(&$vars){
+  // Logo
   $path = drupal_get_path('theme', 'tcbl') . '/img/';
   $vars['logo'] = array(
-    '#markup' => '<img src="' . $path . 'tcbl-logo.png" class="img-responsive"/>',
+    '#markup' => '<img src="/' . $path . 'tcbl-logo.png" class="img-responsive"/>',
   );
+
+  // Container class
+  $vars['container_class'] = 'container';
+  if ($vars['is_front']){
+    $vars['container_class'] = 'container-fluid';
+  }
 }
 
 // ** ADMIN **

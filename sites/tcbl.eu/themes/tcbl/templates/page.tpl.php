@@ -53,7 +53,7 @@
 <?php endif; ?>
 
 <div class="wrapper-content">
-  <div class="main-container container-fluid">  
+  <div class="main-container <?php print $container_class; ?>">  
     <?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
     <a id="main-content"></a>
     
