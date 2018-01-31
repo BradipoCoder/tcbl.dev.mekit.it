@@ -76,13 +76,21 @@ body.cke_editable, body.mceContentBody{
 .node-type-post .main-container {
   .padding-b(0);
 }
+
 // ** LOGO ** //
 // -------------
 
-.footer .logo img,
-.navbar-header .logo img {
-  max-width: 200px;
+.container-header{
+  position: relative;
+  .logo{
+    position: absolute;
+    top: 24px;
+    left: 12px;
+    max-width: 208px;
+    margin: 0;
+  }
 }
+
 // ** TABS **
 // ----------
 
@@ -91,11 +99,14 @@ body.cke_editable, body.mceContentBody{
   .margin-b(1);
   text-align: center;
 }
+
 // ** PAGER **
 // -----------
+
 .nhc-pager {
   .margin-v(1);
 }
+
 // ** HOVER BOX **
 // ---------------
 

@@ -31,6 +31,13 @@ function tcbl_preprocess_html(&$variables) {
   */
 }
 
+function tcbl_preprocess_page(&$vars){
+  $path = drupal_get_path('theme', 'tcbl') . '/img/';
+  $vars['logo'] = array(
+    '#markup' => '<img src="' . $path . 'tcbl-logo.png" class="img-responsive"/>',
+  );
+}
+
 // ** ADMIN **
 // -----------
 
