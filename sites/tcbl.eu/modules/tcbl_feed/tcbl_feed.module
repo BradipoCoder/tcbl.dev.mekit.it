@@ -11,7 +11,7 @@ function tcbl_feed_block_info() {
     'tcbl_feed' => [
       'info' => t("TCBL feed"),
       'cache' => DRUPAL_NO_CACHE,/*DRUPAL_CACHE_GLOBAL*/
-    ],
+    ]
   ];
 }
 
@@ -31,57 +31,18 @@ function tcbl_feed_block_view($delta = '') {
   $answer['subject'] = t('TCBL Feeds');
   $answer['content'] = t('No feeds available.');
 
-  //@todo: implement this with cron hook and remove it from here
   $options = [
     "fake_feeds" => [
       "generate" => true,
-      "count" => 7,
+      "count" => 5,
     ],
-    "external_feeds" => [
-      "count_per_source" => 5,
-    ],
-  ];
-  \TcblFeed\FeedFactory::generateFeeds($options);
-
-  $options = [
-    "filters" => [],
-    "ordering" => "",
   ];
   $feeds = \TcblFeed\FeedFactory::getFeeds($options);
 
-
   if(count($feeds)) {
-    //$answer['content'] = t('Number of feeds: ' . count($feeds));
-    $answer['content'] = [];
-    $answer['content']['feeds'] = [];
-
-    /** @var \TcblFeed\FeedItem $feed */
-    foreach($feeds as $feed)
-    {
-      $feedThemeItem = [
-        '#theme' => 'tcbl_feed_item',
-        '#feed_item' => $feed,
-      ];
-      array_push($answer['content']['feeds'], $feedThemeItem);
-    }
+    $answer['content'] = t('Number of feeds: ' . count($feeds));
   }
 
   return $answer;
-}
-
-
-/**
- * Implements hook_theme().
- */
-function tcbl_feed_theme($existing, $type, $theme, $path) {
-  return [
-    'tcbl_feed_item' => [
-      'template' => 'tcbl-feed-item',
-      'variables' => [
-        'feed_item' => NULL,
-      ],
-      /*'pattern' => 'tcbl-feed-item__',*/
-    ],
-  ];
 }
 
