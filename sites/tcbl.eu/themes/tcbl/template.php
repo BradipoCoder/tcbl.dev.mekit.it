@@ -57,9 +57,10 @@ function tcbl_preprocess_page(&$vars){
 function tcbl_form_node_form_alter(&$form, $form_state){
   global $user;
 
-  $form['nodehierarchy']['#title'] = 'Genitore';
+  $form['nodehierarchy']['#title'] = 'Parent node';
   if (isset($form['nodehierarchy']['nodehierarchy_menu_links'][0]['#title'])){
-    $form['nodehierarchy']['nodehierarchy_menu_links'][0]['#title'] = 'Genitore';
+    $form['nodehierarchy']['nodehierarchy_menu_links'][0]['#title'] = 'Parent node';
+    $form['nodehierarchy']['#weight'] = -1;
   }
 
   if ($user->uid == 1){
