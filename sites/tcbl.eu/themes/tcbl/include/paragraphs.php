@@ -42,6 +42,10 @@ function tcbl_preprocess_entity(&$vars){
         _tcbl_preprocess_p_copy($vars);
         break;
 
+      case 'video':
+        _tcbl_preprocess_p_video($vars);
+        break;
+
         # code...
         break;
     }
@@ -94,22 +98,9 @@ function _tcbl_preprocess_p_imgs(&$vars){
 }
 
 function _tcbl_preprocess_p_img_big(&$vars){
-
   if ($vars['view_mode'] == 'full'){
-    $vars['content']['field_img'] = array(
-      '#prefix' => '<div class="wrapper-p-img margin-b-05">',
-      '#suffix' => '</div>',
-      'data' => $vars['content']['field_img'][0],
-    );
-    //if (isset($vars['content']['field_img']['data']['#item']['title'])){
-    //  $title = $vars['content']['field_img']['data']['#item']['title'];
-    //  $vars['content']['field_img']['desc'] = array(
-    //    '#prefix' => '<div class="margin-t-05"><p class="small">',
-    //    '#suffix' => '</p></div>',
-    //    '#markup' => $title,
-    //    '#weight' => 2,
-    //  );
-    //}
+    $vars['content']['#prefix'] = '<div class="text-max-width margin-v-2">';
+    $vars['content']['#suffix'] = '</div>';  
   }
 }
 
@@ -249,12 +240,17 @@ function _tcbl_preprocess_p_text_parallax(&$vars){
 }
 
 function _tcbl_preprocess_p_copy(&$vars){
-  $vars['content']['#prefix'] = '<div class="margin-sm-h-1">';
-  $vars['content']['#suffix'] = '</div>';
+  //$vars['content']['#prefix'] = '<div class="margin-sm-h-1">';
+  //$vars['content']['#suffix'] = '</div>';
 
   // In specific field
   // if ($vars['elements']['#entity']->field_name == 'field_content_down'){
   //   $vars['content']['#prefix'] = '<div class="container margin-v-2">';
   //   $vars['content']['#suffix'] = '</div>';
   // }
+}
+
+function _tcbl_preprocess_p_video(&$vars){
+  $vars['content']['#prefix'] = '<div class="text-max-width margin-v-2">';
+  $vars['content']['#suffix'] = '</div>';
 }
