@@ -9,6 +9,8 @@
 .directory
 .DS_Store
 ftpsync.settings
+tcbl.sublime-project
+tcbl.sublime-workspace
 
 
 # DRUPAL - Configuration files containing sensitive information
