@@ -7,19 +7,18 @@
 
 namespace TcblFeed\Plugins;
 
+use TcblFeed\FeedItem;
 
 class TcblZineWpFeedPlugin extends FeedPlugin implements FeedPluginInterface {
 
   /**
-   * @param array $options
-   *
    * @return array
    */
-  public function getFeeds($options = []): array {
-    $answer = [];
+  public function getFeeds(): array {
 
+    $feeds = $this->getFakeFeeds("tcbl_zine");
 
-    return $answer;
+    return $feeds;
   }
 }
 

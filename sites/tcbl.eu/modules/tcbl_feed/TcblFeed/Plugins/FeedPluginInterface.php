@@ -15,9 +15,7 @@ namespace TcblFeed\Plugins;
 interface FeedPluginInterface {
 
   /**
-   * @param array $options
-   *
    * @return array
    */
-  public function getFeeds($options = []):array;
+  public function getFeeds():array;
 }

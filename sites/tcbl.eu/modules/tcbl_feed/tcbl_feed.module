@@ -33,19 +33,14 @@ function tcbl_feed_block_view($delta = '') {
   $answer['subject'] = t('TCBL Feeds');
   $answer['content'] = t('No feeds available.');
 
-  $feedPlugins = [
-    "TcblZineWpFeedPlugin",
-  ];
 
   //@todo: implement this with cron hook and remove it from here
   $generateOptions = [
-    "plugins" => $feedPlugins,
-    "feed_item_per_plugin" => 5,
+    "feed_item_per_plugin" => 3,
   ];
   \TcblFeed\FeedFactory::generateFeeds($generateOptions);
 
   $getFeedOptions = [
-    "plugins" => $feedPlugins,
     "filters" => [],
     "ordering" => "",
   ];

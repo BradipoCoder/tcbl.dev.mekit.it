@@ -31,26 +31,17 @@ class FeedFactory {
   public static function generateFeeds($options = [])
   {
     $feeds = [];
+
     FeedFactory::enumerateFeedPlugins();
 
-    if(isset($options["plugins"]) && count($options["plugins"]))
+    foreach(FeedFactory::$feed_plugins as $pluginClass)
     {
-      foreach($options["plugins"] as $pluginName)
-      {
-        if(in_array($pluginName, FeedFactory::$feed_plugins))
-        {
-          $fqcn = "TcblFeed\Plugins\\$pluginName";
-          $reflection = new \ReflectionClass($fqcn);
-          /** @var \TcblFeed\Plugins\FeedPluginInterface $plugin */
-          $plugin = $reflection->newInstance();
-          $pluginFeeds = $plugin->getFeeds($options);
-          $feeds = array_merge($feeds, $pluginFeeds);
-        }
-      }
+      $reflection = new \ReflectionClass($pluginClass);
+      /** @var \TcblFeed\Plugins\FeedPluginInterface $plugin */
+      $plugin = $reflection->newInstance($options);
+      $pluginFeeds = $plugin->getFeeds();
+      $feeds = array_merge($feeds, $pluginFeeds);
     }
-
-    //FeedFactory::generateFakeFeeds($options);
-    //FeedFactory::generateFeedsFromExternalSources($options);
 
     //sort feeds
 
@@ -75,9 +66,22 @@ class FeedFactory {
     return $feeds;
   }
 
+  /**
+   * check and load plugins
+   */
   protected static function enumerateFeedPlugins()
   {
+    $pluginPath = drupal_realpath(drupal_get_path("module", "tcbl_feed") . "/TcblFeed/Plugins/");
+    $pluginFiles = glob($pluginPath . '/*Plugin.php');
 
+    foreach ($pluginFiles as &$pluginFile)
+    {
+      require_once($pluginFile);
+      $pluginClass = 'TcblFeed\\Plugins\\' . str_replace('.php', '', str_replace($pluginPath . '/', '', $pluginFile));
+      if (in_array('TcblFeed\Plugins\FeedPluginInterface', class_implements($pluginClass))) {
+        array_push(FeedFactory::$feed_plugins, $pluginClass);
+      }
+    }
   }
 
   /**
@@ -101,20 +105,6 @@ class FeedFactory {
     }
 
     return $feeds;
-  }
-
-  /**
-   * Generate feed elements using plugins to read external sources
-   *
-   * @param array $options
-   *
-   */
-  protected static function generateFeedsFromExternalSources($options = [])
-  {
-    //@TBW
-    $feeds = [];
-
-    FeedFactory::writeFeedsFile($feeds);
   }
 
   /**
