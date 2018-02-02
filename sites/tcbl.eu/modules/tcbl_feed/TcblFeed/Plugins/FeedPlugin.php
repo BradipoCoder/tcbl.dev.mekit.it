@@ -35,6 +35,8 @@ class FeedPlugin {
   protected function getFakeFeeds($type): array {
     $feeds = [];
 
+
+
     for ($i = 1; $i <= $this->max_feed_count; $i++)
     {
       $item = new FeedItem();
