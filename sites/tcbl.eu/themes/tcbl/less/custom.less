@@ -56,6 +56,10 @@ body.cke_editable, body.mceContentBody{
   background: @primary-lightest;
 }
 
+.parallax-content{
+  .padding-v(6);
+}
+
 // ** MAIN CONTAINER **
 // --------------------
 
@@ -191,12 +195,22 @@ body.cke_editable, body.mceContentBody{
 // ** PARAGRAPHS **
 // ----------------
 
-.paragraphs-item-imgs,
-.wrapper-p-img {
-  img {
-    border: 1px solid @gray-lighter;
+.paragraphs-item-text-img{
+  position: relative;
+
+  .field-name-field-img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: 150px;
+  }
+
+  .field-name-field-short{
+    margin-left: 170px;
+    min-height: 150px;
   }
 }
+
 // ** NODE SERVICE **
 // ------------------
 

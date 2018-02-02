@@ -126,6 +126,7 @@ function _tcbl_preprocess_p_text_icon(&$vars){
 function _tcbl_preprocess_p_text_img(&$vars){
   $p = $vars['paragraphs_item'];
 
+  /*
   $vars['content'] = array(
     'row' => array(
       '#prefix' => '<div class="row row-text-img margin-b-2">',
@@ -141,26 +142,20 @@ function _tcbl_preprocess_p_text_img(&$vars){
         'data' => array(
           '#prefix' => '<div class="margin-md-l-2">',
           '#suffix' => '</div>',
-          'data' => $vars['content']['field_desc'],
+          'data' => $vars['content']['field_short'],
         ),
       ),
     ),
-  );
-
-  if ($p->field_option['und'][0]['value'] == 'right'){
-    $vars['content']['row']['left']['#prefix'] = '<div class="col-md-5 col-md-push-7">';
-    $vars['content']['row']['right']['#prefix'] = '<div class="col-md-7 col-md-pull-5">';
-    $vars['content']['row']['right']['data']['#prefix'] = '<div class="margin-md-r-2">';
-  }
+  );*/
 
   // In specific field
-  if ($vars['elements']['#entity']->field_name == 'field_content_down'){
-    $vars['content']['#prefix'] = '<div class="container">';
-    $vars['content']['#suffix'] = '</div>';
-    if ($p->item_id !== '10'){
-      $vars['content']['#suffix'] .= '<hr class="margin-b-2 hidden-xs">';
-    }
-  }
+  // if ($vars['elements']['#entity']->field_name == 'field_content_down'){
+  //   $vars['content']['#prefix'] = '<div class="container">';
+  //   $vars['content']['#suffix'] = '</div>';
+  //   if ($p->item_id !== '10'){
+  //     $vars['content']['#suffix'] .= '<hr class="margin-b-2 hidden-xs">';
+  //   }
+  // }
 }
 
 function _tcbl_preprocess_p_text_isotope(&$vars){
