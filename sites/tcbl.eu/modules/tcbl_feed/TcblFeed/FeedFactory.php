@@ -7,7 +7,7 @@
 
 namespace TcblFeed;
 
-use TcblFeed\FeedItem;
+//use TcblFeed\FeedItem;
 
 /**
  * Class FeedFactory
@@ -19,18 +19,43 @@ class FeedFactory {
   /** @var string */
   protected static $feeds_cache_file_uri = 'public://tcbl_feeds/feeds.ser';
 
+  /** @var array - list of plugins able to generate feed items */
+  protected static $feed_plugins = [];
+
 
   /**
    * @param array $options
+   *
+   * @throws \ReflectionException
    */
   public static function generateFeeds($options = [])
   {
-    if(isset($options["fake_feeds"]["generate"]) && $options["fake_feeds"]["generate"])
+    $feeds = [];
+    FeedFactory::enumerateFeedPlugins();
+
+    if(isset($options["plugins"]) && count($options["plugins"]))
     {
-      FeedFactory::generateFakeFeeds($options);
-    } else {
-      FeedFactory::generateFeedsFromExternalSources($options);
+      foreach($options["plugins"] as $pluginName)
+      {
+        if(in_array($pluginName, FeedFactory::$feed_plugins))
+        {
+          $fqcn = "TcblFeed\Plugins\\$pluginName";
+          $reflection = new \ReflectionClass($fqcn);
+          /** @var \TcblFeed\Plugins\FeedPluginInterface $plugin */
+          $plugin = $reflection->newInstance();
+          $pluginFeeds = $plugin->getFeeds($options);
+          $feeds = array_merge($feeds, $pluginFeeds);
+        }
+      }
     }
+
+    //FeedFactory::generateFakeFeeds($options);
+    //FeedFactory::generateFeedsFromExternalSources($options);
+
+    //sort feeds
+
+    //write feeds
+    FeedFactory::writeFeedsFile($feeds);
   }
 
   /**
@@ -48,6 +73,11 @@ class FeedFactory {
     $feeds = FeedFactory::readCachedFeedsFile($options);
 
     return $feeds;
+  }
+
+  protected static function enumerateFeedPlugins()
+  {
+
   }
 
   /**

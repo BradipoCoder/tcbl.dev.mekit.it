@@ -2,6 +2,8 @@
 
 require_once ("TcblFeed/FeedFactory.php");
 require_once ("TcblFeed/FeedItem.php");
+require_once ("TcblFeed/Plugins/FeedPlugin.php");
+require_once ("TcblFeed/Plugins/FeedPluginInterface.php");
 
 /**
  * Implements hook_block_info().
@@ -31,23 +33,23 @@ function tcbl_feed_block_view($delta = '') {
   $answer['subject'] = t('TCBL Feeds');
   $answer['content'] = t('No feeds available.');
 
-  //@todo: implement this with cron hook and remove it from here
-  $options = [
-    "fake_feeds" => [
-      "generate" => true,
-      "count" => 7,
-    ],
-    "external_feeds" => [
-      "count_per_source" => 5,
-    ],
+  $feedPlugins = [
+    "TcblZineWpFeedPlugin",
   ];
-  \TcblFeed\FeedFactory::generateFeeds($options);
 
-  $options = [
+  //@todo: implement this with cron hook and remove it from here
+  $generateOptions = [
+    "plugins" => $feedPlugins,
+    "feed_item_per_plugin" => 5,
+  ];
+  \TcblFeed\FeedFactory::generateFeeds($generateOptions);
+
+  $getFeedOptions = [
+    "plugins" => $feedPlugins,
     "filters" => [],
     "ordering" => "",
   ];
-  $feeds = \TcblFeed\FeedFactory::getFeeds($options);
+  $feeds = \TcblFeed\FeedFactory::getFeeds($getFeedOptions);
 
 
   if(count($feeds)) {
