@@ -20,6 +20,8 @@ tcbl.sublime-workspace
 # -------------------------------------------------------------
 /sites/*
 !/sites/tcbl.eu/
+/sites/tcbl.eu/*/.DS_Store
+/sites/tcbl.eu/*/*/.DS_Store
 
 
 # DRUPAL - Configuration files containing sensitive information
