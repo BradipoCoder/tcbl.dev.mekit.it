@@ -61,7 +61,7 @@ function _tcbl_preprocess_p_imgs(&$vars){
     $style = 'vertical';
   }
 
-  $vars['content']['#prefix'] = '<div class="row row-imgs">';
+  $vars['content']['#prefix'] = '<div class="row margin-v-2">';
   $vars['content']['#suffix'] = '</div>';
 
   if ($vars['view_mode'] == 'full'){
@@ -91,10 +91,10 @@ function _tcbl_preprocess_p_imgs(&$vars){
     }
   }
 
-  if ($vars['view_mode'] == 'paragraphs_editor_preview'){
-    $vars['content']['#prefix'] = '<div class="wrapper-p-imgs">';
-    $vars['content']['#suffix'] = '</div>';
-  }
+  // if ($vars['view_mode'] == 'paragraphs_editor_preview'){
+  //   $vars['content']['#prefix'] = '<div class="wrapper-p-imgs">';
+  //   $vars['content']['#suffix'] = '</div>';
+  // }
 }
 
 function _tcbl_preprocess_p_img_big(&$vars){
