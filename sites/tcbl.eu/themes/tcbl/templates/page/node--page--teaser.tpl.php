@@ -21,7 +21,7 @@
   <div class="node-content"<?php print $content_attributes; ?>>
     <div class="container">
       <div class="row">
-        <div class="col-sm-5">
+        <div class="col-md-6 col-lg-5">
           <?php print render($content['field_short']); ?>
         </div>
       </div>

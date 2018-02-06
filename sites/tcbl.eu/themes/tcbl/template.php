@@ -8,7 +8,6 @@
 require('include/content.php');
 require('include/content-types.php');
 require('include/page.php');
-require('include/member.php');
 require('include/form.php');
 require('include/paragraphs.php');
 

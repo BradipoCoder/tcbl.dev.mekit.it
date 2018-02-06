@@ -22,7 +22,7 @@ function _tcbl_preprocess_node_page(&$vars){
       ),
     );
     $vars['content']['more'] = array(
-      '#prefix' => '<div class="wrapper-page-more margin-v-1">',
+      '#prefix' => '<div class="wrapper-page-more margin-t-1">',
       '#suffix' => '</div>',
       '#markup' => l('Read more', 'node/' . $node->nid, $opt),
     );

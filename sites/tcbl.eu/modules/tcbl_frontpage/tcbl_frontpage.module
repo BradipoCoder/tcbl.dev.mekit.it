@@ -4,12 +4,38 @@
  * @param array $vars
  */
 function tcbl_frontpage_preprocess_page(&$vars) {
-  if(!isset($vars["is_front"]) || $vars["is_front"] != true){
+  if(!isset($vars['is_front']) || $vars['is_front'] != true){
     return;
   }
 
-  $vars["page"]["content"]["front"] = [
-    '#markup' => '<h1 class="text-center">TCBL - WIP</h1>'
-  ];
+  $content = array(
+  );
 
+  $content['news']['#markup'] = views_embed_view('hp_news', 'default');
+  $content['events']['#markup'] = views_embed_view('hp_events', 'default');
+  $content['forum']['#markup'] = views_embed_view('hp_forum', 'default');
+
+  $show_sign_up = !user_is_logged_in();
+  $vars['page']['content']['front'] = [
+    '#theme' => 'tcblfront',
+    '#content' => $content,
+    '#show_sign_up' => $show_sign_up,
+  ];
+}
+
+/**
+ * Implements hook_theme().
+ */
+function tcbl_frontpage_theme(){
+  return array(
+    'tcblfront' => array(
+      // use a template and give the template's name.
+      'template' => 'tcblfront',
+      'variables' => array(
+        'content' => NULL,
+        'show_sign_up' => false, 
+      ),
+      'pattern' => 'tcblfront__',
+    )
+  );
 }
