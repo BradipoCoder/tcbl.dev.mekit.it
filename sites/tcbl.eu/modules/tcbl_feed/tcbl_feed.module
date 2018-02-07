@@ -1,5 +1,7 @@
 <?php
 
+// - http://tcbl.dev.mekit.it/mekit-test
+
 require_once ("TcblFeed/FeedFactory.php");
 require_once ("TcblFeed/FeedItem.php");
 require_once ("TcblFeed/Plugins/FeedPlugin.php");
@@ -22,6 +24,7 @@ function tcbl_feed_block_info() {
  *
  * @param string
  * @returns array
+ * @throws \ReflectionException
  */
 function tcbl_feed_block_view($delta = '') {
   $answer = [];
