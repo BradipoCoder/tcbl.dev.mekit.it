@@ -2,6 +2,7 @@
 
 /**
  * This module provides SSO functionality for gluu Server.
+ *
  * @author DITF
  * @modified MEKIT(mekit.it) - 2018-02-08
  *
@@ -33,124 +34,146 @@ function gluuSSO_loginSSO() {
   define("CLIENT_ID", "@!94C6.B1CD.FACE.39C5!0001!6872.82DF!0008!8E3C.FAC0.9AEE.0A2F");
   define("CLIENT_SECRET", "752e0b97-853b-47f0-a87d-bc15b8487339");
 
+
+  $client = new OpenIDConnectClient(
+    ISSUER,
+    CLIENT_ID,
+    CLIENT_SECRET
+  );
+
+  $client->setRedirectURL(URL_REDIRECT);
+
+  $prompt = ['prompt' => 'consent', 'display' => 'page'];
+  $client->addAuthParam($prompt);
+
+  # Add desired scopes. The 'openid' scope is mandatory!
+  $client->addScope('openid');
+  $client->addScope('minimum');
+
+  # Actual authentication and authorization
   try {
-    $oidc = new OpenIDConnectClient(
-      ISSUER,
-      CLIENT_ID,
-      CLIENT_SECRET
-    );
-
-    $oidc->setRedirectURL(URL_REDIRECT);
-
-    $prompt = ['prompt' => 'consent', 'display' => 'page'];
-    $oidc->addAuthParam($prompt);
-
-    # Add desired scopes. The 'openid' scope is mandatory!
-    $oidc->addScope('openid');
-    $oidc->addScope('minimum');
-
-
-    # Actual authentication and authorization
-    $oidc->authenticate();
-
-    # Request user info.
-    $firstname = $oidc->requestUserInfo('given_name');
-    $lastname = $oidc->requestUserInfo('family_name');
-    $email = $oidc->requestUserInfo('email');
-    $inum = $oidc->requestUserInfo('sub');
-    $name = $firstname . ' ' . $lastname;
-
-    # Load drupal account
-    /** @var \DatabaseStatementInterface $query */
-    $query = db_select('users', 'u')
-      ->fields('u', ['uid', 'mail'])
-      ->condition('mail', $email, 'LIKE')
-      ->execute();
-
-    $account = $query->fetchAssoc();
-
-    if (!$account) {
-
-      { # Preparing further information
-        $password = user_password(8);
-        $roleList = ['6' => 'gluu-user'];
-      }
-      { # Account vorbereiten
-        $fields = [
-          'name' => $email,
-          'mail' => $email,
-          'pass' => $password,
-          'status' => 1,
-          'init' => $email,
-          'roles' => $roleList,
-          'field_firstname' => [
-            'und' => [
-              0 => [
-                'value' => $firstname,
-              ],
-            ],
-          ],
-          'field_lastname' => [
-            'und' => [
-              0 => [
-                'value' => $lastname,
-              ],
-            ],
-          ],
-        ];
-      }
-      { # Account erstellen
-        $user = user_save('', $fields);
-        $account['uid'] = $user->uid;
-      }
-      { # Newsletter hinzufügen
-        $snid = db_insert('simplenews_subscriber')
-          ->fields(
-            [
-              'activated' => '1',
-              'mail' => $email,
-              'uid' => $account['uid'],
-              'changes' => 'a:0:{}',
-              'created' => REQUEST_TIME,
-            ]
-          )
-          ->execute();
-
-        db_insert('simplenews_subscription')
-          ->fields(
-            [
-              'snid' => $snid,
-              'tid' => '23',
-              'status' => '1',
-              'timestamp' => REQUEST_TIME,
-              'source' => 'website',
-            ]
-          )
-          ->execute();
-      }
-    }
-    if ($account['uid'] != 1) { # Login
-      { # Logging
-        $user = user_load($account['uid']);
-        $info = [
-          '%user' => $user->name,
-          '%name' => $name,
-          '%email' => $email,
-          '%inum' => $inum,
-        ];
-        watchdog('gluu-sso', 'Session opened for %user (Gluu-Information: %name|%email|%inum) via TCBL login.', $info);
-      }
-      { # Do Login
-        user_login_submit([], $account);
-        drupal_session_regenerate();
-      }
-    }
-    else {
-      drupal_set_message("This user isn't allowed to login via gluu, due security reasons.", "error");
-    }
-  } catch(OpenIDConnectClientException $e) {
-    drupal_set_message("Login isn't allowd via TCBL due missing permission or denied permission.", "error");
+    $client->authenticate();
+  } catch(\OpenIDConnectClientException $e) {
+    $error_number = 1;
+    $error_message = t("Login isn't allowed via TCBL due missing or denied permission.");
+    drupal_set_message($error_message, "error");
+    watchdog("GLUU-SSO", $error_message, ["error_number" => $error_number, "exception" => $e], WATCHDOG_ALERT);
+    drupal_goto('user');
+    return $error_number;
   }
+
+  # Request user info.
+  $firstname = $client->requestUserInfo('given_name');
+  $lastname = $client->requestUserInfo('family_name');
+  $email = $client->requestUserInfo('email');
+  $inum = $client->requestUserInfo('sub');
+  $name = $firstname . ' ' . $lastname;
+
+  if(!$email){
+    $error_number = 2;
+    $error_message = t("Unable to get e-mail address for user identification.");
+    drupal_set_message($error_message, "error");
+    watchdog("GLUU-SSO", $error_message, ["error_number" => $error_number], WATCHDOG_ALERT);
+    drupal_goto('user');
+    return $error_number;
+  }
+
+  # Load drupal account
+  /** @var \DatabaseStatementInterface $query */
+  $query = db_select('users', 'u')
+    ->fields('u', ['uid', 'mail'])
+    ->condition('mail', $email, 'LIKE')
+    ->execute();
+  $account = $query->fetchAssoc();
+
+  # Create account - @todo: continue from here
+  if (!$account) {
+
+    { # Preparing further information
+      $password = user_password(8);
+      $roleList = ['6' => 'gluu-user'];
+    }
+    { # Account vorbereiten
+      $fields = [
+        'name' => $email,
+        'mail' => $email,
+        'pass' => $password,
+        'status' => 1,
+        'init' => $email,
+        'roles' => $roleList,
+        'field_firstname' => [
+          'und' => [
+            0 => [
+              'value' => $firstname,
+            ],
+          ],
+        ],
+        'field_lastname' => [
+          'und' => [
+            0 => [
+              'value' => $lastname,
+            ],
+          ],
+        ],
+      ];
+    }
+    { # Account erstellen
+      $user = user_save('', $fields);
+      $account['uid'] = $user->uid;
+    }
+    { # Newsletter hinzufügen
+      $snid = db_insert('simplenews_subscriber')
+        ->fields(
+          [
+            'activated' => '1',
+            'mail' => $email,
+            'uid' => $account['uid'],
+            'changes' => 'a:0:{}',
+            'created' => REQUEST_TIME,
+          ]
+        )
+        ->execute();
+
+      db_insert('simplenews_subscription')
+        ->fields(
+          [
+            'snid' => $snid,
+            'tid' => '23',
+            'status' => '1',
+            'timestamp' => REQUEST_TIME,
+            'source' => 'website',
+          ]
+        )
+        ->execute();
+    }
+  }
+
+  if ($account['uid'] != 1) { # Login
+    { # Logging
+      $user = user_load($account['uid']);
+      $info = [
+        '%user' => $user->name,
+        '%name' => $name,
+        '%email' => $email,
+        '%inum' => $inum,
+      ];
+      watchdog('gluu-sso', 'Session opened for %user (Gluu-Information: %name|%email|%inum) via TCBL login.', $info);
+    }
+    { # Do Login
+      user_login_submit([], $account);
+      drupal_session_regenerate();
+    }
+  }
+  else {
+    drupal_set_message("This user isn't allowed to login via gluu, due security reasons.", "error");
+  }
+
+
+  //} catch
+  //(OpenIDConnectClientException $e) {
+  //  drupal_set_message("Login isn't allowd via TCBL due missing permission or denied permission.", "error");
+  //}
+
   { # Display page
     drupal_goto('user');
     return 1;
