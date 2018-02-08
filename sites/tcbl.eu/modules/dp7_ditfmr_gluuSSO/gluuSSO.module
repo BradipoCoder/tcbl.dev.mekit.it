@@ -1,8 +1,10 @@
 <?php
 
 /**
- * @file
  * This module provides SSO functionality for gluu Server.
+ * @author DITF
+ * @modified MEKIT(mekit.it) - 2018-02-08
+ *
  */
 
 function gluuSSO_menu() {
@@ -16,6 +18,10 @@ function gluuSSO_menu() {
   return $items;
 }
 
+/**
+ * @return int
+ * @throws \Exception
+ */
 function gluuSSO_loginSSO() {
   module_load_include('php', 'gluuSSO', 'lib/Crypt/RSA');
   module_load_include('php', 'gluuSSO', 'lib/Math/BigInteger');
@@ -53,12 +59,15 @@ function gluuSSO_loginSSO() {
     $email = $oidc->requestUserInfo('email');
     $inum = $oidc->requestUserInfo('sub');
     $name = $firstname . ' ' . $lastname;
+
     # Load drupal account
-    $account = db_select('users', 'u')
+    /** @var \DatabaseStatementInterface $query */
+    $query = db_select('users', 'u')
       ->fields('u', ['uid', 'mail'])
       ->condition('mail', $email, 'LIKE')
-      ->execute()
-      ->fetchAssoc();
+      ->execute();
+
+    $account = $query->fetchAssoc();
 
     if (!$account) {
 
@@ -107,7 +116,7 @@ function gluuSSO_loginSSO() {
           )
           ->execute();
 
-        $snid = db_insert('simplenews_subscription')
+        db_insert('simplenews_subscription')
           ->fields(
             [
               'snid' => $snid,
