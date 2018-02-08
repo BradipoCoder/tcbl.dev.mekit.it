@@ -5,12 +5,12 @@
 ?>
 
 <div class="error-page">
-  <h1 class="text-center"><i title="meh-o" class="fa fa-meh-o" aria-hidden="true"></i> Pagina non trovata</h1>
-  <p class="lead text-center">La pagina che stai cercando non esiste</p>
+  <h1 class="text-center"><i title="meh-o" class="fa fa-meh-o" aria-hidden="true"></i> Page not found</h1>
+  <p class="lead text-center">The page you are looking for does not exist.</p>
   <div class="text-center content margin-b-4">
     <?php $opt['attributes']['class'] = array('btn','btn-default'); ?>
     <p>
-      <?php print l('Torna alla homepage','node', $opt); ?>
+      <?php print l('Homepage','node', $opt); ?>
     </p>
   </div>
 </div>

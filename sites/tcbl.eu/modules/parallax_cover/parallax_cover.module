@@ -1,0 +1,102 @@
+  <?php
+
+/**
+ * Implements hook_block_info();
+ */
+function parallax_cover_block_info() {
+  $blocks = array();
+
+  $blocks['header'] = array(
+    'info' => t('Parallax Cover'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view();
+ * @param $delta 
+ *    the name of the requested block
+ */
+function parallax_cover_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'header':
+      // Get the node page for the cover
+      $node = node_load(300);
+      if ($node){
+        if (isset($node->field_image['und'][0]['uri'])){
+          $uri = $node->field_image['und'][0]['uri'];
+          if ($uri){
+            $block = _parallax_cover_create_block($node, $uri);
+          }  
+        }
+        
+      }
+    break;
+
+  }
+  return $block;
+}
+
+function _parallax_cover_create_block($node, $uri){
+
+  $url_img = file_create_url($uri);
+  $prefix = '<div class="parallax-w" data-bleed="1" data-parallax="scroll" data-image-src="' . $url_img . '" data-position-y="center">';
+  $content['parallax_cover'] = array(
+    '#prefix' => $prefix,
+    '#suffix' => '</div>',
+  );
+
+  $content['parallax_cover']['content'] = array(
+    '#prefix' => '<div class="wrapper-over-parallax"><div class="over-parallax">',
+    '#suffix' => '</div></div>',
+  );
+
+  $p_content = node_view($node,'teaser');
+
+  if (isset($node->field_short['und'][0]['value'])){
+    $p_content['field_short'] = array(
+      '#markup' => $node->field_short['und'][0]['value'],
+    );
+  }
+
+  $content['parallax_cover']['content']['over'] = array(
+    '#prefix' => '<div class="parallax-content clearfix">',
+    '#suffix' => '</div>',
+    'content' => $p_content,
+  );
+
+  $id = 'front';
+  $block['subject'] = 'Parallax cover';
+  $block['content'] = array(
+    '#theme' => 'parallax-cover',
+    '#nid' => $id,
+    '#content' => $content,
+  );
+
+  $block['content']['#attached']['js'][] = drupal_get_path('module', 'parallax_cover') . '/parallax-cover.js';
+  $js_parallax = libraries_get_path('jquery.parallax') . '/jquery.parallax.min.js';
+  drupal_add_js( $js_parallax , array('group' => JS_LIBRARY, 'weight' => 1));
+
+  return $block;
+}
+
+
+/**
+ * Implementes hook_theme();
+ */
+function parallax_cover_theme(){
+  return array(
+    'parallax-cover' => array(
+      // use a template and give the template's name.
+      'template' => 'parallax-cover',
+      'variables' => array(
+        'nid' => NULL,
+        'content' => NULL,
+      ),
+      'pattern' => 'parallax-cover__',
+    ),
+  );
+}

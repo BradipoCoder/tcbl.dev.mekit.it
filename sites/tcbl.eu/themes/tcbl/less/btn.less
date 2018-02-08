@@ -76,7 +76,11 @@
   letter-spacing: 1px;
   text-transform: uppercase;
   font-weight: @font-weight-bold;
-  padding-left: 20px;
-  padding-right: 20px;
-  font-size: @font-size-small;
+  font-size: @font-size-small * 0.8;
+}
+
+.btn-ghost{
+  border: 1px solid @gray;
+  background: none;
+  .color-and-hover(@gray);
 }

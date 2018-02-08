@@ -1,0 +1,7 @@
+name = Parallax Cover
+description = Crea il blocco cover utilizzando parallax
+package = Mekit
+core = 7.x
+version = 7.x-1.x-dev
+
+dependencies[] = block

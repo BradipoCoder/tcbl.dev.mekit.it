@@ -6,7 +6,7 @@
 //
 //## Gray and brand colors for use across Bootstrap.
 
-@gray-darker:     #222;
+@gray-darker:     #111;
 @gray-dark:       #333;
 @gray:            #555;
 @gray-light:      #999;
@@ -20,12 +20,12 @@
 
 @secondary:       #f190a1; // Pink
 
-@brand-primary: @primary;
-@brand-secondary: @secondary;
-@brand-success: #5cb85c;
-@brand-info: @secondary;
-@brand-warning: #f0ad4e;
-@brand-danger: #d9534f;
+@brand-primary:       @primary;
+@brand-secondary:     @secondary;
+@brand-success:       #5cb85c;
+@brand-info:          @secondary;
+@brand-warning:       #f0ad4e;
+@brand-danger:        #d9534f;
 
 //== Scaffolding
 //
@@ -89,10 +89,10 @@
 //## Define common padding and border radius sizes and more. Values based on 14px text and 1.428 line-height (~20px to start).
 
 @padding-base-vertical: 6px;
-@padding-base-horizontal: 12px;
+@padding-base-horizontal: 20px;
 
 @padding-large-vertical: 10px;
-@padding-large-horizontal: 16px;
+@padding-large-horizontal: 30px;
 
 @padding-small-vertical: 5px;
 @padding-small-horizontal: 10px;
@@ -298,7 +298,7 @@
 @grid-gutter-width: @line-height-computed * 1;
 // Navbar collapse
 //** Point at which the navbar becomes uncollapsed.
-@grid-float-breakpoint: @screen-sm-min;
+@grid-float-breakpoint: @screen-md-min;
 //** Point at which the navbar begins collapsing.
 @grid-float-breakpoint-max: (@grid-float-breakpoint - 1);
 

@@ -1,0 +1,39 @@
+/* less/home.less */
+
+.parallax-content{
+  .padding-v(2);
+  @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max){
+    .padding-v(3);  
+  }
+  @media (min-width: @screen-md-min){
+    .padding-v(6);  
+  }
+}
+
+.over-parallax{
+  background: fade(#fff, 40%);
+}
+
+.h1-front-cms{
+  .margin-b(1);
+}
+
+.view-hp-events{
+  .views-row{
+    .clearfix();
+    &:after{
+      content: '';
+      height: 2px;
+      width: 50px;
+      background: @primary-dark;
+      position: relative;
+      top: -15px;
+    }
+
+    &.views-row-last{
+      &:after{
+        display: none;
+      }
+    }
+  }
+}

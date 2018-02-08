@@ -19,18 +19,13 @@
   <?php print render($title_suffix); ?>
 
   <div class="node-content"<?php print $content_attributes; ?>>
-    <div class="row">
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-6">
-            <?php print render($content['body']); ?>
-          </div>
-          <div class="col-sm-6">
-            <?php print render($content['field_image']); ?>
-          </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-lg-5">
+          <?php print render($content['field_short']); ?>
         </div>
-        <?php print render($content); ?>
       </div>
+      <?php print render($content); ?>
     </div>
   </div>
 </div>

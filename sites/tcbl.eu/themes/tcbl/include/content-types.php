@@ -22,22 +22,17 @@ function tcbl_preprocess_node(&$vars){
       _tcbl_preprocess_node_page($vars);
       break;
 
-    case 'cover':
-      _tcbl_preprocess_node_cover($vars);
+    case 'event':
+      _tcbl_preprocess_node_event($vars);
       break;
 
-    case 'service':
-      _tcbl_preprocess_node_service($vars);
+    case 'forum':
+      _tcbl_preprocess_node_forum($vars);
       break;
 
-    case 'post':
-      _tcbl_preprocess_node_post($vars);
+    case 'blog':
+      _tcbl_preprocess_node_blog($vars);
       break;
-
-    case 'member':
-      _tcbl_preprocess_node_member($vars);
-      break;
-
 
     default:
       # code...
@@ -45,62 +40,53 @@ function tcbl_preprocess_node(&$vars){
   }
 }
 
-function _tcbl_preprocess_node_cover(&$vars){
-  if ($vars['view_mode'] == 'teaser'){
-    $vars['classes_array'][] = 'margin-v-6';
-    $vars['classes_array'][] = 'negative';
-    $vars['classes_array'][] = 'text-center';
-  }
-}
-
-/**
- * Preprecess node service
- * @param  [type] &$vars [description]
- * @return [type]        [description]
- */
-function _tcbl_preprocess_node_service(&$vars){
+function _tcbl_preprocess_node_event(&$vars){
   $node = $vars['node'];
-  if ($vars['view_mode'] == 'child'){
-    $vars['classes_array'][] = 'col-sm-4';
-    $vars['classes_array'][] = 'margin-b-1';
-    _tcbl_display_as_hover_box($vars);
+  if ($vars['view_mode'] == 'teaser'){
 
-    if ($node->nid == 8){
-      $vars['classes_array'][] = 'col-sm-offset-2';
+    $vars['classes_array'][] = 'margin-b-1';
+
+    if (isset($node->field_location['und'][0]['city'])){
+      $text = $node->field_location['und'][0]['city'];
+
+      if (isset($vars['content']['field_date']['0']['#markup'])){
+        $date = $vars['content']['field_date']['0']['#markup'];
+        $text .= ' ' . $date;
+      }
+      hide($vars['content']['field_date']);
+
+      $vars['content']['head'] = array(
+        '#prefix' => '<h5 class="margin-v-025">',
+        '#suffix' => '</h5>',
+        '#markup' => $text,
+      );
     }
   }
-
-  if ($vars['view_mode'] == 'full'){
-    _tcbl_add_posts_by_category($vars);
-  }
 }
 
-/**
- * Preprecess node post
- * @param  [type] &$vars [description]
- * @return [type]        [description]
- */
-function _tcbl_preprocess_node_post(&$vars){
+function _tcbl_preprocess_node_forum(&$vars){
   $node = $vars['node'];
-
-  if ($vars['view_mode'] == 'full'){
-    _tcbl_post_category_and_date($vars);
-    _tcbl_post_category_btm($vars);
-    _add_custom_btn_social($vars);
-    _tcbl_fancy_share($vars);
-
-    $title = field_view_field('node', $node, 'field_form_title' , 'default');
-    _tcbl_add_bottom_form($vars, $title);
-  }
-
-  if ($vars['view_mode'] == 'child'){
-    _tcbl_post_short_title($vars);
-    _tcbl_post_category_and_date($vars);
-    hide($vars['content']['field_date']);
-    hide($vars['content']['field_ref_cat']);
-    $vars['classes_array'][] = 'col-md-6';
-    $vars['classes_array'][] = 'margin-b-2';
-    add_same_h_by_selector('.view-id-posts');
+  if ($vars['view_mode'] == 'teaser'){
+    $vars['content']['more'] = array(
+      '#prefix' => '<div class="wrapper-more copy margin-t-05">',
+      '#suffix' => '</div>',
+      '#markup' => l('Join the discussion', 'node/' . $node->nid),
+      '#weight' => 5,
+    );
   }
 }
 
+function _tcbl_preprocess_node_blog(&$vars){
+  $node = $vars['node'];
+  if ($vars['view_mode'] == 'full'){
+    if (isset($node->field_by['und'][0]['user'])){
+      $writtenBy = $node->field_by['und'][0]['user'];
+
+      $vars['content']['field_by'] = array(
+        '#prefix' => '<div class="posted-by margin-v-1"><p>',
+        '#suffix' => '</p></div>',
+        '#markup' => 'Posted By<br/>' . l($writtenBy->name, 'user/' . $writtenBy->uid),
+      );
+    }
+  }
+}
