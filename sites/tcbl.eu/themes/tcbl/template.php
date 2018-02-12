@@ -7,7 +7,7 @@
 
 require('include/content.php');
 require('include/content-types.php');
-require('include/page.php');
+require('include/node-page.php');
 require('include/form.php');
 require('include/paragraphs.php');
 

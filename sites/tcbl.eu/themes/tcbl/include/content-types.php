@@ -62,6 +62,23 @@ function _tcbl_preprocess_node_event(&$vars){
       );
     }
   }
+
+  if ($vars['view_mode'] == 'child'){
+    $vars['classes_array'][] = 'margin-b-1';
+
+    if (isset($node->field_location['und'][0]['city'])){
+      $city = $node->field_location['und'][0]['city'];
+      $vars['content']['city']['#markup'] = '<h6 class="margin-b-025">' . $city . '</h6>';
+      $vars['content']['city']['#weight'] = 2;
+
+      $vars['content']['more'] = array(
+        '#prefix' => '<div class="wrapper-more copy small text-italic">',
+        '#suffix' => '</div>',
+        '#markup' => l('read more', 'node/' . $node->nid),
+        '#weight' => 5,
+      );
+    }
+  }
 }
 
 function _tcbl_preprocess_node_forum(&$vars){

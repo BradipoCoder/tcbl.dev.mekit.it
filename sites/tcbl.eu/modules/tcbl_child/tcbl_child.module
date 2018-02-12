@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * Implements hook_entity_info_alter().
+ * Add another view mode = child
+ */
+function tcbl_child_entity_info_alter(&$entity_info) {
+  $entity_info['node']['view modes']['child'] = array(
+    'label' => t('Child'),
+    'custom settings' => TRUE,
+  );
+}

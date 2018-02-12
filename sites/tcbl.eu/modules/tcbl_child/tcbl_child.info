@@ -1,0 +1,5 @@
+name = TCBL Child
+description = Add child view mode
+package = TCBL
+core = 7.x
+
