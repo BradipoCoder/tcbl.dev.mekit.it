@@ -72,8 +72,11 @@
       </div>
     <?php endif; ?>
 
-    <?php if (!empty($tabs)): ?>
-      <?php print render($tabs); ?>
+    <?php if (!$page_with_view): ?>
+      <?php // Hide tabs for nodes with view injected in code; see node-page.php ?>
+      <?php if (!empty($tabs)): ?>
+        <?php print render($tabs); ?>
+      <?php endif; ?>
     <?php endif; ?>
 
     <?php if (!empty($page['help'])): ?>

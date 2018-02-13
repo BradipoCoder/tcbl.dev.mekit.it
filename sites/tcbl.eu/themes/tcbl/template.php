@@ -44,6 +44,9 @@ function tcbl_preprocess_page(&$vars){
   }
 
   _tcbl_add_header($vars);
+  
+  // Add usefull variables to page template (when views is present)
+  _tcbl_is_page_with_view($vars);
 }
 
 // ** ADMIN **

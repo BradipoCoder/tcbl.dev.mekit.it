@@ -270,3 +270,36 @@ function _tcbl_alter_pagination(&$vars, $title = TRUE){
     $vars['content']['pager']['next']['#text'] = '<span class="small">' . $t_next . '</span>';
   }
 }
+
+// ** MACHINE PROCESS **
+// ---------------------
+
+/**
+ * Gets all section nodes
+ */
+function _tcbl_get_news(){
+  // Get all nodes related by region
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', array('blog'))
+    ->propertyCondition('status', NODE_PUBLISHED);
+    
+    //->fieldOrderBy('field_photo', 'fid', 'DESC')
+  if (isset($options['ref_nid'])){
+    $query->fieldCondition('field_ref_brand', 'target_id', $options['ref_nid']);
+  }
+  $query->addMetaData('account', user_load(1)); // Run the query as user 1.
+  $query->execute();
+
+  if (isset($query->ordered_results)){
+    $nodes = $query->ordered_results;
+    $nodes_id = array();
+    foreach ( $nodes as $node ) {
+      array_push ($nodes_id, $node->entity_id );
+    }
+    $nodes = node_load_multiple($nodes_id);
+  } else {
+    $nodes = false;
+  }
+  return $nodes;
+}

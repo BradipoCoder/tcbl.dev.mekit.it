@@ -99,11 +99,33 @@ function _tcbl_preprocess_node_blog(&$vars){
     if (isset($node->field_by['und'][0]['user'])){
       $writtenBy = $node->field_by['und'][0]['user'];
 
+      $name = $writtenBy->name;
+
+      if (isset($writtenBy->field_firstname['und'][0]['value']) && $writtenBy->field_firstname['und'][0]['value'] !== ''){
+        $name = $writtenBy->field_firstname['und'][0]['value'];
+      
+        if (isset($writtenBy->field_lastname['und'][0]['value']) && $writtenBy->field_lastname['und'][0]['value'] !== ''){
+          $name .= ' ' . $writtenBy->field_lastname['und'][0]['value'];
+        }
+      }
+
       $vars['content']['field_by'] = array(
         '#prefix' => '<div class="posted-by margin-v-1"><p>',
         '#suffix' => '</p></div>',
-        '#markup' => 'Posted By<br/>' . l($writtenBy->name, 'user/' . $writtenBy->uid),
+        '#markup' => 'Posted By<br/>' . l($name, 'user/' . $writtenBy->uid),
+        '#weight' => 8,
       );
     }
+  }
+
+  if ($vars['view_mode'] == 'child'){
+    $vars['classes_array'][] = 'margin-b-1';
+
+    $vars['content']['more'] = array(
+      '#prefix' => '<div class="wrapper-more copy small text-italic">',
+      '#suffix' => '</div>',
+      '#markup' => l('read more', 'node/' . $node->nid),
+      '#weight' => 5,
+    );
   }
 }

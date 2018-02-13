@@ -81,6 +81,11 @@
 
 .btn-ghost{
   border: 1px solid @gray;
-  background: none;
+  background: none !important;
   .color-and-hover(@gray);
+
+  &.btn-primary{
+    border: 1px solid @brand-primary;  
+    .color-and-hover(@brand-primary);
+  }
 }
