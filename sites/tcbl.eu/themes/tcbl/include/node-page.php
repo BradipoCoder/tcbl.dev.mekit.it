@@ -40,18 +40,30 @@ function _tcbl_preprocess_node_page(&$vars){
   }
 }
 
+/**
+ * Hide counter intuitive tabs on node with views
+ * Administator can see everything
+ */
 function _tcbl_is_page_with_view(&$vars){
+  $vars['page_with_view'] = false;
+
+  global $user;
+  $roles = $user->roles;
+  if (isset($roles[3])){
+    return;
+  }
+
   $has_view = array(
     '312', '313', '326',
   );
-  $vars['page_with_view'] = false;
+  
   if (isset($vars['node'])){
     $node = $vars['node'];
     $nid = $node->nid;
     if (in_array($nid, $has_view)){
       $vars['page_with_view'] = true;
     }
-  }
+  }  
 }
 
 function _tcbl_preprocess_node_page_events(&$vars){
