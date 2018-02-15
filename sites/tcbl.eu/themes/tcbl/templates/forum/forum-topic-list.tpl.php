@@ -37,27 +37,42 @@
  * @ingroup themeable
  */
 ?>
-<table id="forum-topic-<?php print $topic_id; ?>" class="table">
-  <thead>
-    <tr><?php print $header; ?></tr>
-  </thead>
-  <tbody>
+<div id="forum-topic-<?php print $topic_id; ?>" class="wrapper-topic-list">
+  <?php /*
+  <div class="header">
+    <?php print $header; ?>
+  </div>
+  */ ?>
   <?php foreach ($topics as $topic): ?>
-    <tr class="<?php print $topic->zebra;?>">
-      <td class="icon"><?php print $topic->icon; ?></td>
-      <td class="title">
-        <div>
-          <?php print $topic->title; ?>
+    <div class="topic-item <?php print $topic->zebra;?>">
+      <div class="topic-item--content">
+        <h3 class="margin-t-0 margin-b-025"><?php print $topic->title; ?></h3>
+        <div class="topic-item--body small">
+          <?php print render($topic->body); ?>
         </div>
-        <div>
-          <?php print $topic->created; ?>
+        <?php //print $topic->created; ?>
+      </div>
+      
+      <div class="topic-item--date">
+        <div class="topic-v-center">
+          <span><?php print $topic->simple_created; ?></span>
         </div>
-      </td>
+      </div>
+
+      <div class="topic-item--comments">
+        <div class="topic-v-center">
+          <span class="h3"><?php print $topic->comment_count; ?></span> <span class="comment-label"><?php print $topic->comment_label; ?></span>
+        </div>
+      </div>
+    </div><!-- topic item -->
+
+    <?php /*
+
     <?php if ($topic->moved): ?>
       <td colspan="3"><?php print $topic->message; ?></td>
     <?php else: ?>
       <td class="replies">
-        <?php print $topic->comment_count; ?>
+        
         <?php if ($topic->new_replies): ?>
           <br />
           <a href="<?php print $topic->new_url; ?>"><?php print $topic->new_text; ?></a>
@@ -66,7 +81,7 @@
       <td class="last-reply"><?php print $topic->last_reply; ?></td>
     <?php endif; ?>
     </tr>
+    */ ?>
   <?php endforeach; ?>
-  </tbody>
-</table>
+</div>
 <?php print $pager; ?>

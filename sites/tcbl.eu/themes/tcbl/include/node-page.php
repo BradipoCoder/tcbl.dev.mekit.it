@@ -27,6 +27,13 @@ function _tcbl_preprocess_node_page(&$vars){
     );
   }
 
+  if ($vars['view_mode'] == 'full'){
+    $vars['has_image'] = false;
+    if (isset($node->field_image['und'][0]['uri'])){
+      $vars['has_image'] = true;
+    }  
+  }
+
   if ($node->nid == 312){
     _tcbl_preprocess_node_page_news($vars);
   }
@@ -37,6 +44,10 @@ function _tcbl_preprocess_node_page(&$vars){
 
   if ($node->nid == 313){
     _tcbl_preprocess_node_page_events($vars);
+  }
+
+  if ($node->nid == 327){
+    _tcbl_preprocess_node_page_forums($vars);
   }
 }
 
@@ -95,4 +106,32 @@ function _tcbl_preprocess_node_page_news(&$vars){
 function _tcbl_preprocess_node_page_news_archive(&$vars){
   $vars['content']['news']['#markup'] = views_embed_view('news', 'archive');
   add_same_h_by_selector('.news-sameh');  
+}
+
+function _tcbl_preprocess_node_page_forums(&$vars){
+  $forum_term = forum_forum_load(9);
+
+  $forum_per_page = variable_get('forum_per_page', 5);
+  $sortby = variable_get('forum_order', 1);
+
+  if (empty($forum_term->container)) {
+    $topics = forum_get_topics($forum_term->tid, $sortby, $forum_per_page);
+  }
+  else {
+    $topics = '';
+  }
+
+  $forum = array(
+    '#theme' => 'forums',
+    '#forums' => $forum_term->forums,
+    '#topics' => $topics,
+    '#parents' => $forum_term->parents,
+    '#tid' => $forum_term->tid,
+    '#sortby' => $sortby, 
+    '#forums_per_page' => $forum_per_page,
+  );
+
+  $vars['content']['forum'] = $forum;
+
+  //dpm($forum);
 }

@@ -1,0 +1,50 @@
+/* less/forum.less */
+
+@topic-box-width: 130px;
+
+.topic-item{
+  position: relative;
+  border: 1px solid @primary;
+  .margin-b(1);
+}
+
+.topic-item--content{
+  padding: 15px;
+  margin-right: @topic-box-width * 2;
+}
+
+.topic-item--comments,
+.topic-item--date{
+  position: absolute;
+  width: @topic-box-width;
+  text-align: center;
+  border-left: 1px solid @primary;
+  height: 100%;
+  background: @primary-lightest;
+}
+
+.topic-v-center{
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  margin-top: -13px;
+}
+
+.topic-item--comments{
+  top: 0;
+  right: 0;
+
+  .comment-label{
+    color: @gray-light;
+    font-size: @font-size-small;
+    font-weight: @font-weight-bold;  
+  }
+}
+
+.topic-item--date{
+  top: 0;
+  right: @topic-box-width;
+  color: @gray-light;
+  font-size: @font-size-small;
+  font-weight: @font-weight-bold;
+}

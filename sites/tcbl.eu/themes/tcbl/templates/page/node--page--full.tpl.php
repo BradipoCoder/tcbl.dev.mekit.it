@@ -21,14 +21,16 @@
   <div class="node-content"<?php print $content_attributes; ?>>
     <div class="row">
       <div class="container">
-        <div class="row">
-          <div class="col-sm-6">
-            <?php print render($content['body']); ?>
+        <?php if ($has_image) : ?>
+          <div class="row">
+            <div class="col-sm-6">
+              <?php print render($content['body']); ?>
+            </div>
+            <div class="col-sm-6">
+              <?php print render($content['field_image']); ?>
+            </div>
           </div>
-          <div class="col-sm-6">
-            <?php print render($content['field_image']); ?>
-          </div>
-        </div>
+        <?php endif; ?>
         <?php print render($content); ?>
       </div>
     </div>
