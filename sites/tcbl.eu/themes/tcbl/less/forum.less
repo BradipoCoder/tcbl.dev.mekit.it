@@ -4,13 +4,29 @@
 
 .topic-item{
   position: relative;
-  border: 1px solid @primary;
+  border: 1px solid @primary-light;
   .margin-b(1);
 }
 
 .topic-item--content{
-  padding: 15px;
+  position: relative;
+  padding: 20px 20px 20px 40px;
   margin-right: @topic-box-width * 2;
+
+  h3 a{
+    position: relative;
+    &:before{
+      content: '';
+      position: absolute;
+      top: 6px;
+      left: -22px;
+      width: 14px;
+      height: 14px;
+      border: 3px solid @secondary;
+      .border-top-radius(100%);
+      .border-bottom-radius(100%);
+    }
+  }
 }
 
 .topic-item--comments,
@@ -18,7 +34,7 @@
   position: absolute;
   width: @topic-box-width;
   text-align: center;
-  border-left: 1px solid @primary;
+  border-left: 1px solid @primary-light;
   height: 100%;
   background: @primary-lightest;
 }
@@ -47,4 +63,72 @@
   color: @gray-light;
   font-size: @font-size-small;
   font-weight: @font-weight-bold;
+}
+
+// ** FORUM FULL **
+// ----------------
+
+.node-forum.node-full{
+  .field-name-title-field{
+    margin-left: 95px;
+  }
+}
+
+.wrapper-topic{
+  border: 1px solid @primary-light; 
+}
+
+.wrapper-topic{
+  margin-left: 40px;
+}
+
+.topic-header{
+  padding: 10px 0 10px 55px;
+  border-bottom: 1px solid @primary-light;
+  position: relative;
+
+  .avatar{
+    position: absolute;
+    top: -18px;
+    left: -40px;
+    width: 80px;
+    height: 80px;
+    border: 1px solid @primary-light;
+    background: #fff;
+    padding: 3px;
+    .border-top-radius(100%);
+    .border-bottom-radius(100%);
+
+    img{
+      .border-top-radius(100%);
+      .border-bottom-radius(100%);  
+    }
+  }
+}
+
+.topic-submitted{
+  border-left: 1px solid @primary-light;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 300px;
+  text-align: center;
+  span{
+    position: absolute;
+    top: 50%;
+    margin-top: -12px;
+    display: block;
+    width: 100%;
+    font-weight: @font-weight-bold;
+  }
+}
+
+.topic-container{
+  padding: 20px 55px 20px 55px;
+
+  .comment-wrapper{
+    border: none;
+    border-top: 1px solid @primary-light;
+  }
 }

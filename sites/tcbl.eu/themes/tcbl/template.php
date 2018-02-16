@@ -10,7 +10,6 @@ require('include/content-types.php');
 require('include/node-page.php');
 require('include/form.php');
 require('include/paragraphs.php');
-require('include/forum.php');
 
 /**
  * Implements hook_preprocess_html()
@@ -45,6 +44,7 @@ function tcbl_preprocess_page(&$vars){
   }
 
   _tcbl_add_header($vars);
+  _tcbl_alter_breadcrumbs($vars);
   
   // Add usefull variables to page template (when views is present)
   _tcbl_is_page_with_view($vars);
@@ -72,7 +72,10 @@ function tcbl_form_node_form_alter(&$form, $form_state){
     // Authenticated user
     $form['options']['promote']['#access'] = false;
     $form['options']['sticky']['#access'] = false;
-    $form['revision_information']['#access'] = false;
+  }
+
+  if (isset($form['shadow'])){
+    $form['shadow']['#access'] = false;  
   }
 }
 

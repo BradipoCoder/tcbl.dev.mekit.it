@@ -23,6 +23,29 @@ function _tcbl_add_header(&$vars){
   }
 }
 
+function _tcbl_alter_breadcrumbs(&$vars){
+  if (isset($vars['node'])){
+    $node = $vars['node'];
+    if ($node->type == 'forum'){
+      $bcs = [];
+      $bcs[] = t('Home');
+      $bcs[] = l('Community', 'node/325');
+      $bcs[] = l('Forum', 'node/327');
+      drupal_set_breadcrumb($bcs);
+    }
+  }
+}
+
+function _tcbl_faq_link(){
+  $text = '<i class="fa fa-question-circle-o"></i> FAQ';
+  $data = array(
+    '#prefix' => '<div class="wrapper-faq-link margin-b-1 text-right"><span class="h4 small">',
+    '#suffix' => '</span></div>',
+    '#markup' => l($text, 'node/328', array('html' => TRUE)),
+  );
+  return $data;
+}
+
 
 // ** DROP ? **
 // ------------

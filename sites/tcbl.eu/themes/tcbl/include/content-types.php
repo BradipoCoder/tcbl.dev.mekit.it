@@ -83,6 +83,11 @@ function _tcbl_preprocess_node_event(&$vars){
 
 function _tcbl_preprocess_node_forum(&$vars){
   $node = $vars['node'];
+
+  if ($vars['view_mode'] == 'full'){
+    $vars['content']['faq'] = _tcbl_faq_link();
+  }
+
   if ($vars['view_mode'] == 'teaser'){
     $vars['content']['more'] = array(
       '#prefix' => '<div class="wrapper-more copy margin-t-05">',
@@ -90,6 +95,18 @@ function _tcbl_preprocess_node_forum(&$vars){
       '#markup' => l('Join the discussion', 'node/' . $node->nid),
       '#weight' => 5,
     );
+  }
+
+  if ($vars['view_mode'] == 'child'){
+    if (isset($node->comment_count)){
+      $cc = $node->comment_count;
+      $vars['content']['comment_count']['#markup'] = $cc;
+
+      $vars['content']['comment_label']['#markup'] = 'comments';
+      if ($cc == 1){
+        $vars['content']['comment_label']['#markup'] = 'comment';  
+      } 
+    }
   }
 }
 
