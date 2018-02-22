@@ -3,34 +3,36 @@
 function dp7_ditfmr_tcbl_usermenutabs_menu_local_tasks_alter(&$data, $router_item, $root_path) {
 	$pathParts = explode("/",$root_path);
 	if ($pathParts[0] == "user") {
-		$tabs = $data['tabs'][0]['output'];
-		// Walk through array
-		for ($i = 0; $i < count($tabs); $i++) {
-			switch ($tabs[$i]['#link']['title']) {
-				case "View":
-					$tabs[$i]['#link']['title'] = "About";
-					$tabs[$i]['#weight'] = 0;				
-					break;
-				case "Edit":
-					$tabs[$i]['#weight'] = 10;
-					break;					
-				case "Comment Wall":
-					$tabs[$i]['#weight'] = 20;
-					break;										
-				case "Blog Posts":
-					$tabs[$i]['#weight'] = 20;
-					break;					
-				case "Relationships":
-					$tabs[$i]['#weight'] = 30;
-					break;										
-				case "Blog Posts":
-					$tabs[$i]['#weight'] = 40;
-					break;
-				default:
-					$tabs[$i]['#weight'] = 1000;					
-			}
-		}	
-		// Write back local data
-		$data['tabs'][0]['output'] = $tabs;
+		if (isset($data['tabs'][0]['output'])){
+			$tabs = $data['tabs'][0]['output'];
+			// Walk through array
+			for ($i = 0; $i < count($tabs); $i++) {
+				switch ($tabs[$i]['#link']['title']) {
+					case "View":
+						$tabs[$i]['#link']['title'] = "About";
+						$tabs[$i]['#weight'] = 0;				
+						break;
+					case "Edit":
+						$tabs[$i]['#weight'] = 10;
+						break;					
+					case "Comment Wall":
+						$tabs[$i]['#weight'] = 20;
+						break;										
+					case "Blog Posts":
+						$tabs[$i]['#weight'] = 20;
+						break;					
+					case "Relationships":
+						$tabs[$i]['#weight'] = 30;
+						break;										
+					case "Blog Posts":
+						$tabs[$i]['#weight'] = 40;
+						break;
+					default:
+						$tabs[$i]['#weight'] = 1000;					
+				}
+			}	
+			// Write back local data
+			$data['tabs'][0]['output'] = $tabs;	
+		}
 	}
 }
