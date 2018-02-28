@@ -12,11 +12,22 @@ use TcblFeed\FeedItem;
 class TcblZineWpFeedPlugin extends FeedPlugin implements FeedPluginInterface {
 
   /**
+   * TcblZineWpFeedPlugin constructor.
+   *
+   * @param array $options
+   */
+  public function __construct(array $options = []) {
+    $this->feed_type = "tcbl_zine";
+
+    parent::__construct($options);
+  }
+
+  /**
    * @return array
    */
   public function getFeeds(): array {
 
-    $feeds = $this->getFakeFeeds("tcbl_zine");
+    $feeds = $this->getFakeFeeds();
 
     return $feeds;
   }

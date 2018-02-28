@@ -269,6 +269,14 @@ class FeedItem {
   }
 
   /**
+   * @param string $format
+   * @return string
+   */
+  public function getFormattedCreationDate($format = 'Y-m-d H:i:s'): string {
+    return $this->creation_date->format($format);
+  }
+
+  /**
    * @param \DateTime $creation_date
    */
   public function setCreationDate(\DateTime $creation_date) {

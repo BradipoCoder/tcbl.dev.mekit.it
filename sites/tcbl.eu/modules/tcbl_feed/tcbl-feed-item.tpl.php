@@ -6,6 +6,7 @@
 <div class="col-sm-4">
   <div class="well">
     <h5>FEED ITEM - <?php print $feed_item->getTitle(); ?></h5>
-    <code><?php print $feed_item->getType(); ?></code>
+    <code>TYPE: <?php print $feed_item->getType(); ?></code>
+    <code>DATE: <?php print $feed_item->getFormattedCreationDate(); ?></code>
   </div>
 </div>
