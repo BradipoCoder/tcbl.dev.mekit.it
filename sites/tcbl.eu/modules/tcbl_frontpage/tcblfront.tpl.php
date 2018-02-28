@@ -21,15 +21,13 @@
           <div class="col-sm-6 text-center margin-b-1">
             <h2 class="margin-t-0">Who is TCBL For?</h2>
             <div class="margin-md-h-2">
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-                cursus iaculis ex non imperdiet.</p>
+              <p>Anyone who wants to transform the textile and clothing industry: sector businesses, researchers and explorers, service providers, and experts facilitating knowledge exchange and innovation.</p>
             </div>
           </div>
           <div class="col-sm-6 text-center margin-b-1">
             <h2 class="margin-t-0">Why should I join TCBL?</h2>
             <div class="margin-md-h-2">
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-                cursus iaculis ex non imperdiet.</p>
+              <p>Become part of a value-based community where different types of organisations are working together to create a low-risk environment for business model innovation.</p>
             </div>
           </div>
         </div>
