@@ -4,21 +4,46 @@
  * @param array $vars
  */
 function tcbl_frontpage_preprocess_page(&$vars) {
-  if(!isset($vars['is_front']) || $vars['is_front'] != true){
+  if (!isset($vars['is_front']) || $vars['is_front'] != TRUE) {
     return;
   }
 
-  $content = array(
-  );
+  $content = array();
 
   $content['news']['#markup'] = views_embed_view('hp_news', 'default');
   $content['events']['#markup'] = views_embed_view('hp_events', 'default');
   $content['forum']['#markup'] = views_embed_view('hp_forum', 'default');
 
+  // TCBL FEEDS
+  $generate_feed_options = [
+    "feed_item_per_plugin" => 3
+  ];
+  tcbl_feed_generate_feeds($generate_feed_options);
+
+  $zine_get_feed_opts = [
+    "filters" => [
+      "type" => ["tcbl_zine"]
+    ],
+    "ordering" => ""
+  ];
+
+  $social_get_feed_opts = [
+    "filters" => [
+      "type" => ["facebook", "twitter", "instagram"]
+    ],
+    "ordering" => ""
+  ];
+
+  $tcbl_feeds = [
+    'zine' => tcbl_feed_get_renderable_feeds($zine_get_feed_opts),
+    'social' => tcbl_feed_get_renderable_feeds($social_get_feed_opts)
+  ];
+
   $show_sign_up = !user_is_logged_in();
   $vars['page']['content']['front'] = [
     '#theme' => 'tcblfront',
     '#content' => $content,
+    '#tcbl_feeds' => $tcbl_feeds,
     '#show_sign_up' => $show_sign_up,
   ];
 }
@@ -26,14 +51,15 @@ function tcbl_frontpage_preprocess_page(&$vars) {
 /**
  * Implements hook_theme().
  */
-function tcbl_frontpage_theme(){
+function tcbl_frontpage_theme() {
   return array(
     'tcblfront' => array(
       // use a template and give the template's name.
       'template' => 'tcblfront',
       'variables' => array(
         'content' => NULL,
-        'show_sign_up' => false, 
+        'tcbl_feeds' => NULL,
+        'show_sign_up' => FALSE,
       ),
       'pattern' => 'tcblfront__',
     )

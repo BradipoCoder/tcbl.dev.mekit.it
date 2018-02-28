@@ -2,10 +2,55 @@
 
 // - http://tcbl.dev.mekit.it/mekit-test
 
-require_once ("TcblFeed/FeedFactory.php");
-require_once ("TcblFeed/FeedItem.php");
-require_once ("TcblFeed/Plugins/FeedPlugin.php");
-require_once ("TcblFeed/Plugins/FeedPluginInterface.php");
+require_once("TcblFeed/FeedFactory.php");
+require_once("TcblFeed/FeedItem.php");
+require_once("TcblFeed/Plugins/FeedPlugin.php");
+require_once("TcblFeed/Plugins/FeedPluginInterface.php");
+
+/**
+ *
+ * @param array $getFeedOptions
+ * @param bool $generateFeeds
+ *
+ * @returns array
+ */
+function tcbl_feed_get_renderable_feeds($getFeedOptions = []) {
+  $answer = [];
+
+  $feeds = \TcblFeed\FeedFactory::getFeeds($getFeedOptions);
+
+  if (count($feeds)) {
+    //$answer['content'] = t('Number of feeds: ' . count($feeds));
+    $answer['content'] = [];
+    $answer['content']['feeds'] = [];
+
+    /** @var \TcblFeed\FeedItem $feed */
+    foreach ($feeds as $feed) {
+      $feedThemeItem = [
+        '#theme' => 'tcbl_feed_item',
+        '#feed_item' => $feed,
+      ];
+      array_push($answer['content']['feeds'], $feedThemeItem);
+    }
+  }
+
+  return $answer;
+}
+
+/**
+ * @param array $generateFeedOptions
+ *
+ * @todo: implement this with cron hook
+ *
+ */
+function tcbl_feed_generate_feeds($generateFeedOptions = []) {
+  try {
+    \TcblFeed\FeedFactory::generateFeeds($generateFeedOptions);
+  } catch(\ReflectionException $e) {
+    //bad stuff :-(
+  }
+}
+
 
 /**
  * Implements hook_block_info().
@@ -22,7 +67,10 @@ function tcbl_feed_block_info() {
 /**
  * Implements hook_block_view().
  *
+ * @todo: UNFINISHED!
+ *
  * @param string
+ *
  * @returns array
  * @throws \ReflectionException
  */
@@ -36,35 +84,11 @@ function tcbl_feed_block_view($delta = '') {
   $answer['subject'] = t('TCBL Feeds');
   $answer['content'] = t('No feeds available.');
 
-
-  //@todo: implement this with cron hook and remove it from here
-  $generateOptions = [
-    "feed_item_per_plugin" => 3,
-  ];
-  \TcblFeed\FeedFactory::generateFeeds($generateOptions);
-
   $getFeedOptions = [
     "filters" => [],
     "ordering" => "",
   ];
-  $feeds = \TcblFeed\FeedFactory::getFeeds($getFeedOptions);
-
-
-  if(count($feeds)) {
-    //$answer['content'] = t('Number of feeds: ' . count($feeds));
-    $answer['content'] = [];
-    $answer['content']['feeds'] = [];
-
-    /** @var \TcblFeed\FeedItem $feed */
-    foreach($feeds as $feed)
-    {
-      $feedThemeItem = [
-        '#theme' => 'tcbl_feed_item',
-        '#feed_item' => $feed,
-      ];
-      array_push($answer['content']['feeds'], $feedThemeItem);
-    }
-  }
+  $answer = tcbl_feed_get_renderable_feeds($getFeedOptions, TRUE);
 
   return $answer;
 }
