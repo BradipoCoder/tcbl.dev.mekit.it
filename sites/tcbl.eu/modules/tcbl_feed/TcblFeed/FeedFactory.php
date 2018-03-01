@@ -56,6 +56,7 @@ class FeedFactory {
   public static function getFeeds($options = []) {
     $feeds = FeedFactory::readCachedFeedsFile($options);
 
+    // FILTER FEEDS
     if (isset($options["filters"]) && is_array($options["filters"])) {
       foreach ($options["filters"] as $filterType => $filters) {
         if (empty($filterType) || empty($filters)) {
@@ -67,6 +68,74 @@ class FeedFactory {
             break;
         }
       }
+    }
+
+    // ORDER FEEDS
+    if (isset($options["ordering"]) && is_array($options["ordering"])) {
+      $property = isset($options["ordering"]["property"]) ? $options["ordering"]["property"] : 'id';
+      $order = isset($options["ordering"]["order"]) ? $options["ordering"]["order"] : 'ASC';
+      $order = in_array($order, ["ASC", "DESC"]) ? $order : 'ASC';
+
+      try {
+        $feedItemReflection = new \ReflectionClass("\TcblFeed\FeedItem");
+        if(!$feedItemReflection->hasProperty($property)) {
+          $property = "id";
+        }
+      } catch(\ReflectionException $e) {
+        // hmm - this would be a sad story
+      }
+
+      $feeds = FeedFactory::sortFeeds($feeds, $property, $order);
+    }
+
+    return $feeds;
+  }
+
+  /**
+   * @param array $feeds
+   * @param string $property
+   * @param string $order
+   *
+   * @return array
+   */
+  protected static function sortFeeds($feeds, $property, $order) {
+    //echo "<br />Sorting[$order] by: $property";
+    switch($property)
+    {
+      case "id":
+        if($order == "ASC") {
+          usort($feeds, function(FeedItem $a, FeedItem $b) {
+            return strcmp($a->getId(), $b->getId());
+          });
+        } else {
+          usort($feeds, function(FeedItem $a, FeedItem $b) {
+            return strcmp($b->getId(), $a->getId());
+          });
+        }
+        break;
+      case "title":
+        if($order == "ASC") {
+          usort($feeds, function(FeedItem $a, FeedItem $b) {
+            return strcmp($a->getTitle(), $b->getTitle());
+          });
+        } else {
+          usort($feeds, function(FeedItem $a, FeedItem $b) {
+            return strcmp($b->getTitle(), $a->getTitle());
+          });
+        }
+        break;
+        case "creation_date":
+        if($order == "ASC") {
+          usort($feeds, function(FeedItem $a, FeedItem $b) {
+            return $a->getCreationDate() >= $b->getCreationDate();
+          });
+        } else {
+          usort($feeds, function(FeedItem $a, FeedItem $b) {
+            return $b->getCreationDate() >= $a->getCreationDate();
+          });
+        }
+        break;
+
     }
 
     return $feeds;

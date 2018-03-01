@@ -24,14 +24,20 @@ function tcbl_frontpage_preprocess_page(&$vars) {
     "filters" => [
       "type" => ["tcbl_zine"]
     ],
-    "ordering" => ""
+    "ordering" => [
+      "property" => "title",
+      "order" => "ASC"
+    ]
   ];
 
   $social_get_feed_opts = [
     "filters" => [
       "type" => ["facebook", "twitter", "instagram"]
     ],
-    "ordering" => ""
+    "ordering" => [
+      "property" => "creation_date",
+      "order" => "DESC"
+    ]
   ];
 
   $tcbl_feeds = [

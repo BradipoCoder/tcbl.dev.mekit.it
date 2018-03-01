@@ -40,9 +40,13 @@ class FeedPlugin {
     $randomDateFinish = new \DateTime();
 
     for ($i = 1; $i <= $this->max_feed_count; $i++) {
+
+      $id = rand(1,9999);
+
       $item = new FeedItem();
+      $item->setId($id);
       $item->setType($this->feed_type);
-      $item->setTitle("Item #" . rand(1,999));
+      $item->setTitle(ucfirst($this->feed_type) . " Item #" . str_pad($id, 4, "0", STR_PAD_LEFT));
       $item->setMessage("something...");
       $item->setCreationDate(new \DateTime());
       $item->setCreationDate($this->getFakeRandomDate($randomDateStart, $randomDateFinish));
