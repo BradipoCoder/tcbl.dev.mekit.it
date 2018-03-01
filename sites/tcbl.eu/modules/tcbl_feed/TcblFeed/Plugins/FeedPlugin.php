@@ -68,10 +68,14 @@ class FeedPlugin {
   {
     $answer = new \stdClass();
 
-    $xml = simplexml_load_file($url);
-
-    if ($xml instanceof \SimpleXMLElement) {
-      $answer = $this->fixRssObjectRecursively(@json_decode(@json_encode($xml)));
+    $content = @file_get_contents($url);
+    if($content){
+      $invalid_characters = '/[^\x9\xa\x20-\xD7FF\xE000-\xFFFD]/';
+      $content = preg_replace($invalid_characters, '', $content);
+      $xml = simplexml_load_string($content);
+      if ($xml instanceof \SimpleXMLElement) {
+        $answer = $this->fixRssObjectRecursively(@json_decode(@json_encode($xml)));
+      }
     }
 
     return $answer;
