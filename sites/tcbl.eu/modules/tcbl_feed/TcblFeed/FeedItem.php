@@ -100,6 +100,13 @@ class FeedItem {
   protected $creation_date;
 
   /**
+   * FeedItem constructor.
+   */
+  public function __construct() {
+    $this->setCreationDate(new \DateTime());
+  }
+
+  /**
    * @return array
    */
   public function getPropertyArray()

@@ -37,11 +37,15 @@ class FeedFactory {
       $reflection = new \ReflectionClass($pluginClass);
       /** @var \TcblFeed\Plugins\FeedPluginInterface $plugin */
       $plugin = $reflection->newInstance($options);
-      $pluginFeeds = $plugin->getFeeds();
+      $pluginFeeds = $plugin->fetchFeeds();
+      $pluginFeeds = FeedFactory::sortFeeds($pluginFeeds, "creation_date", "DESC");
+      $pluginFeeds = array_slice($pluginFeeds, 0, $options["feed_item_per_plugin"]);
+
       $feeds = array_merge($feeds, $pluginFeeds);
     }
 
     //sort feeds
+    //@todo: sort here?
 
     //write feeds
     FeedFactory::writeFeedsFile($feeds);
@@ -63,6 +67,9 @@ class FeedFactory {
           continue;
         }
         switch ($filterType) {
+          case "source":
+            $feeds = FeedFactory::filterFeedsBySource($feeds, $filters);
+            break;
           case "type":
             $feeds = FeedFactory::filterFeedsByType($feeds, $filters);
             break;
@@ -142,7 +149,29 @@ class FeedFactory {
   }
 
   /**
-   * Returns array of feeds where types correspond to types in filter
+   * Returns a filtered array of feeds
+   *
+   * @param array $feeds
+   * @param array $filters
+   *
+   * @return array
+   */
+  protected static function filterFeedsBySource($feeds, $filters) {
+    $answer = [];
+
+    /** @var \TcblFeed\FeedItem $feed */
+    foreach($feeds as $feed) {
+      if(in_array($feed->getSource(), $filters)) {
+        array_push($answer, $feed);
+      }
+    }
+
+    return $answer;
+  }
+
+  /**
+   * Returns a filtered array of feeds
+   *
    * @param array $feeds
    * @param array $filters
    *

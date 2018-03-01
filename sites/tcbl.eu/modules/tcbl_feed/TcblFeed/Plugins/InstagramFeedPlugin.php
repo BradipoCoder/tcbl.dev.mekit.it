@@ -17,7 +17,7 @@ class InstagramFeedPlugin extends FeedPlugin implements FeedPluginInterface {
    * @param array $options
    */
   public function __construct(array $options = []) {
-    $this->feed_type = "instagram";
+    $this->feed_source = "instagram";
 
     parent::__construct($options);
   }
@@ -25,9 +25,9 @@ class InstagramFeedPlugin extends FeedPlugin implements FeedPluginInterface {
   /**
    * @return array
    */
-  public function getFeeds(): array {
+  public function fetchFeeds(): array {
 
-    $feeds = $this->getFakeFeeds();
+    $feeds = $this->generateFakeFeeds();
 
     return $feeds;
   }

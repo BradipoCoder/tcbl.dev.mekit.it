@@ -17,5 +17,5 @@ interface FeedPluginInterface {
   /**
    * @return array
    */
-  public function getFeeds():array;
+  public function fetchFeeds():array;
 }

@@ -17,7 +17,7 @@ class TcblZineWpFeedPlugin extends FeedPlugin implements FeedPluginInterface {
    * @param array $options
    */
   public function __construct(array $options = []) {
-    $this->feed_type = "tcbl_zine";
+    $this->feed_source = "tcbl_zine";
 
     parent::__construct($options);
   }
@@ -25,9 +25,9 @@ class TcblZineWpFeedPlugin extends FeedPlugin implements FeedPluginInterface {
   /**
    * @return array
    */
-  public function getFeeds(): array {
+  public function fetchFeeds(): array {
 
-    $feeds = $this->getFakeFeeds();
+    $feeds = $this->generateFakeFeeds();
 
     return $feeds;
   }

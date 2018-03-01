@@ -22,17 +22,27 @@ function tcbl_frontpage_preprocess_page(&$vars) {
 
   $zine_get_feed_opts = [
     "filters" => [
-      "type" => ["tcbl_zine"]
+      "source" => ["tcbl_zine"]
     ],
     "ordering" => [
-      "property" => "title",
-      "order" => "ASC"
+      "property" => "creation_date",
+      "order" => "DESC"
+    ]
+  ];
+
+  $labs_get_feed_opts = [
+    "filters" => [
+      "source" => ["tcbl_labs"]
+    ],
+    "ordering" => [
+      "property" => "creation_date",
+      "order" => "DESC"
     ]
   ];
 
   $social_get_feed_opts = [
     "filters" => [
-      "type" => ["facebook", "twitter", "instagram"]
+      "source" => ["facebook", "twitter", "instagram"]
     ],
     "ordering" => [
       "property" => "creation_date",
@@ -42,6 +52,7 @@ function tcbl_frontpage_preprocess_page(&$vars) {
 
   $tcbl_feeds = [
     'zine' => tcbl_feed_get_renderable_feeds($zine_get_feed_opts),
+    'labs' => tcbl_feed_get_renderable_feeds($labs_get_feed_opts),
     'social' => tcbl_feed_get_renderable_feeds($social_get_feed_opts)
   ];
 

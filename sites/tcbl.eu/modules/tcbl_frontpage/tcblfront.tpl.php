@@ -78,15 +78,7 @@
         <p>Lorem ipsum dolor sit amet</p>
       </div>
       <div class="row margin-v-1">
-        <div class="col-md-4">
-          <div class="well"><code>Lab #1</code></div>
-        </div>
-        <div class="col-sm-4">
-          <div class="well"><code>Lab #2</code></div>
-        </div>
-        <div class="col-sm-4">
-          <div class="well"><code>Lab #3</code></div>
-        </div>
+        <?php print render($tcbl_feeds["labs"]); ?>
       </div>
     </div>
   </div>

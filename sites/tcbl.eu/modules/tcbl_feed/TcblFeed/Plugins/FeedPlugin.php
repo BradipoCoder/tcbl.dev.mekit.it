@@ -11,7 +11,7 @@ use TcblFeed\FeedItem;
 
 class FeedPlugin {
   /** @var string */
-  protected $feed_type;
+  protected $feed_source;
 
   /** @var int */
   protected $max_feed_count = 5;
@@ -31,24 +31,69 @@ class FeedPlugin {
   }
 
   /**
+   * Normalizes Rss object by removing @attributes element and assigning the
+   * contained key/value pairs to its parent
+   *
+   * @param mixed $object
+   *
+   * @return mixed
+   */
+  protected function fixRssObjectRecursively($object)
+  {
+    if(is_object($object)) {
+      $attributesKeyName = "@attributes";
+      if(property_exists($object, $attributesKeyName)) {
+        foreach($object->$attributesKeyName as $k => $v) {
+          $object->$k = $v;
+        }
+        unset($object->$attributesKeyName);
+      }
+    }
+
+    if(is_array($object) || is_object($object)) {
+      foreach($object as $k => &$v) {
+        $v = $this->fixRssObjectRecursively($v);
+      }
+    }
+
+    return $object;
+  }
+
+  /**
+   * @param string $url
+   *
+   * @return \stdClass
+   */
+  protected function fetchRssXmlAndConvertToObject($url)
+  {
+    $answer = new \stdClass();
+
+    $xml = simplexml_load_file($url);
+
+    if ($xml instanceof \SimpleXMLElement) {
+      $answer = $this->fixRssObjectRecursively(@json_decode(@json_encode($xml)));
+    }
+
+    return $answer;
+  }
+
+  /**
    * @return array
    */
-  protected function getFakeFeeds(): array {
+  protected function generateFakeFeeds(): array {
     $feeds = [];
 
     $randomDateStart = new \DateTime('now - 18 months');
     $randomDateFinish = new \DateTime();
 
     for ($i = 1; $i <= $this->max_feed_count; $i++) {
-
       $id = rand(1,9999);
-
       $item = new FeedItem();
       $item->setId($id);
-      $item->setType($this->feed_type);
-      $item->setTitle(ucfirst($this->feed_type) . " Item #" . str_pad($id, 4, "0", STR_PAD_LEFT));
-      $item->setMessage("something...");
-      $item->setCreationDate(new \DateTime());
+      $item->setSource($this->feed_source);
+      $item->setType("post");
+      $item->setTitle(ucfirst($this->feed_source) . " Item #" . str_pad($id, 4, "0", STR_PAD_LEFT));
+      $item->setMessage("something interesting...");
       $item->setCreationDate($this->getFakeRandomDate($randomDateStart, $randomDateFinish));
       $item->setUrl("https://mekit.it");
       array_push($feeds, $item);
