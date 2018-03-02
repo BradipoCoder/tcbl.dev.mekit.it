@@ -11,3 +11,4 @@
     <pre class="dump"><?php print print_r($feed_item->getPropertyArray(), true); ?></pre>
   </div>
 </div>
+

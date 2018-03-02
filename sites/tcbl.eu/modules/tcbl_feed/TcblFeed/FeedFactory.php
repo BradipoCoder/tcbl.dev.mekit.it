@@ -7,8 +7,6 @@
 
 namespace TcblFeed;
 
-//use TcblFeed\FeedItem;
-
 /**
  * Class FeedFactory
  *
@@ -21,7 +19,6 @@ class FeedFactory {
 
   /** @var array - list of plugins able to generate feed items */
   protected static $feed_plugins = [];
-
 
   /**
    * @param array $options
@@ -58,7 +55,7 @@ class FeedFactory {
    * @return array
    */
   public static function getFeeds($options = []) {
-    $feeds = FeedFactory::readCachedFeedsFile($options);
+    $feeds = FeedFactory::readCachedFeedsFile();
 
     // FILTER FEEDS
     if (isset($options["filters"]) && is_array($options["filters"])) {
@@ -215,11 +212,9 @@ class FeedFactory {
   /**
    * Read feeds file in
    *
-   * @param array $options
-   *
    * @return array
    */
-  protected static function readCachedFeedsFile($options = []) {
+  protected static function readCachedFeedsFile() {
     $feeds = [];
 
     $fileRealPath = drupal_realpath(FeedFactory::$feeds_cache_file_uri);

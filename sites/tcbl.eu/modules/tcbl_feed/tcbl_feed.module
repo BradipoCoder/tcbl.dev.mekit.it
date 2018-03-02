@@ -51,29 +51,58 @@ function tcbl_feed_generate_feeds($generateFeedOptions = []) {
   }
 }
 
+/**
+ * @param $vars
+ */
+function tcbl_feed_preprocess_tcbl_feed_item(&$vars) {
+  /** @var \TcblFeed\FeedItem $feedItem */
+  $feedItem = $vars["feed_item"];
+
+  $vars["theme_hook_suggestions"][] = "tcbl_feed_item_" . $feedItem->getSource();
+  $vars["theme_hook_suggestions"][] = "tcbl_feed_item_" . $feedItem->getSource() . '_' . $feedItem->getType();
+}
 
 /**
- * Implements hook_block_info().
+ * Implements hook_theme().
  */
-function tcbl_feed_block_info() {
+function tcbl_feed_theme($existing, $type, $theme, $path) {
   return [
-    'tcbl_feed' => [
-      'info' => t("TCBL feed"),
-      'cache' => DRUPAL_NO_CACHE,/*DRUPAL_CACHE_GLOBAL*/
+    'tcbl_feed_item' => [
+      'template' => 'tcbl-feed-item',
+      'variables' => [
+        'feed_item' => NULL,
+      ],
+      'path' => drupal_get_path('module', 'tcbl_feed') . '/templates',
+      /*'pattern' => 'tcbl-feed-item__',*/
     ],
   ];
 }
 
+//-----------------------------------------------------------------------------------
+//---------------------------------- REMOVED BLOCK INFO -----------------------------
+//-----------------------------------------------------------------------------------
+/**
+ * Implements hook_block_info().
+ */
+/*
+function tcbl_feed_block_info() {
+  return [
+    'tcbl_feed' => [
+      'info' => t("TCBL feed"),
+      'cache' => DRUPAL_NO_CACHE,/* DRUPAL_CACHE_GLOBAL* /
+    ],
+  ];
+}
+*/
+
 /**
  * Implements hook_block_view().
- *
- * @todo: UNFINISHED!
  *
  * @param string
  *
  * @returns array
- * @throws \ReflectionException
  */
+/*
 function tcbl_feed_block_view($delta = '') {
   $answer = [];
 
@@ -88,24 +117,8 @@ function tcbl_feed_block_view($delta = '') {
     "filters" => [],
     "ordering" => "",
   ];
-  $answer = tcbl_feed_get_renderable_feeds($getFeedOptions, TRUE);
+  $answer = tcbl_feed_get_renderable_feeds($getFeedOptions);
 
   return $answer;
 }
-
-
-/**
- * Implements hook_theme().
- */
-function tcbl_feed_theme($existing, $type, $theme, $path) {
-  return [
-    'tcbl_feed_item' => [
-      'template' => 'tcbl-feed-item',
-      'variables' => [
-        'feed_item' => NULL,
-      ],
-      /*'pattern' => 'tcbl-feed-item__',*/
-    ],
-  ];
-}
-
+*/
