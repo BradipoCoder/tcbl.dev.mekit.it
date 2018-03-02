@@ -60,6 +60,15 @@ class FeedPlugin {
   }
 
   /**
+   * @param \SimpleXMLElement $el
+   *
+   * @return \SimpleXMLElement
+   */
+  protected function fixRssXmlRecursively(\SimpleXMLElement $el) {
+    return $el;
+  }
+
+  /**
    * @param string $url
    *
    * @return \stdClass
@@ -74,7 +83,11 @@ class FeedPlugin {
       $content = preg_replace($invalid_characters, '', $content);
       $xml = simplexml_load_string($content);
       if ($xml instanceof \SimpleXMLElement) {
-        $answer = $this->fixRssObjectRecursively(@json_decode(@json_encode($xml)));
+        $xml = $this->fixRssXmlRecursively($xml);
+        $jsonObject = @json_decode(@json_encode($xml));
+        //dpm($jsonObject, $url);
+        $answer = $this->fixRssObjectRecursively($jsonObject);
+        //dpm($jsonObject, "fixed: " . $url);
       }
     }
 

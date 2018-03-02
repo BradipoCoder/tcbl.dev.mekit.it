@@ -48,7 +48,7 @@ class TcblZineWpFeedPlugin extends FeedPlugin implements FeedPluginInterface {
           $feedItem->setSource($this->feed_source);
           $feedItem->setType("post");
           $feedItem->setTitle($item->title);
-          //$feedItem->setDescription($item->description);
+          $feedItem->setDescription($item->description);
           $feedItem->setCreationDate(new \DateTime($item->pubDate));
           $feedItem->setUrl($item->link);
           //$feedItem->setPostedByName($item->author);
@@ -62,6 +62,46 @@ class TcblZineWpFeedPlugin extends FeedPlugin implements FeedPluginInterface {
     }
 
     return $feeds;
+  }
+
+  /**
+   * Temporay Xml fix to:
+   * 1) strip html from description
+   * 2) add image_url
+   *
+   * @param \SimpleXMLElement $el
+   *
+   * @return \SimpleXMLElement
+   */
+  protected function fixRssXmlRecursively(\SimpleXMLElement $el) {
+
+    if ($el->count()) {
+      $strippedDescription = null;
+      /** @var \SimpleXMLElement $child */
+      foreach($el->children() as $child) {
+        if($child->getName() == "description") {
+          $strippedDescription = trim(strip_tags($child->__toString()));
+        }
+
+        $child = $this->fixRssXmlRecursively($child);
+      }
+
+      if(!is_null($strippedDescription)) {
+        unset($el->description);
+        $el->addChild("description", $strippedDescription);
+      }
+    }
+
+    if($media = $el->children( 'media', true )) {
+      $mediaContentAttributes = $media->content->attributes();
+      $mediaUrl = $mediaContentAttributes->url->__toString();
+      $enclosure = $el->addChild("enclosure");
+      $enclosure->addAttribute("url", $mediaUrl);
+    }
+
+
+
+    return $el;
   }
 
 }
