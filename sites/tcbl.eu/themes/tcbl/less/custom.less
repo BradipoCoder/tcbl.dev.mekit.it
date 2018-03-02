@@ -405,7 +405,7 @@ body.cke_editable, body.mceContentBody{
 
   .content{
     margin:10px;
-    border: 1px solid #dedede;
+    /*border: 1px solid #dedede;*/
     position: relative;
 
     .image-content{
@@ -450,12 +450,21 @@ body.cke_editable, body.mceContentBody{
         right: 0;
         background: rgba(255,255,255, 0.7);
       }
+
+
     }
   }
 
   &.feed-item-tcbl-zine{
     .content{
-
+      .feed-title{
+        position: relative;
+        padding: 5px 15px;
+        font-size: 12px;
+        font-weight: 600;
+        font-style: italic;
+        color: @primary;
+      }
     }
   }
 
