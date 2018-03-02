@@ -107,6 +107,14 @@ class FeedItem {
   }
 
   /**
+   * @return bool
+   */
+  public function isSocial()
+  {
+    return in_array($this->getSource(), ["facebook", "twitter", "instagram"]);
+  }
+
+  /**
    * @return array
    */
   public function getPropertyArray()

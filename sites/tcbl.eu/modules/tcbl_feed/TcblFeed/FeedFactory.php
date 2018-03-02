@@ -28,15 +28,29 @@ class FeedFactory {
   public static function generateFeeds($options = []) {
     $feeds = [];
 
+    $defaultNumberOfFeeds = 3;
+    if(isset($options["feed_item_per_plugin"]["default"])) {
+      $defaultNumberOfFeeds = intval($options["feed_item_per_plugin"]["default"]);
+    }
+
     FeedFactory::enumerateFeedPlugins();
 
     foreach (FeedFactory::$feed_plugins as $pluginClass) {
+      $maxNumberOfFeeds = $defaultNumberOfFeeds;
+
+
       $reflection = new \ReflectionClass($pluginClass);
       /** @var \TcblFeed\Plugins\FeedPluginInterface $plugin */
       $plugin = $reflection->newInstance($options);
       $pluginFeeds = $plugin->fetchFeeds();
       $pluginFeeds = FeedFactory::sortFeeds($pluginFeeds, "creation_date", "DESC");
-      $pluginFeeds = array_slice($pluginFeeds, 0, $options["feed_item_per_plugin"]);
+
+      $feedSource = $plugin->getFeedSource();
+      if(isset($options["feed_item_per_plugin"][$feedSource])) {
+        $maxNumberOfFeeds = intval($options["feed_item_per_plugin"][$feedSource]);
+      }
+
+      $pluginFeeds = array_slice($pluginFeeds, 0, $maxNumberOfFeeds);
 
       $feeds = array_merge($feeds, $pluginFeeds);
     }

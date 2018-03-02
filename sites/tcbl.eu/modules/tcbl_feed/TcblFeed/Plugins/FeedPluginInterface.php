@@ -15,7 +15,12 @@ namespace TcblFeed\Plugins;
 interface FeedPluginInterface {
 
   /**
+   * @return string
+   */
+  public function getFeedSource(): string;
+
+  /**
    * @return array
    */
-  public function fetchFeeds():array;
+  public function fetchFeeds(): array;
 }

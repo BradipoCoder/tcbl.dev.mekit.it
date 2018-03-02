@@ -8,9 +8,7 @@ require_once("TcblFeed/Plugins/FeedPlugin.php");
 require_once("TcblFeed/Plugins/FeedPluginInterface.php");
 
 /**
- *
  * @param array $getFeedOptions
- * @param bool $generateFeeds
  *
  * @returns array
  */
@@ -58,9 +56,15 @@ function tcbl_feed_preprocess_tcbl_feed_item(&$vars) {
   /** @var \TcblFeed\FeedItem $feedItem */
   $feedItem = $vars["feed_item"];
 
-  $vars["theme_hook_suggestions"][] = "tcbl_feed_item_" . $feedItem->getSource();
-  $vars["theme_hook_suggestions"][] = "tcbl_feed_item_" . $feedItem->getSource() . '_' . $feedItem->getType();
+  // Theme hook suggestions
+  $vars["theme_hook_suggestions"] = [];
+  if($feedItem->isSocial()) {
+    $vars["theme_hook_suggestions"][] = "tcbl_feed_item__social";
+  }
+  $vars["theme_hook_suggestions"][] = "tcbl_feed_item__" . $feedItem->getSource();
+  $vars["theme_hook_suggestions"][] = "tcbl_feed_item__" . $feedItem->getSource() . '__' . $feedItem->getType();
 
+  // Classes
   $classStub = "feed-item";
   $classes = [];
   $classes[] = $classStub;
@@ -85,48 +89,3 @@ function tcbl_feed_theme($existing, $type, $theme, $path) {
     ],
   ];
 }
-
-//-----------------------------------------------------------------------------------
-//---------------------------------- REMOVED BLOCK INFO -----------------------------
-//-----------------------------------------------------------------------------------
-/**
- * Implements hook_block_info().
- */
-/*
-function tcbl_feed_block_info() {
-  return [
-    'tcbl_feed' => [
-      'info' => t("TCBL feed"),
-      'cache' => DRUPAL_NO_CACHE,/* DRUPAL_CACHE_GLOBAL* /
-    ],
-  ];
-}
-*/
-
-/**
- * Implements hook_block_view().
- *
- * @param string
- *
- * @returns array
- */
-/*
-function tcbl_feed_block_view($delta = '') {
-  $answer = [];
-
-  if ($delta != 'tcbl_feed') {
-    return $answer;
-  }
-
-  $answer['subject'] = t('TCBL Feeds');
-  $answer['content'] = t('No feeds available.');
-
-  $getFeedOptions = [
-    "filters" => [],
-    "ordering" => "",
-  ];
-  $answer = tcbl_feed_get_renderable_feeds($getFeedOptions);
-
-  return $answer;
-}
-*/

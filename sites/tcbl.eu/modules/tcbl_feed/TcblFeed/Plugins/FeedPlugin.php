@@ -22,12 +22,19 @@ class FeedPlugin {
    * @param array $options
    */
   public function __construct($options = []) {
+    /*
     $this->max_feed_count = isset($options["feed_item_per_plugin"])
                             && intval($options["feed_item_per_plugin"])
       ? $options["feed_item_per_plugin"]
       : $this->max_feed_count;
+    */
+  }
 
-
+  /**
+   * @return string
+   */
+  public function getFeedSource(): string {
+    return $this->feed_source;
   }
 
   /**
@@ -38,20 +45,19 @@ class FeedPlugin {
    *
    * @return mixed
    */
-  protected function fixRssObjectRecursively($object)
-  {
-    if(is_object($object)) {
+  protected function fixRssObjectRecursively($object) {
+    if (is_object($object)) {
       $attributesKeyName = "@attributes";
-      if(property_exists($object, $attributesKeyName)) {
-        foreach($object->$attributesKeyName as $k => $v) {
+      if (property_exists($object, $attributesKeyName)) {
+        foreach ($object->$attributesKeyName as $k => $v) {
           $object->$k = $v;
         }
         unset($object->$attributesKeyName);
       }
     }
 
-    if(is_array($object) || is_object($object)) {
-      foreach($object as $k => &$v) {
+    if (is_array($object) || is_object($object)) {
+      foreach ($object as $k => &$v) {
         $v = $this->fixRssObjectRecursively($v);
       }
     }
@@ -73,12 +79,11 @@ class FeedPlugin {
    *
    * @return \stdClass
    */
-  protected function fetchRssXmlAndConvertToObject($url)
-  {
+  protected function fetchRssXmlAndConvertToObject($url) {
     $answer = new \stdClass();
 
     $content = @file_get_contents($url);
-    if($content){
+    if ($content) {
       $invalid_characters = '/[^\x9\xa\x20-\xD7FF\xE000-\xFFFD]/';
       $content = preg_replace($invalid_characters, '', $content);
       $xml = simplexml_load_string($content);
@@ -104,12 +109,14 @@ class FeedPlugin {
     $randomDateFinish = new \DateTime();
 
     for ($i = 1; $i <= $this->max_feed_count; $i++) {
-      $id = rand(1,9999);
+      $id = rand(1, 9999);
       $item = new FeedItem();
       $item->setId($id);
       $item->setSource($this->feed_source);
       $item->setType("post");
-      $item->setTitle(ucfirst($this->feed_source) . " Item #" . str_pad($id, 4, "0", STR_PAD_LEFT));
+      $item->setTitle(
+        ucfirst($this->feed_source) . " Item #" . str_pad($id, 4, "0", STR_PAD_LEFT)
+      );
       $item->setMessage("something interesting...");
       $item->setCreationDate($this->getFakeRandomDate($randomDateStart, $randomDateFinish));
       $item->setUrl("https://mekit.it");
@@ -125,11 +132,11 @@ class FeedPlugin {
    *
    * @return \DateTime
    */
-  private function getFakeRandomDate($date1, $date2){
+  private function getFakeRandomDate($date1, $date2) {
     $answer = new \DateTime();
     try {
       $random_u = random_int($date1->format('U'), $date2->format('U'));
-    } catch(\Exception $e){
+    } catch(\Exception $e) {
       $random_u = $date1->format('U');
     }
     $answer->setTimestamp($random_u);

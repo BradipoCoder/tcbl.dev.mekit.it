@@ -16,7 +16,10 @@ function tcbl_frontpage_preprocess_page(&$vars) {
 
   // TCBL FEEDS
   $generate_feed_options = [
-    "feed_item_per_plugin" => 3
+    "feed_item_per_plugin" => [
+      "default" => 3,
+      "tcbl_zine" => 4,
+    ]
   ];
   tcbl_feed_generate_feeds($generate_feed_options);
 
