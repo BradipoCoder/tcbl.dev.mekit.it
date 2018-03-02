@@ -49,6 +49,10 @@ function _tcbl_preprocess_node_page(&$vars){
   if ($node->nid == 327){
     _tcbl_preprocess_node_page_forums($vars);
   }
+
+  if ($node->nid == 310){
+    _tcbl_preprocess_node_page_bpilots($vars);
+  }
 }
 
 /**
@@ -113,6 +117,14 @@ function _tcbl_preprocess_node_page_forums(&$vars){
 
   $vars['content']['faq'] = _tcbl_faq_link();
   $vars['content']['forum']['#markup'] = views_embed_view('forum', 'content');
+}
 
-  
+function _tcbl_preprocess_node_page_bpilots(&$vars){
+  $node = $vars['node'];
+
+  if ($vars['view_mode'] == 'full'){
+    $vars['content']['bpilots']['#markup'] = views_embed_view('bpilots', 'block');
+    $vars['content']['bpilots']['#weight'] = 40;
+    add_same_h_by_selector('.bpilots-sameh');
+  }
 }

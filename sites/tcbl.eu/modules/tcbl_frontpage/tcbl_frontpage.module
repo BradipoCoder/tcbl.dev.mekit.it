@@ -14,6 +14,16 @@ function tcbl_frontpage_preprocess_page(&$vars) {
   $content['events']['#markup'] = views_embed_view('hp_events', 'default');
   $content['forum']['#markup'] = views_embed_view('hp_forum', 'default');
 
+  // Business Pilots
+  $bpilots_node = node_load(310);
+  $bpilots_node_view = node_view($bpilots_node, 'teaser');
+  $content['bpilots'] = $bpilots_node_view['field_short'];
+  $uri = $bpilots_node->field_image['und'][0]['uri'];
+  dpm($uri);
+
+  $js_parallax = libraries_get_path('jquery.parallax') . '/jquery.parallax.min.js';
+  drupal_add_js( $js_parallax , array('group' => JS_LIBRARY, 'weight' => 1));
+
   // TCBL FEEDS
   $generate_feed_options = [
     "feed_item_per_plugin" => [
