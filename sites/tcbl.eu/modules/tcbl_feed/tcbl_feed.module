@@ -60,6 +60,13 @@ function tcbl_feed_preprocess_tcbl_feed_item(&$vars) {
 
   $vars["theme_hook_suggestions"][] = "tcbl_feed_item_" . $feedItem->getSource();
   $vars["theme_hook_suggestions"][] = "tcbl_feed_item_" . $feedItem->getSource() . '_' . $feedItem->getType();
+
+  $classStub = "feed-item";
+  $classes = [];
+  $classes[] = $classStub;
+  $classes[] = $classStub . "-" . str_replace("_", "-", $feedItem->getSource());
+  $classes[] = $classStub . "-" . str_replace("_", "-", $feedItem->getType());
+  $vars["classes_array"] = $classes;
 }
 
 /**
@@ -71,6 +78,7 @@ function tcbl_feed_theme($existing, $type, $theme, $path) {
       'template' => 'tcbl-feed-item',
       'variables' => [
         'feed_item' => NULL,
+        'classes' => NULL,
       ],
       'path' => drupal_get_path('module', 'tcbl_feed') . '/templates',
       /*'pattern' => 'tcbl-feed-item__',*/
