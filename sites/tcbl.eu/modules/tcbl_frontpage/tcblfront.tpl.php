@@ -86,8 +86,11 @@
   <div class="wrapper-front-business-pilots">
     <div class="parallax-w" data-bleed="1" data-parallax="scroll" data-image-src="<?php print render($content['bpilots_img_path']); ?>" data-position-y="center">
       <div class="container">
-        <h2 class="h1-big text-italic">Business Pilots</h2>
-        <?php print render($content['bpilots']); ?>
+        <div class="text-max-width text-center margin-v-4">
+          <h2 class="h1-big text-italic">Business Pilots</h2>
+          <?php print render($content['bpilots']); ?>
+          <?php print render($content['bpilots_more']); ?>
+        </div>
       </div>
     </div>
   </div>
