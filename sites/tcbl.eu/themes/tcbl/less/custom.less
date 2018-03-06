@@ -413,6 +413,7 @@ body.cke_editable, body.mceContentBody{
     margin:10px;
     /*border: 1px solid #dedede;*/
     position: relative;
+    overflow: hidden;
 
     .image-content{
       position: relative;
@@ -481,9 +482,26 @@ body.cke_editable, body.mceContentBody{
   }
 
   &.feed-item-social{
-    border: 1px dashed #dedede;
     .content{
+      border: 1px dashed #dedede;
+      margin:0;
       height:150px;
+      .image-content{
+        img{
+          height: 100%;
+          width: auto;
+        }
+      }
+      a .image-content img{
+        filter: blur(2px) grayscale(100%);
+        -webkit-filter: blur(2px) grayscale(100%);
+        -moz-filter: blur(2px) grayscale(100%);
+      }
+      a:hover .image-content img{
+        filter: none;
+        -webkit-filter: none;
+        -moz-filter: none;
+      }
     }
   }
 

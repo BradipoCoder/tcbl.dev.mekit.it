@@ -19,6 +19,7 @@ class FacebookFeedPlugin extends FeedPlugin implements FeedPluginInterface {
   /** @var string */
   protected $pageId = 'projecttcbl';
 
+  /** @var int */
   protected $feed_limit = 5;
 
   /**
@@ -68,8 +69,7 @@ class FacebookFeedPlugin extends FeedPlugin implements FeedPluginInterface {
         if ($body && isset($body["data"]) && is_array($body["data"])
             && count($body["data"])) {
           $data = $body["data"];
-          dpm($data);
-
+          //dpm($data);
 
           foreach($data as $item) {
 
@@ -97,12 +97,9 @@ class FacebookFeedPlugin extends FeedPlugin implements FeedPluginInterface {
 
             array_push($feeds, $feedItem);
           }
-
-
         }
       }
     }
-
 
     return $feeds;
   }

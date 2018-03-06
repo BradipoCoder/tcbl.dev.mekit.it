@@ -5,7 +5,7 @@
 ?>
 
 
-<div class="<?php print $classes; ?> col-sm-1">
+<div class="<?php print $classes; ?> col-sm-2">
   <div class="content">
     <a href="<?php print $feed_item->getUrl(); ?>" target="_blank">
       <?php if($feed_item->getPictureUrl()): ?>
