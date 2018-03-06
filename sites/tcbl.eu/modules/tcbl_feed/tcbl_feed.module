@@ -1,11 +1,6 @@
 <?php
 
-// - http://tcbl.dev.mekit.it/mekit-test
-
-require_once("TcblFeed/FeedFactory.php");
-require_once("TcblFeed/FeedItem.php");
-require_once("TcblFeed/Plugins/FeedPlugin.php");
-require_once("TcblFeed/Plugins/FeedPluginInterface.php");
+require_once ("vendor/autoload.php");
 
 /**
  * @param array $getFeedOptions
@@ -15,14 +10,14 @@ require_once("TcblFeed/Plugins/FeedPluginInterface.php");
 function tcbl_feed_get_renderable_feeds($getFeedOptions = []) {
   $answer = [];
 
-  $feeds = \TcblFeed\FeedFactory::getFeeds($getFeedOptions);
+  $feeds = \Mekit\TcblFeed\FeedFactory::getFeeds($getFeedOptions);
 
   if (count($feeds)) {
     //$answer['content'] = t('Number of feeds: ' . count($feeds));
     $answer['content'] = [];
     $answer['content']['feeds'] = [];
 
-    /** @var \TcblFeed\FeedItem $feed */
+    /** @var \Mekit\TcblFeed\FeedItem $feed */
     foreach ($feeds as $feed) {
       $feedThemeItem = [
         '#theme' => 'tcbl_feed_item',
@@ -43,7 +38,7 @@ function tcbl_feed_get_renderable_feeds($getFeedOptions = []) {
  */
 function tcbl_feed_generate_feeds($generateFeedOptions = []) {
   try {
-    \TcblFeed\FeedFactory::generateFeeds($generateFeedOptions);
+    \Mekit\TcblFeed\FeedFactory::generateFeeds($generateFeedOptions);
   } catch(\ReflectionException $e) {
     //bad stuff :-(
   }
@@ -53,7 +48,7 @@ function tcbl_feed_generate_feeds($generateFeedOptions = []) {
  * @param $vars
  */
 function tcbl_feed_preprocess_tcbl_feed_item(&$vars) {
-  /** @var \TcblFeed\FeedItem $feedItem */
+  /** @var \Mekit\TcblFeed\FeedItem $feedItem */
   $feedItem = $vars["feed_item"];
 
   // Theme hook suggestions
@@ -75,6 +70,13 @@ function tcbl_feed_preprocess_tcbl_feed_item(&$vars) {
 
 /**
  * Implements hook_theme().
+ *
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ *
+ * @return array
  */
 function tcbl_feed_theme($existing, $type, $theme, $path) {
   return [

@@ -1,0 +1,27 @@
+{
+  "name": "mekit/tcbl_feel",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "jakabadambalazs",
+      "email": "jakabadambalazs@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "facebook/graph-sdk": "^5.6"
+  },
+  "scripts": {
+    "post-install-cmd": [
+    ],
+    "post-update-cmd": [
+    ]
+  },
+  "autoload": {
+    "psr-0": {
+      "Mekit\\": "src/"
+    }
+  }
+}
