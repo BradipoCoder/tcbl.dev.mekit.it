@@ -40,6 +40,8 @@ class FeedFactory {
     foreach (FeedFactory::$feed_plugins as $pluginClass) {
       $maxNumberOfFeeds = $defaultNumberOfFeeds;
 
+      //@todo: we need plugin specific options like $options["facebook"]=>[...]
+      //@todo: so we can pass those to each constructor
 
       $reflection = new \ReflectionClass($pluginClass);
       /** @var FeedPluginInterface $plugin */

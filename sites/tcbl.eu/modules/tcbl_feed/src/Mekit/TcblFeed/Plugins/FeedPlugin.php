@@ -105,7 +105,7 @@ class FeedPlugin {
   protected function generateFakeFeeds(): array {
     $feeds = [];
 
-    $randomDateStart = new \DateTime('now - 18 months');
+    $randomDateStart = new \DateTime('now - 1 months');
     $randomDateFinish = new \DateTime();
 
     for ($i = 1; $i <= $this->max_feed_count; $i++) {

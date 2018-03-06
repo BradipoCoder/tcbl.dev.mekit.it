@@ -63,6 +63,9 @@ function tcbl_feed_preprocess_tcbl_feed_item(&$vars) {
   $classStub = "feed-item";
   $classes = [];
   $classes[] = $classStub;
+  if($feedItem->isSocial()) {
+    $classes[] = $classStub . "-social";
+  }
   $classes[] = $classStub . "-" . str_replace("_", "-", $feedItem->getSource());
   $classes[] = $classStub . "-" . str_replace("_", "-", $feedItem->getType());
   $vars["classes_array"] = $classes;

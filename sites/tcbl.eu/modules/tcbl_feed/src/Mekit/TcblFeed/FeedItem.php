@@ -42,57 +42,57 @@ class FeedItem {
   /**
    * @var string - id of the post
    */
-  protected $id;
+  protected $id = "";
 
   /**
    * @var string - facebook|twitter|etc...
    */
-  protected $source;
+  protected $source = "";
 
   /**
    * @var string - post|link|status|photo|video
    */
-  protected $type;
+  protected $type = "";
 
   /**
    * @var string - the title/name of the post
    */
-  protected $title;
+  protected $title = "";
 
   /**
    * @var string - the description
    */
-  protected $description;
+  protected $description = "";
 
   /**
    * @var string - the caption
    */
-  protected $caption;
+  protected $caption = "";
 
   /**
    * @var string - the message
    */
-  protected $message;
+  protected $message = "";
 
   /**
    * @var string - urls to the post picture
    */
-  protected $picture_url;
+  protected $picture_url = "";
 
   /**
    * @var string - link to the post
    */
-  protected $url;
+  protected $url = "";
 
   /**
    * @var string - the name of the account who posted
    */
-  protected $posted_by_name;
+  protected $posted_by_name = "";
 
   /**
    * @var string - the image of the account who posted
    */
-  protected $posted_by_picture_url;
+  protected $posted_by_picture_url = "";
 
   /**
    * @var \DateTime - the creation date/time
