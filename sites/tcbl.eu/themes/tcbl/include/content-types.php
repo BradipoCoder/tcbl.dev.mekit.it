@@ -34,6 +34,11 @@ function tcbl_preprocess_node(&$vars){
       _tcbl_preprocess_node_blog($vars);
       break;
 
+    case 'bpilot':
+      _tcbl_preprocess_node_bpilot($vars);
+      break;
+
+
     default:
       # code...
       break;
@@ -144,5 +149,12 @@ function _tcbl_preprocess_node_blog(&$vars){
       '#markup' => l('read more', 'node/' . $node->nid),
       '#weight' => 5,
     );
+  }
+}
+
+function _tcbl_preprocess_node_bpilot(&$vars){
+  if ($vars['view_mode'] == 'child'){
+    $vars['classes_array'][] = 'col-md-4';
+    $vars['classes_array'][] = 'col-sm-6';
   }
 }
