@@ -1,5 +1,5 @@
 <?php
-/** @var \TcblFeed\FeedItem $feed_item */
+/** @var \Mekit\TcblFeed\FeedItem $feed_item */
 /** @var string $classes */
 ?>
 <div class="<?php print $classes; ?> col-sm-4">
