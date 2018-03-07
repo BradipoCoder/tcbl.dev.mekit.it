@@ -69,6 +69,24 @@ function tcbl_feed_preprocess_tcbl_feed_item(&$vars) {
   $classes[] = $classStub . "-" . str_replace("_", "-", $feedItem->getSource());
   $classes[] = $classStub . "-" . str_replace("_", "-", $feedItem->getType());
   $vars["classes_array"] = $classes;
+
+  // Fontawesome icon
+  $icons = ["fa"];
+  switch($feedItem->getSource()) {
+    case "facebook":
+      $icons[] = "fa-facebook-f";
+      break;
+    case "instagram":
+      $icons[] = "fa-instagram";
+      break;
+    case "twitter":
+      $icons[] = "fa-twitter";
+      break;
+    default:
+      $icons[] = "fa-rss";
+      break;
+  }
+  $vars["fontawesome_icon"] = implode(" ", $icons);
 }
 
 /**
@@ -87,7 +105,8 @@ function tcbl_feed_theme($existing, $type, $theme, $path) {
       'template' => 'tcbl-feed-item',
       'variables' => [
         'feed_item' => NULL,
-        'classes' => NULL,
+        /*'classes' => NULL,*/
+        'fontawesome_icon' => NULL,
       ],
       'path' => drupal_get_path('module', 'tcbl_feed') . '/templates',
       /*'pattern' => 'tcbl-feed-item__',*/

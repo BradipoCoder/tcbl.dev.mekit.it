@@ -483,9 +483,18 @@ body.cke_editable, body.mceContentBody{
 
   &.feed-item-social{
     .content{
-      border: 1px dashed #dedede;
+      /*border: 1px dashed #dedede;*/
       margin:0;
       height:150px;
+      background: @primary-light;
+
+      i.fa{
+        color: @primary-lightest;
+        position:absolute;
+        left:3px;
+        top:5px;
+      }
+
       .image-content{
         img{
           height: 100%;
@@ -501,6 +510,14 @@ body.cke_editable, body.mceContentBody{
         filter: none;
         -webkit-filter: none;
         -moz-filter: none;
+      }
+
+      .feed-title{
+        padding: 15px 15px;
+        font-size: 12px;
+        font-weight: 600;
+        font-style: italic;
+        color: white;
       }
     }
   }

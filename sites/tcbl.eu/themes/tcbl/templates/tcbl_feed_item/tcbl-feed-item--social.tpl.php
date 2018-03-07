@@ -1,7 +1,7 @@
 <?php
 /** @var \Mekit\TcblFeed\FeedItem $feed_item */
 /** @var string $classes */
-
+/** @var string $fontawesome_icon */
 ?>
 
 
@@ -14,6 +14,8 @@
 
         </div>
       <?php endif; ?>
+
+      <i class="<?php print $fontawesome_icon; ?>" aria-hidden="true"></i>
 
       <div class="feed-title">
         <span><?php print $feed_item->getTitle(); ?></span>
