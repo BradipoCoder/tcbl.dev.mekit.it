@@ -11,6 +11,16 @@ class ComposerStaticInit6179928242d243d6758298367446bac6
     );
 
     public static $prefixLengthsPsr4 = array (
+        'p' => 
+        array (
+            'phpssdb\\' => 8,
+            'phpFastCache\\' => 13,
+        ),
+        'P' => 
+        array (
+            'Psr\\Cache\\' => 10,
+            'Predis\\' => 7,
+        ),
         'F' => 
         array (
             'Facebook\\' => 9,
@@ -18,6 +28,22 @@ class ComposerStaticInit6179928242d243d6758298367446bac6
     );
 
     public static $prefixDirsPsr4 = array (
+        'phpssdb\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpfastcache/phpssdb/src/phpssdb',
+        ),
+        'phpFastCache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpfastcache/phpfastcache/src/phpFastCache',
+        ),
+        'Psr\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/cache/src',
+        ),
+        'Predis\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/predis/predis/src',
+        ),
         'Facebook\\' => 
         array (
             0 => __DIR__ . '/..' . '/facebook/graph-sdk/src/Facebook',
@@ -25,11 +51,25 @@ class ComposerStaticInit6179928242d243d6758298367446bac6
     );
 
     public static $prefixesPsr0 = array (
+        'U' => 
+        array (
+            'Unirest\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/mashape/unirest-php/src',
+            ),
+        ),
         'M' => 
         array (
             'Mekit\\' => 
             array (
                 0 => __DIR__ . '/../..' . '/src',
+            ),
+        ),
+        'I' => 
+        array (
+            'InstagramScraper' => 
+            array (
+                0 => __DIR__ . '/..' . '/raiym/instagram-php-scraper/src',
             ),
         ),
     );

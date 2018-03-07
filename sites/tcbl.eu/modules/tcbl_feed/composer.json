@@ -11,7 +11,8 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "facebook/graph-sdk": "^5.6"
+    "facebook/graph-sdk": "^5.6",
+    "raiym/instagram-php-scraper": "^0.8.14"
   },
   "scripts": {
     "post-install-cmd": [

@@ -6,5 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Unirest\\' => array($vendorDir . '/mashape/unirest-php/src'),
     'Mekit\\' => array($baseDir . '/src'),
+    'InstagramScraper' => array($vendorDir . '/raiym/instagram-php-scraper/src'),
 );
