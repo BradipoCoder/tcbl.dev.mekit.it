@@ -92,7 +92,7 @@ class FacebookFeedPlugin extends FeedPlugin implements FeedPluginInterface {
             $feedItem->setMessage($message);
             $feedItem->setCreationDate(new \DateTime($item["created_time"]));
             $feedItem->setUrl($link);
-            //$feedItem->setPostedByName($item->author);
+            $feedItem->setPostedByName("TCBL");
             $feedItem->setPictureUrl($full_picture);
 
             array_push($feeds, $feedItem);

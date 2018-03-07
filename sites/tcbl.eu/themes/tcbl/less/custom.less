@@ -486,13 +486,13 @@ body.cke_editable, body.mceContentBody{
       /*border: 1px dashed #dedede;*/
       margin:0;
       height:150px;
-      background: @primary-light;
+      background: @gray-lightest;
 
       i.fa{
-        color: @primary-lightest;
+        color: white;
         position:absolute;
-        left:3px;
-        top:5px;
+        left:7px;
+        top:7px;
       }
 
       .image-content{
@@ -512,14 +512,70 @@ body.cke_editable, body.mceContentBody{
         -moz-filter: none;
       }
 
-      .feed-title{
-        padding: 15px 15px;
-        font-size: 12px;
-        font-weight: 600;
+      .feed-date{
+        position: absolute;
+        font-size: 11px;
+        top:7px;
+        right:7px;
+        color: @gray-dark;
+        font-weight: bold;
+      }
+
+      .feed-message{
+        position: absolute;
+        font-size: 9px;
+        line-height: 12px;
         font-style: italic;
-        color: white;
+        top: 50px;
+        left: 0;
+        right: 0;
+        padding: 0 10px;
+        height: 65px;
+        overflow: hidden;
+      }
+
+      .feed-author{
+        position: absolute;
+        font-size: 12px;
+        font-weight: bold;
+        bottom: 10px;
+        left: 0;
+        right: 0;
+        padding: 0 10px;
+        height: 20px;
+        overflow: hidden;
+      }
+
+    }
+
+
+    /*
+    &.feed-item-facebook{
+      .content{
+        background: #dfe3ee;
+        i.fa{
+          color: #3b5998;
+        }
       }
     }
+    &.feed-item-instagram{
+      .content{
+        background: #efefef;
+        i.fa{
+          color: #000000;
+        }
+      }
+    }
+    &.feed-item-twitter{
+      .content{
+        background: #c0deed;
+        i.fa{
+          color: #00aced;
+        }
+      }
+    }
+    */
+
   }
 
 

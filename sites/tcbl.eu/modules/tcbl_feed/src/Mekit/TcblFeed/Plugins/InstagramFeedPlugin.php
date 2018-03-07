@@ -46,7 +46,6 @@ class InstagramFeedPlugin extends FeedPlugin implements FeedPluginInterface {
 
     if($this->instagram) {
       $medias = FALSE;
-
       try{
         $medias = $this->instagram->getMedias($this->pageId, $this->feed_limit);
       } catch (InstagramException $e) {
@@ -79,7 +78,7 @@ class InstagramFeedPlugin extends FeedPlugin implements FeedPluginInterface {
           $feedItem->setTitle("");
           $feedItem->setCaption($media->getCaption());
           $feedItem->setDescription("");
-          $feedItem->setMessage("");
+          $feedItem->setMessage($media->getCaption());
           $feedItem->setCreationDate($creationDate);
           $feedItem->setUrl($media->getLink());
           $feedItem->setPostedByName($authorName);

@@ -38,6 +38,9 @@ function tcbl_frontpage_preprocess_page(&$vars) {
     "feed_item_per_plugin" => [
       "default" => 3,
       "tcbl_zine" => 4,
+      "facebook" => 2,
+      "instagram" => 2,
+      "twitter" => 2,
     ]
   ];
   tcbl_feed_generate_feeds($generate_feed_options);

@@ -214,6 +214,20 @@ class FeedItem {
   }
 
   /**
+   * @param int $trimAt
+   *
+   * @return string
+   */
+  public function getTrimmedMessage($trimAt = 0): string {
+    $answer = $this->message;
+    if($trimAt && strlen($this->message) > $trimAt) {
+      $answer = substr($answer, 0 , $trimAt - 3) . "...";
+    }
+
+    return $answer;
+  }
+
+  /**
    * @param string $message
    */
   public function setMessage(string $message) {
