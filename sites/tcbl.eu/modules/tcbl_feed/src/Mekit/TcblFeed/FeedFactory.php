@@ -26,8 +26,12 @@ class FeedFactory {
    * @param array $options
    *
    * @throws \ReflectionException
+   *
+   * @return array
    */
   public static function generateFeeds($options = []) {
+    $answer = [];
+
     $feeds = [];
 
     $defaultOptions = [
@@ -37,8 +41,7 @@ class FeedFactory {
       "plugin" => []
     ];
     $options = self::array_merge_recursive_distinct($defaultOptions, $options);
-
-    dsm("GEN-OPTIONS: " . json_encode($options));
+    //dsm("OPTIONS: " . json_encode($options));
 
     FeedFactory::enumerateFeedPlugins();
 
@@ -50,7 +53,7 @@ class FeedFactory {
         ? self::array_merge_recursive_distinct($options["default"], $options["plugin"][$pluginShortcode])
         : $options["default"];
 
-      dsm("GEN($pluginClass)[$pluginShortcode] plugin options: " . json_encode($pluginOptions));
+      //dsm("PLUGIN OPTIONS($pluginClass)[$pluginShortcode]: " . json_encode($pluginOptions));
 
       /** @var FeedPluginInterface $plugin */
       $plugin = $reflection->newInstance($pluginOptions);
@@ -63,6 +66,8 @@ class FeedFactory {
 
       //add to other feeds
       $feeds = array_merge($feeds, $pluginFeeds);
+
+      $answer[$pluginShortcode] = count($pluginFeeds);
     }
 
     //sort feeds
@@ -70,33 +75,14 @@ class FeedFactory {
 
     //write feeds
     FeedFactory::writeFeedsFile($feeds);
+
+    return $answer;
   }
 
-  /**
-   * @param array $array1
-   * @param array $array2
-   *
-   * @return array
-   */
-  private static function array_merge_recursive_distinct(array $array1, $array2)
-  {
-    $merged = $array1;
-
-    if (is_array($array2))
-      foreach ($array2 as $key => $val)
-        if (is_array($array2[$key])){
-          $merged[$key] = isset($merged[$key]) && is_array($merged[$key])
-            ? self::array_merge_recursive_distinct($merged[$key], $array2[$key])
-            : $array2[$key];
-        } else {
-          $merged[$key] = $val;
-        }
-
-    return $merged;
-  }
 
   /**
    * Returns ann array of feeds according to the options passed
+   *
    * @param array $options
    *
    * @return array
@@ -129,7 +115,7 @@ class FeedFactory {
 
       try {
         $feedItemReflection = new \ReflectionClass("\TcblFeed\FeedItem");
-        if(!$feedItemReflection->hasProperty($property)) {
+        if (!$feedItemReflection->hasProperty($property)) {
           $property = "id";
         }
       } catch(\ReflectionException $e) {
@@ -151,39 +137,53 @@ class FeedFactory {
    */
   protected static function sortFeeds($feeds, $property, $order) {
     //echo "<br />Sorting[$order] by: $property";
-    switch($property)
-    {
+    switch ($property) {
       case "id":
-        if($order == "ASC") {
-          usort($feeds, function(FeedItem $a, FeedItem $b) {
+        if ($order == "ASC") {
+          usort(
+            $feeds, function (FeedItem $a, FeedItem $b) {
             return strcmp($a->getId(), $b->getId());
-          });
-        } else {
-          usort($feeds, function(FeedItem $a, FeedItem $b) {
+          }
+          );
+        }
+        else {
+          usort(
+            $feeds, function (FeedItem $a, FeedItem $b) {
             return strcmp($b->getId(), $a->getId());
-          });
+          }
+          );
         }
         break;
       case "title":
-        if($order == "ASC") {
-          usort($feeds, function(FeedItem $a, FeedItem $b) {
+        if ($order == "ASC") {
+          usort(
+            $feeds, function (FeedItem $a, FeedItem $b) {
             return strcmp($a->getTitle(), $b->getTitle());
-          });
-        } else {
-          usort($feeds, function(FeedItem $a, FeedItem $b) {
+          }
+          );
+        }
+        else {
+          usort(
+            $feeds, function (FeedItem $a, FeedItem $b) {
             return strcmp($b->getTitle(), $a->getTitle());
-          });
+          }
+          );
         }
         break;
-        case "creation_date":
-        if($order == "ASC") {
-          usort($feeds, function(FeedItem $a, FeedItem $b) {
+      case "creation_date":
+        if ($order == "ASC") {
+          usort(
+            $feeds, function (FeedItem $a, FeedItem $b) {
             return $a->getCreationDate() >= $b->getCreationDate();
-          });
-        } else {
-          usort($feeds, function(FeedItem $a, FeedItem $b) {
+          }
+          );
+        }
+        else {
+          usort(
+            $feeds, function (FeedItem $a, FeedItem $b) {
             return $b->getCreationDate() >= $a->getCreationDate();
-          });
+          }
+          );
         }
         break;
 
@@ -204,8 +204,8 @@ class FeedFactory {
     $answer = [];
 
     /** @var FeedItem $feed */
-    foreach($feeds as $feed) {
-      if(in_array($feed->getSource(), $filters)) {
+    foreach ($feeds as $feed) {
+      if (in_array($feed->getSource(), $filters)) {
         array_push($answer, $feed);
       }
     }
@@ -225,8 +225,8 @@ class FeedFactory {
     $answer = [];
 
     /** @var FeedItem $feed */
-    foreach($feeds as $feed) {
-      if(in_array($feed->getType(), $filters)) {
+    foreach ($feeds as $feed) {
+      if (in_array($feed->getType(), $filters)) {
         array_push($answer, $feed);
       }
     }
@@ -249,8 +249,8 @@ class FeedFactory {
       //require_once($pluginFile);
       $pluginClass = 'Mekit\\TcblFeed\\Plugins\\' . str_replace(
           '.php', '', str_replace(
-          $pluginPath . '/', '', $pluginFile
-        )
+                  $pluginPath . '/', '', $pluginFile
+                )
         );
 
       //dsm("plugin class: " . $pluginClass);
@@ -294,5 +294,32 @@ class FeedFactory {
                 && FILE_MODIFY_PERMISSIONS
     );
     file_save_data($flatData, FeedFactory::$feeds_cache_file_uri, FILE_EXISTS_REPLACE);
+  }
+
+  /**
+   * Recursively merges two arrays into one
+   *
+   * @param array $array1
+   * @param array $array2
+   *
+   * @return array
+   */
+  private static function array_merge_recursive_distinct(array $array1, $array2) {
+    $merged = $array1;
+
+    if (is_array($array2)) {
+      foreach ($array2 as $key => $val) {
+        if (is_array($array2[$key])) {
+          $merged[$key] = isset($merged[$key]) && is_array($merged[$key])
+            ? self::array_merge_recursive_distinct($merged[$key], $array2[$key])
+            : $array2[$key];
+        }
+        else {
+          $merged[$key] = $val;
+        }
+      }
+    }
+
+    return $merged;
   }
 }
