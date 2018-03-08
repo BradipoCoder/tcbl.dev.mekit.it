@@ -47,14 +47,41 @@ function tcbl_frontpage_preprocess_page(&$vars) {
  */
 function _tcbl_frontpage_get_tcbl_feeds() {
 
-  //--------------------------------------------FEED GENERATION (to be removed)
   $generate_feed_options = [
+    /*
     "feed_item_per_plugin" => [
       "default" => 3,
       "tcbl_zine" => 4,
       "facebook" => 2,
       "instagram" => 2,
       "twitter" => 2,
+    ],*/
+    "default" => [
+      "max_items" => 3
+    ],
+    "plugin" => [
+      "tcbl_zine" => [
+        "max_items" => 4
+      ],
+      "tcbl_labs" => [
+        "max_items" => 3
+      ],
+      "facebook" => [
+        "max_items" => 2,
+        'app_id' => '301393660390585',
+        'app_secret' => 'fa161c64d4663bf34c562c007a02dc59',
+        'default_graph_version' => 'v2.12',
+      ],
+      "instagram" => [
+        "max_items" => 2
+      ],
+      "twitter" => [
+        "max_items" => 2,
+        "consumer_key"            => "05rhm0AJq1Wcl8VdVR1EKb1qY",
+        "consumer_secret"         => "ozj7VwhS2GO3anJTpS82OWUtrEEzx7uwSKCh7bWEhIoVA3swl3",
+        "access_token"            => "776749216442056704-9hZR2zniP7UTabNDtOFdFowoPDqhMpj",
+        "access_token_secret"     => "mqx0lSHqvYNKErjd1cXRSzl8M9XJ05Jz57bBEWCZAEhQE",
+      ],
     ]
   ];
   tcbl_feed_generate_feeds($generate_feed_options);

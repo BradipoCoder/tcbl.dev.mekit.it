@@ -30,32 +30,38 @@ class FeedFactory {
   public static function generateFeeds($options = []) {
     $feeds = [];
 
-    $defaultNumberOfFeeds = 3;
-    if(isset($options["feed_item_per_plugin"]["default"])) {
-      $defaultNumberOfFeeds = intval($options["feed_item_per_plugin"]["default"]);
-    }
+    $defaultOptions = [
+      "default" => [
+        "max_items" => 3
+      ],
+      "plugin" => []
+    ];
+    $options = self::array_merge_recursive_distinct($defaultOptions, $options);
+
+    dsm("GEN-OPTIONS: " . json_encode($options));
 
     FeedFactory::enumerateFeedPlugins();
 
     foreach (FeedFactory::$feed_plugins as $pluginClass) {
-      $maxNumberOfFeeds = $defaultNumberOfFeeds;
-
-      //@todo: we need plugin specific options like $options["facebook"]=>[...]
-      //@todo: so we can pass those to each constructor
-
       $reflection = new \ReflectionClass($pluginClass);
+
+      $pluginShortcode = $reflection->getConstant("SHORT_CODE");
+      $pluginOptions = isset($options["plugin"][$pluginShortcode])
+        ? self::array_merge_recursive_distinct($options["default"], $options["plugin"][$pluginShortcode])
+        : $options["default"];
+
+      dsm("GEN($pluginClass)[$pluginShortcode] plugin options: " . json_encode($pluginOptions));
+
       /** @var FeedPluginInterface $plugin */
-      $plugin = $reflection->newInstance($options);
+      $plugin = $reflection->newInstance($pluginOptions);
+
       $pluginFeeds = $plugin->fetchFeeds();
       $pluginFeeds = FeedFactory::sortFeeds($pluginFeeds, "creation_date", "DESC");
 
-      $feedSource = $plugin->getFeedSource();
-      if(isset($options["feed_item_per_plugin"][$feedSource])) {
-        $maxNumberOfFeeds = intval($options["feed_item_per_plugin"][$feedSource]);
-      }
+      //truncate
+      $pluginFeeds = array_slice($pluginFeeds, 0, $pluginOptions["max_items"]);
 
-      $pluginFeeds = array_slice($pluginFeeds, 0, $maxNumberOfFeeds);
-
+      //add to other feeds
       $feeds = array_merge($feeds, $pluginFeeds);
     }
 
@@ -64,6 +70,29 @@ class FeedFactory {
 
     //write feeds
     FeedFactory::writeFeedsFile($feeds);
+  }
+
+  /**
+   * @param array $array1
+   * @param array $array2
+   *
+   * @return array
+   */
+  private static function array_merge_recursive_distinct(array $array1, $array2)
+  {
+    $merged = $array1;
+
+    if (is_array($array2))
+      foreach ($array2 as $key => $val)
+        if (is_array($array2[$key])){
+          $merged[$key] = isset($merged[$key]) && is_array($merged[$key])
+            ? self::array_merge_recursive_distinct($merged[$key], $array2[$key])
+            : $array2[$key];
+        } else {
+          $merged[$key] = $val;
+        }
+
+    return $merged;
   }
 
   /**

@@ -12,6 +12,7 @@ use Facebook\Facebook;
 use Facebook\Exceptions\FacebookSDKException;
 
 class FacebookFeedPlugin extends FeedPlugin implements FeedPluginInterface {
+  const SHORT_CODE = "facebook";
 
   /** @var Facebook */
   protected $facebook;
@@ -28,19 +29,19 @@ class FacebookFeedPlugin extends FeedPlugin implements FeedPluginInterface {
    * @param array $options
    */
   public function __construct(array $options = []) {
-    $this->feed_source = "facebook";
+    $this->feed_source = self::SHORT_CODE;
 
     parent::__construct($options);
 
     $facebookConfig = [
-      'app_id' => '301393660390585',
-      'app_secret' => 'fa161c64d4663bf34c562c007a02dc59',
-      'default_graph_version' => 'v2.12',
+      'app_id' => $options['app_id'],
+      'app_secret' => $options['app_secret'],
+      'default_graph_version' => $options['default_graph_version'],
     ];
     try {
       $this->facebook = new Facebook($facebookConfig);
     } catch(FacebookSDKException $e) {
-      watchdog("Feed", "Facebook SDK error: " . $e->getMessage(), WATCHDOG_WARNING);
+      watchdog("TCBL Feed", "Facebook SDK error: " . $e->getMessage(), WATCHDOG_WARNING);
     }
   }
 
@@ -60,7 +61,7 @@ class FacebookFeedPlugin extends FeedPlugin implements FeedPluginInterface {
       } catch(FacebookSDKException $e) {
         //no response
         watchdog(
-          "Feed", "Facebook feed error: " . $e->getMessage(), WATCHDOG_WARNING
+          "TCBL Feed", "Facebook feed error: " . $e->getMessage(), WATCHDOG_WARNING
         );
       }
 

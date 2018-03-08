@@ -13,6 +13,7 @@ use Mekit\TcblFeed\FeedItem;
 use Abraham\TwitterOAuth\TwitterOAuth;
 
 class TwitterFeedPlugin extends FeedPlugin implements FeedPluginInterface {
+  const SHORT_CODE = "twitter";
 
   /** @var TwitterOAuth */
   protected $twitter;
@@ -29,22 +30,15 @@ class TwitterFeedPlugin extends FeedPlugin implements FeedPluginInterface {
    * @param array $options
    */
   public function __construct(array $options = []) {
-    $this->feed_source = "twitter";
+    $this->feed_source = self::SHORT_CODE;
 
     parent::__construct($options);
 
-    $twitterConfig = [
-      "consumer_key"            => "05rhm0AJq1Wcl8VdVR1EKb1qY",
-      "consumer_secret"         => "ozj7VwhS2GO3anJTpS82OWUtrEEzx7uwSKCh7bWEhIoVA3swl3",
-      "access_token"            => "776749216442056704-9hZR2zniP7UTabNDtOFdFowoPDqhMpj",
-      "access_token_secret"     => "mqx0lSHqvYNKErjd1cXRSzl8M9XJ05Jz57bBEWCZAEhQE",
-    ];
-
     $this->twitter = new TwitterOAuth(
-      $twitterConfig["consumer_key"],
-      $twitterConfig["consumer_secret"],
-      $twitterConfig["access_token"],
-      $twitterConfig["access_token_secret"]
+      $options["consumer_key"],
+      $options["consumer_secret"],
+      $options["access_token"],
+      $options["access_token_secret"]
     );
   }
 
@@ -65,7 +59,7 @@ class TwitterFeedPlugin extends FeedPlugin implements FeedPluginInterface {
                                       ]);
       } catch(\Exception $e) {
         watchdog(
-          "Feed", "Twitter feed error: " . $e->getMessage(), WATCHDOG_WARNING);
+          "TCBL Feed", "Twitter feed error: " . $e->getMessage(), WATCHDOG_WARNING);
       }
 
       if($tweets) {

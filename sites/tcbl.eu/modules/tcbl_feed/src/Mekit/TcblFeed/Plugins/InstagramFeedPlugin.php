@@ -15,6 +15,7 @@ use \InstagramScraper\Model\Media;
 use Mekit\TcblFeed\FeedItem;
 
 class InstagramFeedPlugin extends FeedPlugin implements FeedPluginInterface {
+  const SHORT_CODE = "instagram";
 
   /** @var Instagram */
   protected $instagram;
@@ -31,7 +32,7 @@ class InstagramFeedPlugin extends FeedPlugin implements FeedPluginInterface {
    * @param array $options
    */
   public function __construct(array $options = []) {
-    $this->feed_source = "instagram";
+    $this->feed_source = self::SHORT_CODE;
 
     parent::__construct($options);
 
@@ -50,7 +51,7 @@ class InstagramFeedPlugin extends FeedPlugin implements FeedPluginInterface {
         $medias = $this->instagram->getMedias($this->pageId, $this->feed_limit);
       } catch (InstagramException $e) {
         watchdog(
-          "Feed", "Instagram feed error: " . $e->getMessage(), WATCHDOG_WARNING);
+          "TCBL Feed", "Instagram feed error: " . $e->getMessage(), WATCHDOG_WARNING);
       }
 
       if($medias) {

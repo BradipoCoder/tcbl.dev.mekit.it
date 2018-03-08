@@ -10,6 +10,7 @@ namespace Mekit\TcblFeed\Plugins;
 use Mekit\TcblFeed\FeedItem;
 
 class TcblZineWpFeedPlugin extends FeedPlugin implements FeedPluginInterface {
+  const SHORT_CODE = "tcbl_zine";
 
   /** @var string */
   protected $rssFeedUrl = "https://zine.tcbl.eu/feed";
@@ -20,7 +21,7 @@ class TcblZineWpFeedPlugin extends FeedPlugin implements FeedPluginInterface {
    * @param array $options
    */
   public function __construct(array $options = []) {
-    $this->feed_source = "tcbl_zine";
+    $this->feed_source = self::SHORT_CODE;
 
     parent::__construct($options);
   }

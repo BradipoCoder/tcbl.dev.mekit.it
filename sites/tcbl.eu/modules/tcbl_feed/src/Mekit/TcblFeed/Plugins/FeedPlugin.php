@@ -22,12 +22,7 @@ class FeedPlugin {
    * @param array $options
    */
   public function __construct($options = []) {
-    /*
-    $this->max_feed_count = isset($options["feed_item_per_plugin"])
-                            && intval($options["feed_item_per_plugin"])
-      ? $options["feed_item_per_plugin"]
-      : $this->max_feed_count;
-    */
+    //
   }
 
   /**

@@ -3,6 +3,39 @@
 require_once ("vendor/autoload.php");
 
 /**
+ * Implements hook_cron().
+ */
+function tcbl_feed_cron() {
+  $default_interval = 3 * 60 * 60;//seconds
+  if(!variable_get('tcbl_feed_cron_interval')) {
+    variable_set('tcbl_feed_cron_interval', $default_interval);
+  }
+  $interval = variable_get('tcbl_feed_cron_interval', $default_interval);
+  $last_exec = variable_get('tcbl_feed_cron_last_exec', 0);
+  $now = time();
+
+  if ($last_exec + $interval > $now) {
+    watchdog('TCBL Feed', 'Cron - not yet!');
+    return;
+  }
+
+  watchdog('TCBL Feed', 'Cron run: ' . $now);
+  variable_set('tcbl_feed_cron_last_exec', $now);
+
+  //--------------------------------------------FEED GENERATION
+  $generate_feed_options = [
+    "feed_item_per_plugin" => [
+      "default" => 3,
+      "tcbl_zine" => 4,
+      "facebook" => 2,
+      "instagram" => 2,
+      "twitter" => 2,
+    ]
+  ];
+  tcbl_feed_generate_feeds($generate_feed_options);
+}
+
+/**
  * @param array $getFeedOptions
  *
  * @returns array

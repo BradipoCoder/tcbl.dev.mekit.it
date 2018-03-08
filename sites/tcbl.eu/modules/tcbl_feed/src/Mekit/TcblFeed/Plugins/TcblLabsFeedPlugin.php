@@ -10,6 +10,7 @@ namespace Mekit\TcblFeed\Plugins;
 use Mekit\TcblFeed\FeedItem;
 
 class TcblLabsFeedPlugin extends FeedPlugin implements FeedPluginInterface {
+  const SHORT_CODE = "tcbl_labs";
 
   /** @var string */
   protected $rssFeedUrl = "https://labs.tcbl.eu/projects.rss";
@@ -20,7 +21,7 @@ class TcblLabsFeedPlugin extends FeedPlugin implements FeedPluginInterface {
    * @param array $options
    */
   public function __construct(array $options = []) {
-    $this->feed_source = "tcbl_labs";
+    $this->feed_source = self::SHORT_CODE;
 
     parent::__construct($options);
   }
