@@ -7,8 +7,8 @@
   <div class="content">
     <a href="<?php print $feed_item->getUrl(); ?>" target="_blank">
       <div class="image-content">
-<!--        <img src="--><?php ///*print $feed_item->getPictureUrl();*/ ?><!--" class=""/>-->
-        <img src="https://picsum.photos/400/300/?random&blur" class=""/>
+        <img src="<?php print $feed_item->getPictureUrl(); ?>" class=""/>
+<!--        <img src="https://picsum.photos/400/300/?random&blur" class=""/>-->
       </div>
       <div class="feed-title">
         <span><?php print $feed_item->getTitle(); ?></span>
