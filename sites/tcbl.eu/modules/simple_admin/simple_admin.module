@@ -7,7 +7,7 @@ function simple_admin_block_info() {
   $blocks = array();
 
   $blocks['s_admin'] = array(
-    'info' => t('Simple Admin'), 
+    'info' => t('Simple Admin'),
     'cache' => DRUPAL_NO_CACHE,
   );
 
@@ -16,29 +16,32 @@ function simple_admin_block_info() {
 
 /**
  * Implements hook_block_view();
- * @param $delta 
+ *
+ * @param $delta
  *    the name of the requested block
  */
 function simple_admin_block_view($delta = '') {
   $block = array();
   switch ($delta) {
     case 's_admin':
-      
+
       $block['subject'] = 'Simple Admin';
 
       $block['content'] = array(
         '#markup' => '<p>Ciao, qui ci saranno i tasti</p>'
       );
 
-      $menu_name = variable_get('S_ADMIN_MENU', false);
-      $buttons = false;
+      $menu_name = variable_get('S_ADMIN_MENU', FALSE);
+      $buttons = FALSE;
 
       // menu utente
       global $user;
 
-      $hello = false;
-      $log_out = false;
-      if($user->uid !== 0){
+      $hello = FALSE;
+      $log_out = FALSE;
+      $comments = FALSE;
+
+      if ($user->uid !== 0) {
         $hello = array(
           '#theme' => 'link',
           '#text' => '<i class="fa fa-user"></i> ' . $user->name,
@@ -47,9 +50,10 @@ function simple_admin_block_view($delta = '') {
             'attributes' => array(
               'class' => array('small')
             ),
-            'html' => true,
+            'html' => TRUE,
           ),
         );
+
 
         $log_out = array(
           '#theme' => 'link',
@@ -59,19 +63,42 @@ function simple_admin_block_view($delta = '') {
             'attributes' => array(
               'class' => array('small')
             ),
-            'html' => true,
+            'html' => TRUE,
           ),
         );
+
+
+
+        $unapproved_comment_count = db_query('SELECT COUNT(cid) FROM {comment} WHERE status = :status', array(
+          ':status' => COMMENT_NOT_PUBLISHED,
+        ))->fetchField();
+        //$unapproved_comment_count = 0;
+
+        if(intval($unapproved_comment_count) > 0) {
+          $comments = array(
+            '#theme' => 'link',
+            '#text' => '<i class="fa fa-comment"></i><span class="badge">'
+                       . $unapproved_comment_count . '</span>',
+            '#path' => 'admin/content/comment/approval',
+            '#options' => array(
+              'attributes' => array(
+                'class' => array('small', 'unapproved-comments')
+              ),
+              'html' => TRUE,
+            ),
+          );
+        }
+
       }
 
       // voci del menu
-      if ($menu_name){
+      if ($menu_name) {
         $menu = menu_tree($menu_name);
-        
+
         $buttons = array();
         foreach ($menu as $key => $voce) {
-          if (is_numeric($key)){
-            if ($voce['#title']){
+          if (is_numeric($key)) {
+            if ($voce['#title']) {
 
               $buttons[$key] = array(
                 '#theme' => 'link',
@@ -83,17 +110,17 @@ function simple_admin_block_view($delta = '') {
                       'small'
                     )
                   ),
-                  'html' => false,
+                  'html' => FALSE,
                 )
               );
 
-              if (isset($voce['#localized_options']['icon'])){
+              if (isset($voce['#localized_options']['icon'])) {
                 $buttons[$key]['#options']['icon'] = $voce['#localized_options']['icon'];
-                $buttons[$key]['#options']['html'] = true;
+                $buttons[$key]['#options']['html'] = TRUE;
                 $buttons[$key]['#text'] = ' ' . $voce['#title'];
               }
 
-              if (!in_array('last', $voce['#attributes']['class'])){
+              if (!in_array('last', $voce['#attributes']['class'])) {
                 $buttons[$key]['#suffix'] = ' | ';
               }
 
@@ -101,7 +128,8 @@ function simple_admin_block_view($delta = '') {
           }
         }
 
-      } else {
+      }
+      else {
         drupal_set_message('Siple admin: menu non selezionato.', 'error');
       }
 
@@ -110,38 +138,41 @@ function simple_admin_block_view($delta = '') {
         '#buttons' => $buttons,
         '#user_buttons' => $hello,
         '#log_out' => $log_out,
+        '#comments' => $comments,
+
       );
-      
-    break;
+
+      break;
   }
   return $block;
 }
 
 /**
  * Implements hook_block_configure();
- * @param $delta 
+ *
+ * @param $delta
  *    the name of the requested block
  */
 function simple_admin_block_configure($delta) {
   switch ($delta) {
     case 's_admin':
-      
+
       $menu = get_avaible_menu();
 
       $default_menu = variable_get('S_ADMIN_MENU', '0');
 
       // Menu del sito
       $form['s_admin_menu'] = array(
-       '#type' => 'select',
-       '#title' => t('Seleziona un menu di amministrazione'),
-       '#options' => $menu,
-       '#default_value' => $default_menu,
-       '#required' => 1,
-       '#description' => t('Seleziona un menu di amministrazione.'),
+        '#type' => 'select',
+        '#title' => t('Seleziona un menu di amministrazione'),
+        '#options' => $menu,
+        '#default_value' => $default_menu,
+        '#required' => 1,
+        '#description' => t('Seleziona un menu di amministrazione.'),
       );
 
       return $form;
-    break;
+      break;
   }
 }
 
@@ -153,14 +184,14 @@ function simple_admin_block_save($delta, $edit = array()) {
     case 's_admin':
       //dpm($edit);
       variable_set('S_ADMIN_MENU', $edit['s_admin_menu']);
-    break;
+      break;
   }
 }
 
 /**
  * Implementes hook_theme();
  */
-function simple_admin_theme(){
+function simple_admin_theme() {
   return array(
     'sadmin' => array(
       // use a template and give the template's name.
@@ -169,13 +200,14 @@ function simple_admin_theme(){
         'user_buttons' => NULL,
         'buttons' => NULL,
         'log_out' => NULL,
+        'comments' => NULL,
       ),
       'pattern' => 'sadmin__',
     )
   );
 }
 
-function get_avaible_menu(){
+function get_avaible_menu() {
   $menu['0'] = ' -- ';
   $menu += menu_get_menus();
   return $menu;
