@@ -43,6 +43,8 @@ function tcbl_preprocess_page(&$vars){
     $vars['container_class'] = 'container-fluid';
   }
 
+  _tcbl_add_social_menu($vars);
+  _tcbl_add_user_login($vars);
   _tcbl_add_header($vars);
   _tcbl_alter_breadcrumbs($vars);
   

@@ -109,6 +109,15 @@ body.cke_editable, body.mceContentBody{
 // ** NAVBAR **
 // ------------
 
+.navbar-nav{
+  margin: 0;
+}
+
+.navbar-nav > li > a{
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
 @media (min-width: @grid-float-breakpoint){
   .navbar-nav{
     margin-top: 68px;
@@ -410,6 +419,96 @@ body.cke_editable, body.mceContentBody{
     .padding-h(1);
   }
 }
+
+// ** SOCIAL HEADER **
+// -------------------
+
+.ul-social{
+  @media (min-width: @grid-float-breakpoint){
+    position: absolute;
+    top: 30px;
+    right: 220px;
+    padding: 0;
+  }
+
+  list-style: none;
+  padding: 10px 15px 20px 15px;
+  margin: 0;
+
+  li{
+    display: inline-block;
+  }
+}
+
+.a-social{
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  .border-top-radius(100%);
+  .border-bottom-radius(100%);
+  background: @gray-light;
+  text-align: center;
+  line-height: 25px;
+  margin: 0 3px;
+
+  i{
+    font-size: 14px;
+    line-height: 25px;
+    .color-and-hover(#fff);
+    position: relative;
+    top: -1px;
+  }
+}
+
+// Facebook
+.a-social-2945{ background: #3957a0;}
+// Twitter
+.a-social-2947{ background: #39ace3;}
+// Instagram
+.a-social-3468{ background: #4272a2;}
+// YouTube
+.a-social-2949{ background: #ec2124;}
+
+// ** USER MENU **
+// ---------------
+
+.user-menu{
+  padding: 10px 15px;
+  @media (min-width: @grid-float-breakpoint){
+    position: absolute;
+    top: 28px;
+    right: 20px;
+    width: 180px;
+    text-align: right;
+    padding: 0;
+  }
+
+  img{
+    width: 25px;
+    height: 25px;
+    border: 2px solid #94d0e8;
+    .border-top-radius(100%);
+    .border-bottom-radius(100%);
+  }
+
+  &.log-in{
+    img{
+      -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+      filter: grayscale(100%);
+    }
+  }
+
+  .log-in,
+  .name{
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: @font-weight-bold;
+    letter-spacing: 1px;
+    font-size: @font-size-small * 0.8;
+    margin-left: 3px;
+  }
+}
+
 
 // ** MEDIA QUERY EXAMPLE **
 // -------------------------

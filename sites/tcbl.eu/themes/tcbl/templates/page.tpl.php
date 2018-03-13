@@ -38,6 +38,8 @@
               <?php print render($primary_nav); ?>
             </ul>
           <?php endif; ?>
+          <?php print render($menu_user); ?>
+          <?php print render($menu_social); ?>
         </nav>
       </div>
     <?php endif; ?>

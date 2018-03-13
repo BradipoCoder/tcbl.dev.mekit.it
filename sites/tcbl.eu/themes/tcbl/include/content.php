@@ -23,6 +23,61 @@ function _tcbl_add_header(&$vars){
   }
 }
 
+function _tcbl_add_social_menu(&$vars){
+  $menu = menu_tree('menu-social');
+  $keys = element_children($menu);
+  
+  $data = array(
+    '#prefix' => '<ul class="ul-social">',
+    '#suffix' => '</ul>',
+  );
+
+  foreach ($keys as $key) {
+    $l = $menu[$key];
+    if (isset($l['#localized_options']['icon']['icon'])){
+      $icon = '<i class="fa fa-' . $l['#localized_options']['icon']['icon'] . '"></i>'; 
+    }
+    $data[$key] = array(
+      '#prefix' => '<li class="li-social">',
+      '#suffix' => '</li>',
+      '#markup' => '<a href="' . $l['#href'] . '" title="' . $l['#title'] . '" class="a-social a-social-' . $key . '" target="_blank">' . $icon . '</a>',
+    );
+  }
+
+  $vars['menu_social'] = $data;
+}
+
+function _tcbl_add_user_login(&$vars){
+  
+  global $base_url;
+  $path = $base_url . '/' . drupal_get_path('theme', 'tcbl') . '/img/tcbl-avatar.png';
+
+  if (user_is_logged_in()){
+    global $user;
+    $full_user = user_load($user->uid);
+    $name = $full_user->name;
+
+    if (isset($full_user->realname)){
+      $name = $full_user->realname;
+    }
+
+    $data['user'] = array(
+      '#prefix' => '<div class="user-menu"><a href="https://tcblsso.ilabt.iminds.be/usermanager" title="' . $name . '" target="_blank">',
+      '#suffix' => '</a></div>',
+      '#markup' => '<img src="' . $path . '"/> <span class="name">' . $name . '</span>',
+    );
+
+  } else {
+    $data['user'] = array(
+      '#prefix' => '<div class="user-menu log-in"><a href="/user/gluuSSO" title="Log in at TCBL">',
+      '#suffix' => '</a></div>',
+      '#markup' => '<img src="' . $path . '"/> <span class="log-in">Login with TCBL</span>',
+    ); 
+  }
+
+  $vars['menu_user'] = $data;
+}
+
 function _tcbl_alter_breadcrumbs(&$vars){
   if (isset($vars['node'])){
     $node = $vars['node'];
