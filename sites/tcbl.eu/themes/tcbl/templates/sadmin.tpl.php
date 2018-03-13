@@ -8,7 +8,10 @@
       </div>
       <div class="col-sm-6">
         <div class="simple-admin-user-buttons text-right text-xs-left">
-          <p><?php print render($user_buttons); ?> | <?php print render($log_out); ?></p>
+          <p>
+            <?php print render($comments); ?> | <?php print render($user_buttons); ?>
+            | <?php print render($log_out); ?>
+          </p>
         </div>
       </div>
     </div>

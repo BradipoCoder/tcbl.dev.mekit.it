@@ -72,21 +72,22 @@ function simple_admin_block_view($delta = '') {
         $unapproved_comment_count = db_query('SELECT COUNT(cid) FROM {comment} WHERE status = :status', array(
           ':status' => COMMENT_NOT_PUBLISHED,
         ))->fetchField();
+        //$unapproved_comment_count = 0;
 
-        $unapproved_comment_count = 25;
-
-        $comments = array(
-          '#theme' => 'link',
-          '#text' => '<i class="fa fa-comment"></i> Comments<span class="badge">'
-                     . $unapproved_comment_count . '</span>',
-          '#path' => 'admin/content/comment/approval',
-          '#options' => array(
-            'attributes' => array(
-              'class' => array('small', 'unapproved-comments')
+        if(intval($unapproved_comment_count) > 0) {
+          $comments = array(
+            '#theme' => 'link',
+            '#text' => '<i class="fa fa-comment"></i><span class="badge">'
+                       . $unapproved_comment_count . '</span>',
+            '#path' => 'admin/content/comment/approval',
+            '#options' => array(
+              'attributes' => array(
+                'class' => array('small', 'unapproved-comments')
+              ),
+              'html' => TRUE,
             ),
-            'html' => TRUE,
-          ),
-        );
+          );
+        }
 
       }
 
@@ -129,7 +130,7 @@ function simple_admin_block_view($delta = '') {
 
       }
       else {
-        drupal_set_message('Simple admin: menu non selezionato.', 'error');
+        drupal_set_message('Siple admin: menu non selezionato.', 'error');
       }
 
       $block['content'] = array(

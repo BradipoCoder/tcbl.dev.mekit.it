@@ -1,12 +1,13 @@
 /* less/comments.less */
+@import "variables";
 
 .comment-wrapper{
-  border: 1px solid @primary;  
+  border: 1px solid @primary;
 }
 
 .comments-header{
   border-bottom: 1px solid @primary;
-  padding: 15px; 
+  padding: 15px;
 }
 
 .indented{
@@ -21,5 +22,22 @@
 
   .comments-add-new{
     .margin-h(3);
-  }  
+  }
+}
+
+
+.wrapper-simple-admin{
+  a.unapproved-comments{
+    position: relative;
+    margin-right:12px;
+    span.badge{
+      position: absolute;
+      right:-13px;
+      top:-5px;
+      font-size: 8px;
+      background-color: @secondary;
+      color: white;
+      padding:3px 5px;
+    }
+  }
 }
