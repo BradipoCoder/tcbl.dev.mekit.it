@@ -36,13 +36,46 @@ function _tcbl_alter_breadcrumbs(&$vars){
   }
 }
 
-function _tcbl_faq_link(){
+/**
+ * Create content array with tcbl FAQ link
+ * @param  class $node Nodo a cui collegare le FAQ
+ */
+function _tcbl_faq_link($node){
   $text = '<i class="fa fa-question-circle-o"></i> FAQ';
-  $data = array(
+
+  $nid = $node->nid;
+
+  $opt = array(
+    'html' => true,
+    'attributes' => array(
+      'class' => array(
+        'colorbox-inline',
+      ),
+    ),
+    'query' => array(
+      'width' => '750',
+      'height' => '500',
+      'inline' => 'true',
+    ),
+    'fragment' => 'faq-content-' . $nid,
+    'external' => true,
+  );
+
+  $data['link'] = array(
     '#prefix' => '<div class="wrapper-faq-link margin-b-1 text-right"><span class="h4 small">',
     '#suffix' => '</span></div>',
-    '#markup' => l($text, 'node/328', array('html' => TRUE)),
+    '#markup' => l($text, '', $opt),
   );
+
+  $data['content'] = array(
+    '#prefix' => '<div class="wrapper-faw-content hide"><div id="faq-content-' . $nid . '" class="faq-content">',
+    '#suffix' => '</div></div>',
+    'title' => array(
+      '#markup' => '<h2>' . $node->title . '</h2>',
+    ),
+    'node' => node_view($node, 'default'),
+  );
+
   return $data;
 }
 

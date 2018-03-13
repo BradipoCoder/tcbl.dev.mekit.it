@@ -38,10 +38,6 @@ function _tcbl_preprocess_node_page(&$vars){
     _tcbl_preprocess_node_page_news($vars);
   }
 
-   if ($node->nid == 326){
-    _tcbl_preprocess_node_page_news_archive($vars);
-  }
-
   if ($node->nid == 313){
     _tcbl_preprocess_node_page_events($vars);
   }
@@ -69,7 +65,7 @@ function _tcbl_is_page_with_view(&$vars){
   }
 
   $has_view = array(
-    '312', '313', '326',
+    '312',
   );
   
   if (isset($vars['node'])){
@@ -82,40 +78,24 @@ function _tcbl_is_page_with_view(&$vars){
 }
 
 function _tcbl_preprocess_node_page_events(&$vars){
+  
+  $faq = node_load(352);
+  $vars['content']['faq'] = _tcbl_faq_link($faq);
+
   $vars['content']['events']['#markup'] = views_embed_view('events', 'first_6');
   add_same_h_by_selector('.events-sameh');
 }
 
 function _tcbl_preprocess_node_page_news(&$vars){
-  $vars['content']['news']['top']['#markup'] = views_embed_view('news', 'first_6');
-  add_same_h_by_selector('.news-sameh');
-
-  $vars['content']['news']['banner']['#markup'] = '<div class="well margin-v-1"><code>banner</code></div>';
-  
-  $vars['content']['news']['up']['#markup'] = views_embed_view('news', 'bottom_3');
-  
-  $opt = array(
-    'attributes' => array(
-      'class' => array('btn', 'btn-primary', 'btn-ghost', 'btn-lg'),
-    ),
-  );
-
-  $vars['content']['news']['more'] = array(
-    '#prefix' => '<div class="wrapper-more text-center">',
-    '#suffix' => '</div>',
-    '#markup' => l('More', 'node/326', $opt),
-  );
-}
-
-function _tcbl_preprocess_node_page_news_archive(&$vars){
   $vars['content']['news']['#markup'] = views_embed_view('news', 'archive');
-  add_same_h_by_selector('.news-sameh');  
+  add_same_h_by_selector('.news-sameh');
+  //$vars['content']['news']['banner']['#markup'] = '<div class="well margin-v-1"><code>banner</code></div>';
+  //$vars['content']['news']['up']['#markup'] = views_embed_view('news', 'bottom_3');
 }
 
 function _tcbl_preprocess_node_page_forums(&$vars){
-  
-
-  $vars['content']['faq'] = _tcbl_faq_link();
+  $faq = node_load(328);
+  $vars['content']['faq'] = _tcbl_faq_link($faq);
   $vars['content']['forum']['#markup'] = views_embed_view('forum', 'content');
 }
 

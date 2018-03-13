@@ -192,7 +192,13 @@ hr{
   .link-color(@primary-light);
   a{
     font-weight: @font-weight-bold;
-    text-decoration: underline; 
+    text-decoration: underline;
+
+    &.btn-primary,
+    &.btn-info{
+      .color-and-hover(#fff);
+      text-decoration: none;
+    }
   }
 }
 
