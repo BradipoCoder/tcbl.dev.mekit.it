@@ -50,6 +50,11 @@ function tcbl_preprocess_page(&$vars){
   
   // Add usefull variables to page template (when views is present)
   _tcbl_is_page_with_view($vars);
+
+  $js_scroll_to = libraries_get_path('jquery.scrollto') . '/jquery.scrollto.js';
+  drupal_add_js( $js_scroll_to , array('group' => JS_LIBRARY, 'weight' => 1));
+
+
 }
 
 // ** ADMIN **
