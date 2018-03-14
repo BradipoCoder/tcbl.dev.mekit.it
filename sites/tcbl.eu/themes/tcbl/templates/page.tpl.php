@@ -68,7 +68,7 @@ hide($header_event['contact']);
       </div>
     </div>
   <?php endif; ?>
-  <?php if (!empty($header_event)): ?>
+  <?php if (isset($header_event['date']['item'])): ?>
     <div class="wrapper-blue-header bg-blue">
       <div class="container">
         <?php print render($header_event); ?>
@@ -132,5 +132,11 @@ hide($header_event['contact']);
 <div class="wrapper-footer">
   <footer class="footer container-fluid small">
     <?php print render($page['footer']); ?>
+    <div class="static-footer">
+      <p class="small text-center">This project has received funding from the European Union's Horizon 2020 Programme for research, technology development, and innovation under grant Agreement n.646133</p>
+      <div class="wrapper-footer-img">
+        <img src="/sites/tcbl.eu/files/images/euh2020.png" class="img-responsive"/>
+      </div>
+    </div>
   </footer>
 </div>

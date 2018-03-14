@@ -53,11 +53,11 @@
             <?php print render($content['news']); ?>
           </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-6 col-md-4">
           <h2 class="h1 h1-front-cms">Upcoming events</h2>
           <?php print render($content['events']); ?>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-6 col-md-4">
           <h2 class="h1 h1-front-cms">From the forum</h2>
           <?php print render($content['forum']); ?>
         </div>
@@ -96,12 +96,12 @@
   </div>
 
   <div class="wrapper-front-feed-zine">
-    <div class="container">
+    <div class="container-fluid">
       <div class="front-feed-header text-center">
         <h2 class="h1-big text-uppercase">TCBL_ZINE</h2>
         <p>Storytelling, case studies, research and more on the world of textile and clothing in Europe</p>
       </div>
-      <div class="row margin-v-1">
+      <div class="row margin-v-1 wrapper-zine-sameh">
         <?php print render($tcbl_feeds["zine"]); ?>
       </div>
     </div>

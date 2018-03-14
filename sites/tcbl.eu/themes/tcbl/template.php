@@ -10,6 +10,7 @@ require('include/content-types.php');
 require('include/node-page.php');
 require('include/form.php');
 require('include/paragraphs.php');
+require('include/feed.php');
 
 /**
  * Implements hook_preprocess_html()
