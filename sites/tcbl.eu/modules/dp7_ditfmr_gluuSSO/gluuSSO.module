@@ -58,7 +58,7 @@ function gluuSSO_loginSSO() {
     $error_message = t("Login isn't allowed via TCBL due missing or denied permission.");
     drupal_set_message($error_message, "error");
     watchdog("GLUU-SSO", $error_message, ["error_number" => $error_number, "exception" => $e], WATCHDOG_ALERT);
-    drupal_goto('user');
+    drupal_goto('<front>');
     return $error_number;
   }
 
@@ -74,7 +74,7 @@ function gluuSSO_loginSSO() {
     $error_message = t("Unable to get e-mail address for user identification.");
     drupal_set_message($error_message, "error");
     watchdog("GLUU-SSO", $error_message, ["error_number" => $error_number], WATCHDOG_ALERT);
-    drupal_goto('user');
+    drupal_goto('<front>');
     return $error_number;
   }
 
@@ -175,7 +175,7 @@ function gluuSSO_loginSSO() {
   //}
 
   { # Display page
-    drupal_goto('user');
+    drupal_goto('<front>');
     return 1;
   }
 }
