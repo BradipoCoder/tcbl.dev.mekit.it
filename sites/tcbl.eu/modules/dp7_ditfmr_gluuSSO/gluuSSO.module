@@ -6,6 +6,8 @@
  * @author DITF
  * @modified MEKIT(mekit.it) - 2018-02-08
  *
+ * PROFILE URL: https://tcblsso.ilabt.iminds.be/usermanager/user/info?
+ *
  */
 
 function gluuSSO_menu() {
@@ -13,11 +15,13 @@ function gluuSSO_menu() {
   $items['user/gluuSSO'] = [
     'title' => 'Log in with TCBL',
     'page callback' => 'gluuSSO_loginSSO',
-    'access callback' => 'user_is_anonymous',
+    'access callback' => 'gluuSSO_is_authorized',
     'type' => MENU_LOCAL_TASK,
   ];
   return $items;
 }
+
+
 
 /**
  * @return int
@@ -49,6 +53,7 @@ function gluuSSO_loginSSO() {
   # Add desired scopes. The 'openid' scope is mandatory!
   $client->addScope('openid');
   $client->addScope('minimum');
+  $client->addScope('extended');//for user avatar
 
   # Actual authentication and authorization
   try {
@@ -57,7 +62,12 @@ function gluuSSO_loginSSO() {
     $error_number = 1;
     $error_message = t("Login isn't allowed via TCBL due missing or denied permission.");
     drupal_set_message($error_message, "error");
-    watchdog("GLUU-SSO", $error_message, ["error_number" => $error_number, "exception" => $e], WATCHDOG_ALERT);
+    watchdog(
+      "GLUU-SSO", $error_message, [
+      "error_number" => $error_number,
+      "exception" => $e
+    ], WATCHDOG_ALERT
+    );
     drupal_goto('<front>');
     return $error_number;
   }
@@ -67,9 +77,10 @@ function gluuSSO_loginSSO() {
   $lastname = $client->requestUserInfo('family_name');
   $email = $client->requestUserInfo('email');
   $inum = $client->requestUserInfo('sub');
+  $avatar = $client->requestUserInfo('extended_picture_url');
   $name = $firstname . ' ' . $lastname;
 
-  if(!$email){
+  if (!$email) {
     $error_number = 2;
     $error_message = t("Unable to get e-mail address for user identification.");
     drupal_set_message($error_message, "error");
@@ -86,96 +97,122 @@ function gluuSSO_loginSSO() {
     ->execute();
   $account = $query->fetchAssoc();
 
-  # Create account - @todo: continue from here
+  # -------------------------------------------------------------Create account
   if (!$account) {
 
-    { # Preparing further information
-      $password = user_password(8);
-      $roleList = ['6' => 'gluu-user'];
-    }
-    { # Account vorbereiten
-      $fields = [
-        'name' => $email,
-        'mail' => $email,
-        'pass' => $password,
-        'status' => 1,
-        'init' => $email,
-        'roles' => $roleList,
-        'field_firstname' => [
-          'und' => [
-            0 => [
-              'value' => $firstname,
-            ],
+    $account_data = [
+      'name' => $email,
+      'mail' => $email,
+      'pass' => user_password(32),
+      'status' => 1,
+      'init' => $email,
+      'roles' => ['6' => 'gluu-user'],
+      'field_firstname' => [
+        LANGUAGE_NONE => [
+          0 => [
+            'value' => $firstname,
           ],
         ],
-        'field_lastname' => [
-          'und' => [
-            0 => [
-              'value' => $lastname,
-            ],
+      ],
+      'field_lastname' => [
+        LANGUAGE_NONE => [
+          0 => [
+            'value' => $lastname,
           ],
         ],
-      ];
-    }
-    { # Account erstellen
-      $user = user_save('', $fields);
-      $account['uid'] = $user->uid;
-    }
-    { # Newsletter hinzufügen
-      $snid = db_insert('simplenews_subscriber')
-        ->fields(
-          [
-            'activated' => '1',
-            'mail' => $email,
-            'uid' => $account['uid'],
-            'changes' => 'a:0:{}',
-            'created' => REQUEST_TIME,
-          ]
-        )
-        ->execute();
+      ],
+    ];
 
-      db_insert('simplenews_subscription')
-        ->fields(
-          [
-            'snid' => $snid,
-            'tid' => '23',
-            'status' => '1',
-            'timestamp' => REQUEST_TIME,
-            'source' => 'website',
-          ]
-        )
-        ->execute();
-    }
+    $user = user_save('', $account_data);
+    $account = [
+      'uid' => $user->uid,
+      'mail' => $user->mail,
+    ];
+
+    # Newsletter hinzufügen
+    $snid = db_insert('simplenews_subscriber')
+      ->fields(
+        [
+          'activated' => '1',
+          'mail' => $email,
+          'uid' => $account['uid'],
+          'changes' => 'a:0:{}',
+          'created' => REQUEST_TIME,
+        ]
+      )
+      ->execute();
+
+    db_insert('simplenews_subscription')
+      ->fields(
+        [
+          'snid' => $snid,
+          'tid' => '23',
+          'status' => '1',
+          'timestamp' => REQUEST_TIME,
+          'source' => 'website',
+        ]
+      )
+      ->execute();
   }
 
-  if ($account['uid'] != 1) { # Login
-    { # Logging
-      $user = user_load($account['uid']);
-      $info = [
-        '%user' => $user->name,
-        '%name' => $name,
-        '%email' => $email,
-        '%inum' => $inum,
-      ];
-      watchdog('gluu-sso', 'Session opened for %user (Gluu-Information: %name|%email|%inum) via TCBL login.', $info);
-    }
-    { # Do Login
-      user_login_submit([], $account);
-      drupal_session_regenerate();
-    }
-  }
-  else {
+
+  # --------------------------------------------------------------------Login
+  if ($account['uid'] != 1) {
+    $user = user_load($account['uid']);
+    $info = [
+      '%user' => $user->name,
+      '%name' => $name,
+      '%email' => $email,
+      '%inum' => $inum,
+    ];
+    watchdog('gluu-sso', 'Session opened for %user (Gluu-Information: %name|%email|%inum) via TCBL login.', $info);
+
+    //update user avatar
+    echo("<br />user:" . print_r($user, TRUE));
+
+    user_save(
+      $user, [
+             'field_firstname' => [
+               LANGUAGE_NONE => [
+                 0 => [
+                   'value' => $firstname,
+                 ],
+               ],
+             ],
+             'field_lastname' => [
+               LANGUAGE_NONE => [
+                 0 => [
+                   'value' => $lastname,
+                 ],
+               ],
+             ],
+             'field_sso_avatar_uri' => [
+               LANGUAGE_NONE => [
+                 0 => [
+                   'value' => $avatar,
+                 ],
+               ],
+             ],
+           ]
+    );
+
+    user_login_submit([], $account);
+    drupal_session_regenerate();
+  } else {
     drupal_set_message("This user isn't allowed to login via gluu, due security reasons.", "error");
   }
 
 
-  //} catch
-  //(OpenIDConnectClientException $e) {
-  //  drupal_set_message("Login isn't allowd via TCBL due missing permission or denied permission.", "error");
-  //}
+  drupal_goto('<front>');
+  //echo('<br/><a href="/user/gluuSSO">again</a>');
+  return 1;
+}
 
-  { # Display page
-    drupal_goto('<front>');
-    return 1;
-  }
+
+/**
+ * @return bool
+ */
+function gluuSSO_is_authorized() {
+  return user_is_anonymous();
+  //return TRUE;
 }
