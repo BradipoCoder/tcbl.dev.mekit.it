@@ -221,6 +221,17 @@ function _tcbl_faq_link($node){
   return $data;
 }
 
+function _tcbl_get_avatar_path($profile_user){
+  global $base_url;
+  $path = $base_url . '/' . drupal_get_path('theme', 'tcbl') . '/img/tcbl-avatar.png'; 
+  if (isset($profile_user->field_sso_avatar_uri['und'][0]['value'])){
+    $value = $profile_user->field_sso_avatar_uri['und'][0]['value'];
+    if ($value !== '' && $value !== '_'){
+      $path = $value;
+    }
+  }
+  return $path;
+}
 
 // ** DROP ? **
 // ------------

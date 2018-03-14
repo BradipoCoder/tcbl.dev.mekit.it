@@ -55,6 +55,30 @@ function tcbl_preprocess_page(&$vars){
   drupal_add_js( $js_scroll_to , array('group' => JS_LIBRARY, 'weight' => 1));
 }
 
+function tcbl_preprocess_user_profile(&$vars){
+  if (arg(1)){
+    $uid = arg(1);
+    $this_user = user_load($uid);
+    $path = _tcbl_get_avatar_path($this_user);
+
+    $vars['user_profile']['avatar'] = array(
+      '#prefix' => '<div class="tcbl-avatar">',
+      '#suffix' => '</div>',
+      '#markup' => '<img src="' . $path . '" class="img-responsive"/>',
+      '#weight' => -1,
+    );
+
+    if (isset($this_user->mail)){
+      $vars['user_profile']['mail'] = array(
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+        '#markup' => $this_user->mail,
+        '#weight' => 5,
+      );
+    }
+  }
+}
+
 // ** ADMIN **
 // -----------
 
