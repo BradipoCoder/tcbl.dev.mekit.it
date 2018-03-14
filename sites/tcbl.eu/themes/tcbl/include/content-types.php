@@ -47,6 +47,17 @@ function tcbl_preprocess_node(&$vars){
 
 function _tcbl_preprocess_node_event(&$vars){
   $node = $vars['node'];
+  
+  if ($vars['view_mode'] == 'full'){
+    $address = _tcbl_calculate_address($vars);
+    $vars['content']['maps'] = array(
+      '#theme' => 'gmaps',
+      '#address' => $address,
+      '#key' => 'AIzaSyD4-faaQay2GTDdD6RlEqADHdyL4Ouj1rw',
+      '#height' => '250',
+    );
+  }
+
   if ($vars['view_mode'] == 'teaser'){
 
     $vars['classes_array'][] = 'margin-b-1';
@@ -84,6 +95,41 @@ function _tcbl_preprocess_node_event(&$vars){
       );
     }
   }
+}
+
+function _tcbl_calculate_address(&$vars){
+  $node = $vars['node'];
+  $address = _tcbl_calculate_address_array($node);
+
+  if (!empty($address)){
+    $address = implode($address, ' ');
+  } else {
+    $address = false;
+  }
+
+  return $address;
+}
+
+function _tcbl_calculate_address_array($node){
+  $address = array();
+
+  if (isset($node->field_location['und'][0])){
+    $location = $node->field_location['und'][0];
+    
+    if (isset($location['street'])){
+      $address['street']= $location['street'];
+    }
+
+    if (isset($location['city'])){
+      $address['city']= $location['city'];
+    }
+
+    if (isset($location['country_name'])){
+      $address['country_name']= $location['country_name'];
+    }
+  }
+
+  return $address;
 }
 
 function _tcbl_preprocess_node_forum(&$vars){

@@ -11,15 +11,102 @@ function _tcbl_add_header(&$vars){
   $node = menu_get_object();
   if ($node){
     $vars['page_title'] = $node->title;
-  }
 
-  // Date
-  $vars['date'] = false;
-  if ($node && $node->type == 'blog'){
-    if (isset($node->field_submitted['und'][0])){
-      $date = field_view_field('node', $node, 'field_submitted', 'default');
-      $vars['date'] = $date;
+    // Date
+    $vars['date'] = false;
+    if ($node && $node->type == 'blog'){
+      if (isset($node->field_submitted['und'][0])){
+        $date = field_view_field('node', $node, 'field_submitted', 'default');
+        $vars['date'] = $date;
+      }
     }
+
+    _tcbl_event_header($vars, $node);
+  }
+}
+
+function _tcbl_event_header(&$vars, $node){
+  $vars['header_event'] = array();
+  if ($node->type == 'event'){
+
+    if (isset($node->field_date['und'][0])){
+      $date = field_view_field('node', $node, 'field_date', 'default');
+      $vars['header_event']['date'] = array(
+        '#prefix' => '<h5 class="margin-v-0">',
+        '#suffix' => '</h5>',
+        'item' => $date[0],
+      );
+    }
+
+    // Address
+    if (isset($node->field_location['und'][0])){
+      $address = _tcbl_calculate_address_array($node);
+      if (!empty($address)){
+
+
+        $full_address = implode($address, ' ');
+        $path = 'https://www.google.it/maps?q=' . $full_address;
+
+        // City
+        if (isset($address['city'])){
+          $addr['city'] = array(
+            '#prefix' => '<h5 class="margin-b-0">',
+            '#suffix' => '</h5>',
+            '#markup' => '<a href="' . $path . '" class="text-primary" target="_blank">' . $address['city'] . '</a>',
+          );  
+        }
+
+        if (isset($address['street']) && isset($address['city'])){
+          $addr['street'] = array(
+            '#prefix' => '<p class="text-primary small margin-b-0">',
+            '#suffix' => '</p>',
+            '#markup' =>  $address['street'] . ' - ' . $address['city'],
+          );  
+        }
+
+        if (!empty($address)){
+          $addr['#prefix'] = '<div class="wrapper-address">';
+          $addr['#suffix'] = '</div>';
+
+          global $base_url;
+          $path = $base_url . '/' . drupal_get_path('theme', 'tcbl') . '/img/map-marker.png';
+          $addr['icon']['#markup'] = '<img src="' . $path . '"/>';
+
+          $vars['header_event']['address'] = $addr;
+        }
+      }
+    }
+
+    if (user_is_logged_in()){
+      // TCBL Contact
+      if (isset($node->field_tcbl_contact['und'][0]['uid'])){
+        $uid = $node->field_tcbl_contact['und'][0]['uid'];
+        $tcbl_contact = user_load($uid);
+        $name = $tcbl_contact->name;
+        if (isset($tcbl_contact->realname)){
+          $name = $tcbl_contact->realname;
+        }
+
+        $opt = array(
+          'attributes' => array(
+            'class' => array(
+              'h4', 'text-primary',
+            ),
+          ),
+        );
+
+        $vars['header_event']['contact'] = array(
+          '#prefix' => '<div class="tcbl-contact">',
+          '#suffix' => '</div>',
+          'contact' => array(
+            '#prefix' => '<p class="small text-right text-xs-left text-muted">',
+            '#suffix' => '</p>',
+            '#markup' => 'TCBL Contact: ' . l($name, 'user/' . $tcbl_contact->uid, $opt),
+          ),
+        );
+      } 
+    }
+    
   }
 }
 

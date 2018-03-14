@@ -7,6 +7,7 @@
 <?php
   hide($content['links']);
   hide($content['comments']);
+  hide($content['field_date']);
 ?>
 
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?>"<?php print $attributes; ?>>

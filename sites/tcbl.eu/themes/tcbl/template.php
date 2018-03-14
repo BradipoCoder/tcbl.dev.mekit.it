@@ -53,8 +53,6 @@ function tcbl_preprocess_page(&$vars){
 
   $js_scroll_to = libraries_get_path('jquery.scrollto') . '/jquery.scrollto.js';
   drupal_add_js( $js_scroll_to , array('group' => JS_LIBRARY, 'weight' => 1));
-
-
 }
 
 // ** ADMIN **
@@ -110,15 +108,22 @@ function _tcbl_get_ga_script(){
 function tcbl_theme(){
   $path = drupal_get_path('theme', 'tcbl') . '/templates/content';
   return array(
-    'ser-btm-form' => array(
+    'gmaps' => array(
       // use a template and give the template's name.
-      'template' => 'ser-btm-form',
+      'template' => 'gmaps',
       'variables' => array(
-        'head' => array(),
-        'form' => array(),
-        'classes' => '',
+        'address' => NULL,
+        'key' => NULL,
+        'width' => '100%',
+        'height' => '400',
+        'static_width' => '500',
+        'static_height' => '300',
+        'zoom' => 14,
+        'information_bubble' => false,
+        'langcode' => 'en',
+        'map_type' => 'roadmap', // or satellite
       ),
-      'pattern' => 'ser-btm-form__',
+      'pattern' => 'gmaps__',
       'path' => $path,
     ),
   );

@@ -3,6 +3,10 @@
  * Page
  * page.tpl.php
  */
+
+hide($header_event['address']);
+hide($header_event['contact']);
+
 ?>
 
 <header id="navbar" role="banner" class="<?php print $navbar_classes; ?>">
@@ -64,6 +68,22 @@
       </div>
     </div>
   <?php endif; ?>
+  <?php if (!empty($header_event)): ?>
+    <div class="wrapper-blue-header bg-blue">
+      <div class="container">
+        <?php print render($header_event); ?>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <?php print render($header_event['address']); ?>    
+          </div>
+          <div class="col-sm-6">
+            <?php print render($header_event['contact']); ?>   
+          </div>
+        </div>
+      </div>
+    </div>
+  <?php endif; ?>
   <div class="main-container <?php print $container_class; ?>">  
     
     <a id="main-content"></a>
@@ -110,7 +130,7 @@
 <?php endif; ?>
 
 <div class="wrapper-footer">
-  <footer class="footer container-fluid negative">
+  <footer class="footer container-fluid small">
     <?php print render($page['footer']); ?>
   </footer>
 </div>
