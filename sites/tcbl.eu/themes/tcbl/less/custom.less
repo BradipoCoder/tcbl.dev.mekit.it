@@ -106,6 +106,37 @@ body.cke_editable, body.mceContentBody{
   margin-right: auto;
 }
 
+.tcbl-footer{
+  .padding-v(1);
+  .margin-b(1.5);
+}
+
+.tcbl-footer-content{
+  position: relative;
+
+  .ul-social{
+    @media (min-width: @grid-float-breakpoint){
+      position: absolute;
+      top: 0px;
+    }
+  }
+
+  .img-logo{
+    width: 105px;
+    @media (min-width: @grid-float-breakpoint){
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+
+  .footer-menu{
+    @media (min-width: @grid-float-breakpoint){
+      margin-left: 130px;
+    }  
+  }
+}
+
 // ** LOGO ** //
 // -------------
 

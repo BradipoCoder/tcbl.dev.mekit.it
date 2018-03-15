@@ -165,6 +165,27 @@ function _tcbl_add_user_login(&$vars){
   $vars['menu_user'] = $data;
 }
 
+function _tcbl_add_light_footer(&$vars){
+  $content = array();
+
+  if (isset($vars['menu_social'])){
+    $content['menu_social'] = $vars['menu_social'];
+  }
+
+  if (isset($vars['logo'])){
+    $content['logo'] = $vars['logo'];
+  }
+
+  if (isset($vars['primary_nav'])){
+    $nav = $vars['primary_nav'];
+  }
+
+  $vars['page']['footer']['tcbl'] = array(
+    '#theme' => 'tcblfooter',
+    '#content' => $content,
+  );
+}
+
 function _tcbl_alter_breadcrumbs(&$vars){
   if (isset($vars['node'])){
     $node = $vars['node'];

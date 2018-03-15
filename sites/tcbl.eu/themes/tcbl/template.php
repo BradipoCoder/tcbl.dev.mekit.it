@@ -48,6 +48,8 @@ function tcbl_preprocess_page(&$vars){
   _tcbl_add_user_login($vars);
   _tcbl_add_header($vars);
   _tcbl_alter_breadcrumbs($vars);
+
+  _tcbl_add_light_footer($vars);
   
   // Add usefull variables to page template (when views is present)
   _tcbl_is_page_with_view($vars);
@@ -146,6 +148,14 @@ function tcbl_theme(){
         'map_type' => 'roadmap', // or satellite
       ),
       'pattern' => 'gmaps__',
+      'path' => $path,
+    ),
+    'tcblfooter' => array(
+      'template' => 'tcblfooter',
+      'variables' => array(
+        'content' => array(),
+      ),
+      'pattern' => 'tcblfooter__',
       'path' => $path,
     ),
   );
