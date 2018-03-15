@@ -42,6 +42,10 @@ function tcbl_preprocess_node(&$vars){
       _tcbl_preprocess_node_banner($vars);
       break;
 
+    case 'settings':
+      _tcbl_preprocess_node_settings($vars);
+      break;
+
 
     default:
       # code...
@@ -219,10 +223,16 @@ function _tcbl_preprocess_node_banner(&$vars){
       $url = $link['url'];
       $title = $link['title'];
 
-      //dpm($vars['content']['field_image'][0]);
-
       $vars['content']['field_image'][0]['#path']['path'] = $url;
-      //$vars['content']['field_image'][0]['#path']['options']
+      $vars['content']['field_image'][0]['#path']['options']['attributes']['title'] = htmlspecialchars_decode($title);
     }
+  }
+}
+
+function _tcbl_preprocess_node_settings(&$vars){
+  // We don't want people here
+  // Install "content access" for only one page is an overkill
+  if (!user_is_logged_in()){
+    drupal_goto('<front>');
   }
 }

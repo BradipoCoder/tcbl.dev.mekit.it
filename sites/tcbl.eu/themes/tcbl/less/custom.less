@@ -76,6 +76,7 @@ body.cke_editable, body.mceContentBody{
 .front{
   .main-container{
     .padding-t(0);
+    .padding-b(1);
   }
 }
 
@@ -90,7 +91,6 @@ body.cke_editable, body.mceContentBody{
 
 .wrapper-blue-header{
   .padding-v(0.75);
-
   
   .tcbl-contact{
     .margin-t(0.5);
@@ -114,15 +114,9 @@ body.cke_editable, body.mceContentBody{
 .tcbl-footer-content{
   position: relative;
 
-  .ul-social{
-    @media (min-width: @grid-float-breakpoint){
-      position: absolute;
-      top: 0px;
-    }
-  }
-
   .img-logo{
     width: 105px;
+    .margin-b(1);
     @media (min-width: @grid-float-breakpoint){
       position: absolute;
       top: 0;
@@ -135,6 +129,11 @@ body.cke_editable, body.mceContentBody{
       margin-left: 130px;
     }  
   }
+}
+
+.ul-footer-menu{
+  padding: 0;
+  list-style: none;
 }
 
 // ** LOGO ** //
@@ -473,16 +472,9 @@ body.cke_editable, body.mceContentBody{
 // -------------------
 
 .ul-social{
-  @media (min-width: @grid-float-breakpoint){
-    position: absolute;
-    top: 30px;
-    right: 220px;
-    padding: 0;
-  }
-
   list-style: none;
-  padding: 10px 15px 20px 15px;
-  margin: 0;
+  margin: 0 -3px;
+  padding: 0;
 
   li{
     display: inline-block;
@@ -508,6 +500,29 @@ body.cke_editable, body.mceContentBody{
     top: -1px;
   }
 }
+
+.navbar-collapse{
+  .ul-social{
+    padding: 10px 15px 20px 15px;
+    @media (min-width: @grid-float-breakpoint){
+      position: absolute;
+      top: 30px;
+      right: 220px;
+      padding: 0;
+    }  
+  }
+}
+
+.tcbl-footer-content{
+  .ul-social{
+    @media (min-width: @grid-float-breakpoint){
+      position: absolute;
+      top: 0px;
+      right: 220px;
+    }
+  }  
+}
+
 
 // Facebook
 .a-social-2945{ background: #3957a0;}
@@ -538,14 +553,9 @@ body.cke_editable, body.mceContentBody{
 // ---------------
 
 .user-menu{
-  padding: 10px 15px;
+  padding: 0;
   @media (min-width: @grid-float-breakpoint){
-    position: absolute;
-    top: 28px;
-    right: 20px;
-    width: 180px;
     text-align: right;
-    padding: 0;
   }
 
   img{
@@ -574,6 +584,31 @@ body.cke_editable, body.mceContentBody{
   }
 }
 
+.navbar-collapse{
+  .user-menu{
+    padding: 10px 15px;
+    @media (min-width: @grid-float-breakpoint){
+      padding: 0;
+      position: absolute;
+      top: 28px;
+      right: 20px;
+      width: 180px;
+    }
+  }
+}
+
+.tcbl-footer-content{
+  .user-menu{
+    .margin-b(0.5);
+
+    @media (min-width: @grid-float-breakpoint){
+      position: absolute;
+      top: -2px;
+      right: 20px;
+    }
+  }  
+}
+
 // ** TCBL AVATAR **
 // -----------------
 
@@ -584,6 +619,10 @@ body.cke_editable, body.mceContentBody{
     .border-bottom-radius(100%);
     border: 2px solid #94d0e8;  
     padding: 4px;
+
+    &.default{
+      padding: 0;
+    }
   }
 }
 

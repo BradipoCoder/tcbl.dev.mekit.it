@@ -130,10 +130,10 @@ hide($header_event['contact']);
 <?php endif; ?>
 
 <div class="wrapper-footer">
-  <footer class="footer container-fluid small">
+  <footer class="footer container-fluid">
     <?php print render($page['footer']); ?>
     <div class="static-footer">
-      <p class="small text-center">This project has received funding from the European Union's Horizon 2020 Programme for research, technology development, and innovation under grant Agreement n.646133</p>
+      <p class="small text-center text-italic">This project has received funding from the European Union's Horizon 2020 Programme for research, technology development, and innovation under grant Agreement n.646133</p>
       <div class="wrapper-footer-img">
         <img src="/sites/tcbl.eu/files/images/euh2020.png" class="img-responsive"/>
       </div>

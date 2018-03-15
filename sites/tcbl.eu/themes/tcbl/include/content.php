@@ -176,8 +176,40 @@ function _tcbl_add_light_footer(&$vars){
     $content['logo'] = $vars['logo'];
   }
 
+  // Main menu in footer
   if (isset($vars['primary_nav'])){
     $nav = $vars['primary_nav'];
+    $keys = element_children($nav);
+
+    $menu = array(
+      '#prefix' => '<ul class="ul-footer-menu">',
+      '#suffix' => '</ul>',
+    );
+
+    $opt = array(
+      'attributes' => array(
+        'class' => array(
+          'navbar-a-typo',
+        ),
+      ),
+    );
+
+    foreach ($keys as $key) {
+      $item = $nav[$key];
+      $l = $item['#original_link'];
+    
+      $menu[$key] = array(
+        '#prefix' => '<li>',
+        '#suffix' => '</li>',
+        '#markup' => l($l['link_title'], $l['link_path'], $opt),
+      );
+    }
+    $content['menu'] = $menu;
+  }
+
+  // User login in footer
+  if (isset($vars['menu_user'])){
+    $content['menu_user'] = $vars['menu_user'];
   }
 
   $vars['page']['footer']['tcbl'] = array(

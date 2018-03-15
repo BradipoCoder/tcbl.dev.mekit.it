@@ -11,9 +11,10 @@
         <?php print render($content['logo']); ?>
 
         <div class="footer-menu">
-          <code>Footer menu</code>
+          <?php print render($content['menu']); ?>
         </div>
 
+        <?php print render($content['menu_user']); ?>
         <?php print render($content['menu_social']); ?>
       </div>
     </div>

@@ -64,10 +64,16 @@ function tcbl_preprocess_user_profile(&$vars){
     $this_user = user_load($uid);
     $path = _tcbl_get_avatar_path($this_user);
 
+    $class = 'sso';
+    $check = substr($path, -15);
+    if ($check == 'tcbl-avatar.png'){
+      $class = 'default';
+    }
+
     $vars['user_profile']['avatar'] = array(
       '#prefix' => '<div class="tcbl-avatar">',
       '#suffix' => '</div>',
-      '#markup' => '<img src="' . $path . '" class="img-responsive"/>',
+      '#markup' => '<img src="' . $path . '" class="img-responsive ' . $class . '"/>',
       '#weight' => -1,
     );
 

@@ -75,7 +75,10 @@
     <div class="container">
       <div class="front-labs-header text-center">
         <h2 class="h1-big text-uppercase">Labs</h2>
-        <p>Lorem ipsum dolor sit amet</p>
+        <p>
+          Labs are the active, physical context in which TCBL's explorations of new models take place.<br/>
+          Check out the latest projects from our Labs.
+        </p>
       </div>
       <div class="row margin-v-1">
         <?php print render($tcbl_feeds["labs"]); ?>

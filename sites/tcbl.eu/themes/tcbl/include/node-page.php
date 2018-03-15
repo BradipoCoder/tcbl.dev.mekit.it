@@ -82,8 +82,22 @@ function _tcbl_preprocess_node_page_events(&$vars){
   $faq = node_load(352);
   $vars['content']['faq'] = _tcbl_faq_link($faq);
 
+  $set = _tcbl_get_tcbl_settings();
+  if (isset($set->field_ref_banner_events['und'][0]['target_id'])){
+    $nid = $set->field_ref_banner_events['und'][0]['target_id'];
+    $banner = node_load($nid);
+    $vars['content']['banner'] = array(
+      '#prefix' => '<div id="event-banner" class="col-xs-12 wrapper-banner margin-b-2 hide">',
+      '#suffix' => '</div>',
+      'node' => node_view($banner, 'child'),
+    );
+  }
+
   $vars['content']['events']['#markup'] = views_embed_view('events', 'first_6');
   add_same_h_by_selector('.events-sameh');
+
+  $js = drupal_get_path('theme', 'tcbl') . '/js/events.js';
+  drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 1));
 }
 
 function _tcbl_preprocess_node_page_news(&$vars){
