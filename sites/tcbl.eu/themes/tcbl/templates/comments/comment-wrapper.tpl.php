@@ -45,7 +45,11 @@
     <?php print render($title_suffix); ?>
   <?php endif; ?>
 
-  <?php print render($content['comments']); ?>
+  <?php if ($comments) : ?>
+    <div class="comments-list">
+      <?php print render($content['comments']); ?>
+    </div>
+  <?php endif; ?>
 
   <?php if ($content['comment_form']): ?>
     <div class="comments-add-new">

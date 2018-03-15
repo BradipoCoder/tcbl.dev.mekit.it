@@ -103,8 +103,6 @@ function _tcbl_preprocess_node_page_events(&$vars){
 function _tcbl_preprocess_node_page_news(&$vars){
   $vars['content']['news']['#markup'] = views_embed_view('news', 'archive');
   add_same_h_by_selector('.news-sameh');
-  //$vars['content']['news']['banner']['#markup'] = '<div class="well margin-v-1"><code>banner</code></div>';
-  //$vars['content']['news']['up']['#markup'] = views_embed_view('news', 'bottom_3');
 }
 
 function _tcbl_preprocess_node_page_forums(&$vars){

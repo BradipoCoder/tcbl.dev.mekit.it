@@ -148,6 +148,9 @@ function _tcbl_add_user_login(&$vars){
       $name = $full_user->realname;
     }
 
+    $avat = _tcbl_get_avatar_path($full_user);
+    $path = $avat['path'];
+
     $data['user'] = array(
       '#prefix' => '<div class="user-menu"><a href="https://tcblsso.ilabt.iminds.be/usermanager" title="' . $name . '" target="_blank">',
       '#suffix' => '</a></div>',
@@ -276,14 +279,17 @@ function _tcbl_faq_link($node){
 
 function _tcbl_get_avatar_path($profile_user){
   global $base_url;
-  $path = $base_url . '/' . drupal_get_path('theme', 'tcbl') . '/img/tcbl-avatar.png'; 
+  $data['path'] = $base_url . '/' . drupal_get_path('theme', 'tcbl') . '/img/tcbl-avatar.png'; 
+  $data['type'] = 'default';
+
   if (isset($profile_user->field_sso_avatar_uri['und'][0]['value'])){
     $value = $profile_user->field_sso_avatar_uri['und'][0]['value'];
     if ($value !== '' && $value !== '_'){
-      $path = $value;
+      $data['path'] = $value;
+      $data['type'] = 'sso';
     }
   }
-  return $path;
+  return $data;
 }
 
 function _tcbl_get_tcbl_settings(){

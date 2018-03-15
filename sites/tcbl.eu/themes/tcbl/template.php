@@ -11,6 +11,7 @@ require('include/node-page.php');
 require('include/form.php');
 require('include/paragraphs.php');
 require('include/feed.php');
+require('include/comment.php');
 
 /**
  * Implements hook_preprocess_html()
@@ -62,18 +63,12 @@ function tcbl_preprocess_user_profile(&$vars){
   if (arg(1)){
     $uid = arg(1);
     $this_user = user_load($uid);
-    $path = _tcbl_get_avatar_path($this_user);
-
-    $class = 'sso';
-    $check = substr($path, -15);
-    if ($check == 'tcbl-avatar.png'){
-      $class = 'default';
-    }
+    $data = _tcbl_get_avatar_path($this_user);
 
     $vars['user_profile']['avatar'] = array(
       '#prefix' => '<div class="tcbl-avatar">',
       '#suffix' => '</div>',
-      '#markup' => '<img src="' . $path . '" class="img-responsive ' . $class . '"/>',
+      '#markup' => '<img src="' . $data['path'] . '" class="img-responsive ' . $data['type'] . '"/>',
       '#weight' => -1,
     );
 

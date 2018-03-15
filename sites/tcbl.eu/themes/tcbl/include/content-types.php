@@ -144,7 +144,8 @@ function _tcbl_preprocess_node_forum(&$vars){
   $node = $vars['node'];
 
   if ($vars['view_mode'] == 'full'){
-    $vars['content']['faq'] = _tcbl_faq_link();
+    $faq = node_load(328);
+    $vars['content']['faq'] = _tcbl_faq_link($faq);
   }
 
   if ($vars['view_mode'] == 'teaser'){

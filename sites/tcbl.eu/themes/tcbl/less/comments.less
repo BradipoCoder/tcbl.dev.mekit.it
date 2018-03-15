@@ -10,21 +10,22 @@
   padding: 15px;
 }
 
+.comments-list{
+  padding: 30px 0;
+}
+
 .indented{
-  padding-left: 30px;
+  .padding-l(2);
 }
 
 
-.node-blog{
-  .comment{
-    .margin-h(3);
-  }
-
-  .comments-add-new{
-    .margin-h(3);
-  }
+.comment{
+  .margin-h(1);
 }
 
+.comments-add-new{
+  .margin-h(1);
+}
 
 .wrapper-simple-admin{
   a.unapproved-comments{
@@ -39,5 +40,84 @@
       color: white;
       padding:3px 5px;
     }
+  }
+}
+
+.comment{
+  position: relative;
+  padding-left: 70px;
+
+  .tcbl-avatar{
+    position: absolute;
+    top: 0;
+    left: 7px;
+  }
+
+  .new{
+    position: absolute;
+    top: 60px;
+    left: 12px;
+    background: @brand-info;
+    font-size: floor(@font-size-small * 0.8);
+    padding: 1px 7px;
+    color: #fff;
+    font-weight: @font-weight-bold;
+  }
+}
+
+.field-name-comment-body{
+  font-size: @font-size-small;
+  .margin-b(0.5);
+}
+
+.comment-links{
+  list-style: none;
+  padding: 0;
+  margin: 0 -10px;
+
+  li{
+    display: inline-block;
+    font-size: @font-size-small;
+    text-transform: capitalize;
+    padding: 0 10px;
+
+    .l-forbidden{
+      text-transform: initial;
+    }
+
+    a{
+      font-weight: @font-weight-bold;
+      .color-and-hover(@brand-primary);
+      &:after{
+        .fontawesome("\f105");
+        margin-left: 5px;
+      }
+    }
+  }
+}
+
+.comment-form{
+  .form-actions{
+    text-align: left;
+  }
+
+  .control-label{
+    font-size: @font-size-small;
+    font-weight: @font-weight-bold;
+  }
+}
+
+.wrapper-you{
+  position: relative;
+  .clearfix();
+
+  .tcbl-avatar{
+    position: absolute;
+    top: 0;
+    left: 7px;
+  }
+
+  .tcbl-you-name{
+    padding-left: 70px;
   }
 }
