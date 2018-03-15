@@ -79,53 +79,70 @@
 }
 
 .wrapper-topic{
-  margin-left: 40px;
+  @media (max-width: @screen-xs-max){
+    .margin-t(2);
+  }
+  @media (min-width: @screen-sm-min){
+    margin-left: 40px;
+  }
+
+  .comments-add-new{
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 
 .topic-header{
-  padding: 10px 0 10px 55px;
+  padding: 10px 10px 10px 80px;
+  @media (min-width: @screen-sm-min){
+    padding: 10px 10px 10px 55px;
+  }
   border-bottom: 1px solid @primary-light;
   position: relative;
-
-  .avatar{
-    position: absolute;
-    top: -18px;
-    left: -40px;
-    width: 80px;
-    height: 80px;
-    border: 1px solid @primary-light;
+  
+  .tcbl-avatar{
     background: #fff;
-    padding: 3px;
-    .border-top-radius(100%);
-    .border-bottom-radius(100%);
+    position: absolute;
 
-    img{
-      .border-top-radius(100%);
-      .border-bottom-radius(100%);  
+    @media (max-width: @screen-xs-max){
+      max-width: 60px;
+    }
+    
+    left: 5px;
+    top: 5px;
+    @media (min-width: @screen-sm-min){
+      top: -18px;
+      left: -40px;
     }
   }
 }
 
 .topic-submitted{
-  border-left: 1px solid @primary-light;
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 300px;
-  text-align: center;
-  span{
+  @media (min-width: @screen-sm-min){
+    border-left: 1px solid @primary-light;
     position: absolute;
-    top: 50%;
-    margin-top: -12px;
-    display: block;
-    width: 100%;
-    font-weight: @font-weight-bold;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 300px;
+    text-align: center;
+
+    span{
+      position: absolute;
+      top: 50%;
+      margin-top: -12px;
+      display: block;
+      width: 100%;
+      font-weight: @font-weight-bold;
+    }
   }
 }
 
 .topic-container{
-  padding: 20px 55px 20px 55px;
+  padding: 20px;
+  @media (min-width: @screen-sm-min){
+    padding: 20px 55px 20px 55px;
+  }
 
   .comment-wrapper{
     border: none;

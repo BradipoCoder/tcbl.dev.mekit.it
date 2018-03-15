@@ -146,6 +146,13 @@ function _tcbl_preprocess_node_forum(&$vars){
   if ($vars['view_mode'] == 'full'){
     $faq = node_load(328);
     $vars['content']['faq'] = _tcbl_faq_link($faq);
+
+    if (isset($node->field_author['und'][0]['uid'])){
+      $uid = $node->field_author['und'][0]['uid'];
+      $f_user = user_load($uid);
+      $avat = _tcbl_get_avatar_path($f_user);
+      $vars['avatar'] = $avat;
+    }
   }
 
   if ($vars['view_mode'] == 'teaser'){

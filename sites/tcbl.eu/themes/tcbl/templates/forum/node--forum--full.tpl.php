@@ -27,8 +27,8 @@
             <div class="topic-submitted small text-muted">
               <?php print render($content['field_submitted'][0]); ?>
             </div>
-            <div class="avatar">
-              <img src="https://cdn.ycombinator.com/images/people/gustaf-f076e8c4.jpg" class="img-responsive"/>
+            <div class="tcbl-avatar">
+              <img src="<?php print $avatar['path']; ?>" class="img-responsive <?php print $avatar['type']; ?>"/>
             </div>  
           </div>
           
