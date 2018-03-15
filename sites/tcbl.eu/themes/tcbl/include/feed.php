@@ -21,6 +21,15 @@ function tcbl_preprocess_tcbl_feed_item(&$vars){
   $vars['date'] = format_date($timestamp, 'feed');
 
   if ($vars['is_social']){
+    $vars['id'] = $item->getId();
+    if ($type == 'facebook'){
+      $id = explode('_', $vars['id']);
+      if (isset($id[0]) && isset($id[1])){
+        $vars['url'] = 'https://www.facebook.com/' . $id[0] . '/posts/' . $id[1];  
+        $src = 'http://graph.facebook.com/' . $id[0] . '/picture?type=square';
+        $vars['avatar']['#markup'] = '<img src="' . $src . '" class="social-avatar social-avatar-' . $vars['source'] . '"/>';
+      }
+    }
     $vars['date'] = format_date($timestamp, 'feed_social');
   }
 
@@ -38,14 +47,4 @@ function tcbl_preprocess_tcbl_feed_item(&$vars){
   }
 
   $vars['name'] = $item->getPostedByName();
-
-  switch ($type) {
-    case 'tcbl_labs':
-      //_tcbl_preprocess_labs_feed($vars);
-      break;
-    
-    default:
-      # code...
-      break;
-  }
 }

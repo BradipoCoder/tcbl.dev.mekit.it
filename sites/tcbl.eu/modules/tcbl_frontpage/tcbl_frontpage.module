@@ -81,7 +81,8 @@ function _tcbl_frontpage_get_tcbl_feeds() {
     "ordering" => [
       "property" => "creation_date",
       "order" => "DESC"
-    ]
+    ],
+    "max_items" => 4,
   ];
 
   return [

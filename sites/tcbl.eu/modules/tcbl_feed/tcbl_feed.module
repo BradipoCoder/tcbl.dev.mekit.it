@@ -20,16 +20,16 @@ function tcbl_feed_get_default_generation_options() {
         "max_items" => 3
       ],
       "facebook" => [
-        "max_items" => 2,
+        "max_items" => 10,
         'app_id' => '301393660390585',
         'app_secret' => 'fa161c64d4663bf34c562c007a02dc59',
         'default_graph_version' => 'v2.12',
       ],
       "instagram" => [
-        "max_items" => 2
+        "max_items" => 10,
       ],
       "twitter" => [
-        "max_items" => 2,
+        "max_items" => 10,
         "consumer_key"            => "05rhm0AJq1Wcl8VdVR1EKb1qY",
         "consumer_secret"         => "ozj7VwhS2GO3anJTpS82OWUtrEEzx7uwSKCh7bWEhIoVA3swl3",
         "access_token"            => "776749216442056704-9hZR2zniP7UTabNDtOFdFowoPDqhMpj",
@@ -45,7 +45,7 @@ function tcbl_feed_get_default_generation_options() {
  * Implements hook_cron().
  */
 function tcbl_feed_cron() {
-  $default_interval = 3 * 60 * 60;//seconds
+  $default_interval = 0.5 * 60 * 60; // Half an hour
   if(!variable_get('tcbl_feed_cron_interval')) {
     variable_set('tcbl_feed_cron_interval', $default_interval);
   }
@@ -79,14 +79,21 @@ function tcbl_feed_get_renderable_feeds($getFeedOptions = []) {
     //$answer['content'] = t('Number of feeds: ' . count($feeds));
     $answer['content'] = [];
     $answer['content']['feeds'] = [];
-
+    
+    $n = 0;
     /** @var \Mekit\TcblFeed\FeedItem $feed */
     foreach ($feeds as $feed) {
+      $n++;
       $feedThemeItem = [
         '#theme' => 'tcbl_feed_item',
         '#feed_item' => $feed,
       ];
       array_push($answer['content']['feeds'], $feedThemeItem);
+      if (isset($getFeedOptions['max_items'])){
+        if ($n == $getFeedOptions['max_items']){
+          break;
+        }
+      }
     }
   }
 
