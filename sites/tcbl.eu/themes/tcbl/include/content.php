@@ -233,6 +233,15 @@ function _tcbl_get_avatar_path($profile_user){
   return $path;
 }
 
+function _tcbl_get_tcbl_settings(){
+  $settings = node_load(355);
+  $node = false;
+  if ($settings && $settings->type == 'settings'){
+    $node = $settings;
+  }
+  return $node;
+}
+
 // ** DROP ? **
 // ------------
 

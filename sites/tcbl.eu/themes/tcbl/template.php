@@ -99,13 +99,10 @@ function tcbl_form_node_form_alter(&$form, $form_state){
   if ($user->uid == 1){
     // Administrator
   } else {
-    // Authenticated user
     $form['options']['promote']['#access'] = false;
     $form['options']['sticky']['#access'] = false;
-  }
 
-  if (isset($form['shadow'])){
-    $form['shadow']['#access'] = false;  
+    field_group_hide_field_groups($form, array('group_hide'));
   }
 }
 

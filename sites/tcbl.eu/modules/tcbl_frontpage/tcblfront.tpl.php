@@ -32,14 +32,14 @@
           </div>
         </div>
 
-        <?php //if ($show_sign_up) : ?>
+        <?php if ($show_sign_up) : ?>
         <div class="text-center">
           <a href="https://tcblsso.ilabt.iminds.be/usermanager/user/register"
              class="btn btn-primary btn-lg" title="Sign up">
             Sign up
           </a>
         </div>
-        <?php //endif; ?>
+        <?php endif; ?>
       </div>
     </div>
   </div>
@@ -66,8 +66,8 @@
   </div>
 
   <div class="wrapper-front-banner">
-    <div class="container">
-      <div class="well"><code>banner</code></div>
+    <div class="container margin-v-2">
+      <?php print render($content['banner']); ?>
     </div>
   </div>
 
@@ -102,7 +102,7 @@
         <p>Storytelling, case studies, research and more on the world of textile and clothing in Europe</p>
       </div>
       <div class="row margin-v-1 wrapper-zine-sameh">
-        <?php print render($tcbl_feeds["zine"]); ?>
+        <?php print render($tcbl_feeds['zine']); ?>
       </div>
     </div>
   </div>
@@ -110,7 +110,7 @@
   <div class="wrapper-front-feed-social">
     <div class="container">
       <div class="row margin-v-1">
-        <?php print render($tcbl_feeds["social"]); ?>
+        <?php print render($tcbl_feeds['social']); ?>
       </div>
     </div>
   </div>

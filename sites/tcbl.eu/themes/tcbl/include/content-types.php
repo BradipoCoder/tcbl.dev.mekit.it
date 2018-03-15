@@ -38,6 +38,10 @@ function tcbl_preprocess_node(&$vars){
       _tcbl_preprocess_node_bpilot($vars);
       break;
 
+    case 'banner':
+      _tcbl_preprocess_node_banner($vars);
+      break;
+
 
     default:
       # code...
@@ -202,5 +206,23 @@ function _tcbl_preprocess_node_bpilot(&$vars){
   if ($vars['view_mode'] == 'child'){
     $vars['classes_array'][] = 'col-md-4';
     $vars['classes_array'][] = 'col-sm-6';
+  }
+}
+
+function _tcbl_preprocess_node_banner(&$vars){
+  $node = $vars['node'];
+
+  if ($vars['view_mode'] == 'child'){
+    if (isset($node->field_url['und'][0]['url'])){
+      $link = $node->field_url['und'][0];
+      
+      $url = $link['url'];
+      $title = $link['title'];
+
+      //dpm($vars['content']['field_image']);
+
+      //$vars['content']['field_image'][0]
+
+    }
   }
 }
