@@ -219,10 +219,10 @@ function _tcbl_preprocess_node_banner(&$vars){
       $url = $link['url'];
       $title = $link['title'];
 
-      //dpm($vars['content']['field_image']);
+      //dpm($vars['content']['field_image'][0]);
 
-      //$vars['content']['field_image'][0]
-
+      $vars['content']['field_image'][0]['#path']['path'] = $url;
+      //$vars['content']['field_image'][0]['#path']['options']
     }
   }
 }
