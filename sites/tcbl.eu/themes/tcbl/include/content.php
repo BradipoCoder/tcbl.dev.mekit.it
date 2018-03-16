@@ -260,7 +260,7 @@ function _tcbl_faq_link($node){
   );
 
   $data['link'] = array(
-    '#prefix' => '<div class="wrapper-faq-link margin-b-1 text-right"><span class="h4 small">',
+    '#prefix' => '<div class="wrapper-faq-link margin-b-05 text-right"><span class="h4 small">',
     '#suffix' => '</span></div>',
     '#markup' => l($text, '', $opt),
   );

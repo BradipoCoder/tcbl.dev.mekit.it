@@ -119,8 +119,28 @@ function tcbl_form_node_form_alter(&$form, $form_state){
   } else {
     $form['options']['promote']['#access'] = false;
     $form['options']['sticky']['#access'] = false;
-
     field_group_hide_field_groups($form, array('group_hide'));
+  }
+
+  // 2 autenticated
+  // 3 administrator
+  // 4 editor
+  // 5 partner?
+  // 6 gluu user
+  
+  // Can see editor field
+  $is_editor = false;
+  $roles = $user->roles;
+  if (isset($roles[3]) || isset($roles[4])){
+    $is_editor = true;
+  }
+
+  // Field author filled correctly
+  if (isset($form['field_author']['und'][0]['uid']['#default_value'])){
+    $form['field_author']['und'][0]['uid']['#default_value'] = $user->uid;
+    if (!$is_editor){
+      $form['field_author']['#disabled'] = true;  
+    }
   }
 }
 

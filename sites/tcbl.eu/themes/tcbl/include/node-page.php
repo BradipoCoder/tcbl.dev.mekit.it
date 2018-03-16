@@ -106,8 +106,23 @@ function _tcbl_preprocess_node_page_news(&$vars){
 }
 
 function _tcbl_preprocess_node_page_forums(&$vars){
+  
+  if (user_access('create forum content')){
+    $opt = array(
+      'attributes' => array(
+        'class' => array('btn', 'btn-primary'),
+      ),
+    );
+    $vars['content']['add_topic'] = array(
+      '#prefix' => '<div class="margin-v-05 text-right">',
+      '#suffix' => '</div>',
+      '#markup' => l('Insert new forum post', 'node/add/forum', $opt),
+    );  
+  }
+
   $faq = node_load(328);
   $vars['content']['faq'] = _tcbl_faq_link($faq);
+
   $vars['content']['forum']['#markup'] = views_embed_view('forum', 'content');
 }
 
