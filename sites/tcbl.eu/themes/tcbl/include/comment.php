@@ -70,3 +70,19 @@ function tcbl_preprocess_comment(&$vars){
     $vars['content']['links']['comment']['#links']['comment_forbidden']['title'] = '<a href="/user/gluuSSO" title="Log in at TCBL" class="l-forbidden">Login with TCBL</a> <span class="l-forbidden">to comment</span>';  
   }
 }
+
+/**
+ * Add a link to login at TCBL to post comment
+ */
+function _tcbl_add_comments_cta(&$vars){
+  $node = $vars['node'];
+  if (!user_is_logged_in()){
+    if(isset($node->comment) && $node->comment == COMMENT_NODE_OPEN){
+      $vars['content']['comments']['cta_login'] = array(
+        '#prefix' => '<div class="wrapper-cta-login"><h5>',
+        '#suffix' => '</h5></div>',
+        '#markup' => '<a href="/user/gluuSSO" class="a-comment-cta" title="Log in at TCBL">Login with TCBL</a> <span class="span-to-comment">to comment<span>',
+      );
+    }
+  }
+}

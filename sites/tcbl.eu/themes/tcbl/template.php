@@ -26,11 +26,6 @@ function tcbl_preprocess_html(&$variables) {
   foreach ($fonts as $key => $css) {
     drupal_add_css($css, array('type' => 'external'));
   }
-
-  /*
-  $ga = _tcbl_get_ga_script();
-  drupal_add_js($ga, array('type' => 'inline', 'scope' => 'header', 'weight' => 5));
-  */
 }
 
 function tcbl_preprocess_page(&$vars){
@@ -46,7 +41,7 @@ function tcbl_preprocess_page(&$vars){
     $vars['container_class'] = 'container-fluid';
   }
 
-  _tcbl_remove_comment_wall($vars);
+  //_tcbl_remove_comment_wall($vars);
 
   _tcbl_add_social_menu($vars);
   _tcbl_add_user_login($vars);
@@ -141,20 +136,6 @@ function tcbl_form_node_form_alter(&$form, $form_state){
       $form['field_by']['#disabled'] = true;  
     }
   }
-}
-
-/**
- * @return string
- */
-function _tcbl_get_ga_script(){
-  $ga = "(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-99587862-1', 'auto');
-  ga('send', 'pageview');";
-  return $ga;
 }
 
 // ** THEME **
