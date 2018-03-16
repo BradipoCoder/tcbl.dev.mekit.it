@@ -23,6 +23,19 @@
 
 .tabledrag-toggle-weight-wrapper{
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 10px;
+  right: 10px;
+}
+
+@media (max-width: @screen-sm-max){
+  .form-wrapper fieldset{
+    .panel-heading,
+    .panel-body{
+      padding: 5px 10px;
+    }
+  }
+}
+
+fieldset.date-combo .container-inline-date .date-padding{
+  padding: 0;
 }
