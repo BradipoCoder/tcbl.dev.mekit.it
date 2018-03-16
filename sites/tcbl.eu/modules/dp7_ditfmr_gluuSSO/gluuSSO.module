@@ -34,7 +34,7 @@ function gluuSSO_loginSSO() {
 
   define('A_UUID_INUM', '9fce9516-baf2-11e6-b12a-b68472af1a70');
   define("ISSUER", 'https://tcblsso.ilabt.iminds.be');
-  define("URL_REDIRECT", 'https://tcbl.dev.mekit.it/user/gluuSSO');
+  define("URL_REDIRECT", 'https://tcbl.eu/user/gluuSSO');
   define("CLIENT_ID", "@!94C6.B1CD.FACE.39C5!0001!6872.82DF!0008!8E3C.FAC0.9AEE.0A2F");
   define("CLIENT_SECRET", "752e0b97-853b-47f0-a87d-bc15b8487339");
 
