@@ -1,0 +1,59 @@
+/* less/field-group-mobile.less */
+ 
+@media (max-width: @screen-sm-max){
+  
+  .tabs-left > .vertical-tabs-list{
+    width: 100%;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: 1px solid #dddddd;
+
+    > li{
+      display: inline-block;
+      margin-bottom: 0;
+      margin-right: -1px;
+
+      > a{
+        border-color: #dddddd #dddddd #dddddd #dddddd;
+        border-radius: 4px 4px 0 0;
+        margin-bottom: -1px;
+        box-shadow: none;
+        background: lighten(@gray-lightest, 3%);
+        font-size: @font-size-small;
+        padding: 3px 10px;
+      }
+
+      &.active > a,
+      &.active > a:hover,
+      &.active > a:focus{
+        border-color: #dddddd #dddddd #dddddd #dddddd;
+        border-radius: 4px 4px 0 0;
+        margin-bottom: -1px;
+        box-shadow: none;
+        background: #fff;
+        color: @gray-darker;
+        font-weight: @font-weight-bold;
+      }
+    }
+
+    .summary{
+      display: none;
+    }
+  }
+
+  .tabs-left > .tab-content{
+    padding: 0;
+    margin-left: -@navbar-padding-horizontal;
+    margin-right: -@navbar-padding-horizontal;
+    border: 1px solid #fff;
+    display: block;
+    box-shadow: none;
+  }
+
+  // Rimuovo la colonna del riposizionamento nel mobile
+  .field-type-paragraphs{
+    .field-multiple-drag{
+      display: none;
+    }
+  }
+}
