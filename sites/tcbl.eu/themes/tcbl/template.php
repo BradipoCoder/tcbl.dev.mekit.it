@@ -12,6 +12,7 @@ require('include/form.php');
 require('include/paragraphs.php');
 require('include/feed.php');
 require('include/comment.php');
+require('include/access.php');
 
 /**
  * Implements hook_preprocess_html()
@@ -121,25 +122,23 @@ function tcbl_form_node_form_alter(&$form, $form_state){
     $form['options']['sticky']['#access'] = false;
     field_group_hide_field_groups($form, array('group_hide'));
   }
-
-  // 2 autenticated
-  // 3 administrator
-  // 4 editor
-  // 5 partner?
-  // 6 gluu user
   
   // Can see editor field
-  $is_editor = false;
-  $roles = $user->roles;
-  if (isset($roles[3]) || isset($roles[4])){
-    $is_editor = true;
-  }
+  $is_editor = _tcbl_is_editor();
 
-  // Field author filled correctly
-  if (isset($form['field_author']['und'][0]['uid']['#default_value'])){
+  // Field author | Forum topic
+  if (isset($form['field_author']['und'][0]['uid'])){
     $form['field_author']['und'][0]['uid']['#default_value'] = $user->uid;
     if (!$is_editor){
       $form['field_author']['#disabled'] = true;  
+    }
+  }
+
+  // Field by | News
+  if (isset($form['field_by']['und'][0]['uid'])){
+    $form['field_by']['und'][0]['uid']['#default_value'] = $user->uid;
+    if (!$is_editor){
+      $form['field_by']['#disabled'] = true;  
     }
   }
 }
@@ -206,5 +205,20 @@ function tcbl_form_webform_client_form_20_alter(&$form, &$form_state, $form_id){
     $form['submitted']['info']['#default_value'] = $node->title;
   } else {
     $form['submitted']['info']['#default_value'] = 'Home page';
+  }
+}
+
+function tcbl_preprocess_sadmin(&$vars){
+  $is_editor = _tcbl_is_editor();
+  //dpm($vars['buttons']);
+
+  if (!$is_editor){
+    if (isset($vars['buttons'])){
+      foreach ($vars['buttons'] as $key => $l) {
+         if ($l['#path'] == 'node/355'){
+            unset($vars['buttons'][$key]);
+         }
+       } 
+    }  
   }
 }
