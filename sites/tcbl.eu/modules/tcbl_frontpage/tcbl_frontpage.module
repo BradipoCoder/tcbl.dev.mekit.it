@@ -27,7 +27,7 @@ function tcbl_frontpage_preprocess_page(&$vars) {
     ),
   );
   $content['bpilots_more'] = array(
-    '#markup' => l('Explore Business Cases', 'node/310', $opt),
+    '#markup' => l('Explore Business Pilots', 'node/310', $opt),
   );
 
   // Banner

@@ -45,6 +45,8 @@ function tcbl_preprocess_page(&$vars){
     $vars['container_class'] = 'container-fluid';
   }
 
+  _tcbl_remove_comment_wall($vars);
+
   _tcbl_add_social_menu($vars);
   _tcbl_add_user_login($vars);
   _tcbl_add_header($vars);
@@ -57,6 +59,19 @@ function tcbl_preprocess_page(&$vars){
 
   $js_scroll_to = libraries_get_path('jquery.scrollto') . '/jquery.scrollto.js';
   drupal_add_js( $js_scroll_to , array('group' => JS_LIBRARY, 'weight' => 1));
+}
+
+function _tcbl_remove_comment_wall(&$vars){
+  if (isset($vars['tabs']['#primary'])){
+    $primary = $vars['tabs']['#primary'];
+    if (!empty($primary)){
+      foreach ($primary as $key => $l) {
+        if (isset($l['#link']['path']) && ($l['#link']['path'] == 'user/%/comment-wall')){
+          unset($vars['tabs']['#primary'][$key]);
+        }
+      }
+    }
+  }
 }
 
 function tcbl_preprocess_user_profile(&$vars){
