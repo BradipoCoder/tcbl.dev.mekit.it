@@ -10,6 +10,8 @@ require('include/content-types.php');
 require('include/node-page.php');
 require('include/form.php');
 require('include/paragraphs.php');
+require('include/feed.php');
+require('include/comment.php');
 
 /**
  * Implements hook_preprocess_html()
@@ -47,9 +49,38 @@ function tcbl_preprocess_page(&$vars){
   _tcbl_add_user_login($vars);
   _tcbl_add_header($vars);
   _tcbl_alter_breadcrumbs($vars);
+
+  _tcbl_add_light_footer($vars);
   
   // Add usefull variables to page template (when views is present)
   _tcbl_is_page_with_view($vars);
+
+  $js_scroll_to = libraries_get_path('jquery.scrollto') . '/jquery.scrollto.js';
+  drupal_add_js( $js_scroll_to , array('group' => JS_LIBRARY, 'weight' => 1));
+}
+
+function tcbl_preprocess_user_profile(&$vars){
+  if (arg(1)){
+    $uid = arg(1);
+    $this_user = user_load($uid);
+    $data = _tcbl_get_avatar_path($this_user);
+
+    $vars['user_profile']['avatar'] = array(
+      '#prefix' => '<div class="tcbl-avatar">',
+      '#suffix' => '</div>',
+      '#markup' => '<img src="' . $data['path'] . '" class="img-responsive ' . $data['type'] . '"/>',
+      '#weight' => -1,
+    );
+
+    if (isset($this_user->mail)){
+      $vars['user_profile']['mail'] = array(
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+        '#markup' => $this_user->mail,
+        '#weight' => 5,
+      );
+    }
+  }
 }
 
 // ** ADMIN **
@@ -71,13 +102,10 @@ function tcbl_form_node_form_alter(&$form, $form_state){
   if ($user->uid == 1){
     // Administrator
   } else {
-    // Authenticated user
     $form['options']['promote']['#access'] = false;
     $form['options']['sticky']['#access'] = false;
-  }
 
-  if (isset($form['shadow'])){
-    $form['shadow']['#access'] = false;  
+    field_group_hide_field_groups($form, array('group_hide'));
   }
 }
 
@@ -105,15 +133,30 @@ function _tcbl_get_ga_script(){
 function tcbl_theme(){
   $path = drupal_get_path('theme', 'tcbl') . '/templates/content';
   return array(
-    'ser-btm-form' => array(
+    'gmaps' => array(
       // use a template and give the template's name.
-      'template' => 'ser-btm-form',
+      'template' => 'gmaps',
       'variables' => array(
-        'head' => array(),
-        'form' => array(),
-        'classes' => '',
+        'address' => NULL,
+        'key' => NULL,
+        'width' => '100%',
+        'height' => '400',
+        'static_width' => '500',
+        'static_height' => '300',
+        'zoom' => 14,
+        'information_bubble' => false,
+        'langcode' => 'en',
+        'map_type' => 'roadmap', // or satellite
       ),
-      'pattern' => 'ser-btm-form__',
+      'pattern' => 'gmaps__',
+      'path' => $path,
+    ),
+    'tcblfooter' => array(
+      'template' => 'tcblfooter',
+      'variables' => array(
+        'content' => array(),
+      ),
+      'pattern' => 'tcblfooter__',
       'path' => $path,
     ),
   );

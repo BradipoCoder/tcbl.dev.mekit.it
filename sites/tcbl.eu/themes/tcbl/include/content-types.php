@@ -38,6 +38,14 @@ function tcbl_preprocess_node(&$vars){
       _tcbl_preprocess_node_bpilot($vars);
       break;
 
+    case 'banner':
+      _tcbl_preprocess_node_banner($vars);
+      break;
+
+    case 'settings':
+      _tcbl_preprocess_node_settings($vars);
+      break;
+
 
     default:
       # code...
@@ -47,6 +55,17 @@ function tcbl_preprocess_node(&$vars){
 
 function _tcbl_preprocess_node_event(&$vars){
   $node = $vars['node'];
+  
+  if ($vars['view_mode'] == 'full'){
+    $address = _tcbl_calculate_address($vars);
+    $vars['content']['maps'] = array(
+      '#theme' => 'gmaps',
+      '#address' => $address,
+      '#key' => 'AIzaSyD4-faaQay2GTDdD6RlEqADHdyL4Ouj1rw',
+      '#height' => '250',
+    );
+  }
+
   if ($vars['view_mode'] == 'teaser'){
 
     $vars['classes_array'][] = 'margin-b-1';
@@ -86,11 +105,54 @@ function _tcbl_preprocess_node_event(&$vars){
   }
 }
 
+function _tcbl_calculate_address(&$vars){
+  $node = $vars['node'];
+  $address = _tcbl_calculate_address_array($node);
+
+  if (!empty($address)){
+    $address = implode($address, ' ');
+  } else {
+    $address = false;
+  }
+
+  return $address;
+}
+
+function _tcbl_calculate_address_array($node){
+  $address = array();
+
+  if (isset($node->field_location['und'][0])){
+    $location = $node->field_location['und'][0];
+    
+    if (isset($location['street'])){
+      $address['street']= $location['street'];
+    }
+
+    if (isset($location['city'])){
+      $address['city']= $location['city'];
+    }
+
+    if (isset($location['country_name'])){
+      $address['country_name']= $location['country_name'];
+    }
+  }
+
+  return $address;
+}
+
 function _tcbl_preprocess_node_forum(&$vars){
   $node = $vars['node'];
 
   if ($vars['view_mode'] == 'full'){
-    $vars['content']['faq'] = _tcbl_faq_link();
+    $faq = node_load(328);
+    $vars['content']['faq'] = _tcbl_faq_link($faq);
+
+    if (isset($node->field_author['und'][0]['uid'])){
+      $uid = $node->field_author['und'][0]['uid'];
+      $f_user = user_load($uid);
+      $avat = _tcbl_get_avatar_path($f_user);
+      $vars['avatar'] = $avat;
+    }
   }
 
   if ($vars['view_mode'] == 'teaser'){
@@ -156,5 +218,29 @@ function _tcbl_preprocess_node_bpilot(&$vars){
   if ($vars['view_mode'] == 'child'){
     $vars['classes_array'][] = 'col-md-4';
     $vars['classes_array'][] = 'col-sm-6';
+  }
+}
+
+function _tcbl_preprocess_node_banner(&$vars){
+  $node = $vars['node'];
+
+  if ($vars['view_mode'] == 'child'){
+    if (isset($node->field_url['und'][0]['url'])){
+      $link = $node->field_url['und'][0];
+      
+      $url = $link['url'];
+      $title = $link['title'];
+
+      $vars['content']['field_image'][0]['#path']['path'] = $url;
+      $vars['content']['field_image'][0]['#path']['options']['attributes']['title'] = htmlspecialchars_decode($title);
+    }
+  }
+}
+
+function _tcbl_preprocess_node_settings(&$vars){
+  // We don't want people here
+  // Install "content access" for only one page is an overkill
+  if (!user_is_logged_in()){
+    drupal_goto('<front>');
   }
 }

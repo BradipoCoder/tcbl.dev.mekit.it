@@ -20,3 +20,9 @@ regions[footer]         = 'Footer'
 ;; Stylesheets
 ;;;;;;;;;;;;;;;;;;;;;
 stylesheets[all][] = less/style.less
+
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Scripts
+;;;;;;;;;;;;;;;;;;;;;
+scripts[] = js/tcbl.js

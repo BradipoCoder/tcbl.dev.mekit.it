@@ -67,13 +67,13 @@
   <?php endif; ?>
 
   <?php print render($title_prefix); ?>
-  <h3<?php print $title_attributes; ?>><?php print $title ?></h3>
+  <h3 class="text-italic margin-b-025 margin-t-0"><?php print $title ?></h3>
   <?php print render($title_suffix); ?>
 
-  <div class="submitted">
-    <?php print $permalink; ?>
+  <h6 class="submitted margin-t-025">
+    <?php //print $permalink; ?>
     <?php print $submitted; ?>
-  </div>
+  </h6>
 
   <div class="content"<?php print $content_attributes; ?>>
     <?php
@@ -87,8 +87,8 @@
     </div>
     <?php endif; ?>
   </div>
-  
-  <div class="wrapper-links copy">
+
+  <div class="wrapper-links margin-b-1">
     <?php print render($content['links']) ?>
   </div>
 </div>

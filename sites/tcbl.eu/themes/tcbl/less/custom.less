@@ -76,6 +76,7 @@ body.cke_editable, body.mceContentBody{
 .front{
   .main-container{
     .padding-t(0);
+    .padding-b(1);
   }
 }
 
@@ -86,6 +87,53 @@ body.cke_editable, body.mceContentBody{
     font-weight: @font-weight-bold;
     .text-color(#fff);
   }
+}
+
+.wrapper-blue-header{
+  .padding-v(0.75);
+  
+  .tcbl-contact{
+    .margin-t(0.5);
+    @media (min-width: @screen-sm-min){
+      .margin-t(1);
+    } 
+  }
+}
+
+.wrapper-footer-img{
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tcbl-footer{
+  .padding-v(1);
+  .margin-b(1.5);
+}
+
+.tcbl-footer-content{
+  position: relative;
+
+  .img-logo{
+    width: 105px;
+    .margin-b(1);
+    @media (min-width: @grid-float-breakpoint){
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+
+  .footer-menu{
+    @media (min-width: @grid-float-breakpoint){
+      margin-left: 130px;
+    }  
+  }
+}
+
+.ul-footer-menu{
+  padding: 0;
+  list-style: none;
 }
 
 // ** LOGO ** //
@@ -424,16 +472,9 @@ body.cke_editable, body.mceContentBody{
 // -------------------
 
 .ul-social{
-  @media (min-width: @grid-float-breakpoint){
-    position: absolute;
-    top: 30px;
-    right: 220px;
-    padding: 0;
-  }
-
   list-style: none;
-  padding: 10px 15px 20px 15px;
-  margin: 0;
+  margin: 0 -3px;
+  padding: 0;
 
   li{
     display: inline-block;
@@ -460,6 +501,29 @@ body.cke_editable, body.mceContentBody{
   }
 }
 
+.navbar-collapse{
+  .ul-social{
+    padding: 10px 15px 20px 15px;
+    @media (min-width: @grid-float-breakpoint){
+      position: absolute;
+      top: 30px;
+      right: 220px;
+      padding: 0;
+    }  
+  }
+}
+
+.tcbl-footer-content{
+  .ul-social{
+    @media (min-width: @grid-float-breakpoint){
+      position: absolute;
+      top: 0px;
+      right: 220px;
+    }
+  }  
+}
+
+
 // Facebook
 .a-social-2945{ background: #3957a0;}
 // Twitter
@@ -469,18 +533,29 @@ body.cke_editable, body.mceContentBody{
 // YouTube
 .a-social-2949{ background: #ec2124;}
 
+
+// ** EVENT HEADER **
+// ------------------
+
+.wrapper-address{
+  margin-left: 30px;
+  position: relative;
+
+  img{
+    position: absolute;
+    top: 5px;
+    left: -30px;
+    max-width: 20px;
+  }
+}
+
 // ** USER MENU **
 // ---------------
 
 .user-menu{
-  padding: 10px 15px;
+  padding: 0;
   @media (min-width: @grid-float-breakpoint){
-    position: absolute;
-    top: 28px;
-    right: 20px;
-    width: 180px;
     text-align: right;
-    padding: 0;
   }
 
   img{
@@ -509,193 +584,108 @@ body.cke_editable, body.mceContentBody{
   }
 }
 
+.navbar-collapse{
+  .user-menu{
+    padding: 10px 15px;
+    @media (min-width: @grid-float-breakpoint){
+      padding: 0;
+      position: absolute;
+      top: 28px;
+      right: 20px;
+      width: 180px;
+    }
+  }
+}
+
+.tcbl-footer-content{
+  .user-menu{
+    .margin-b(0.5);
+
+    @media (min-width: @grid-float-breakpoint){
+      position: absolute;
+      top: -2px;
+      right: 20px;
+    }
+  }  
+}
+
+// ** TCBL AVATAR **
+// -----------------
+
+.tcbl-avatar{
+  max-width: 85px;
+  .border-top-radius(100%);
+  .border-bottom-radius(100%);
+  
+  img{
+    .border-top-radius(100%);
+    .border-bottom-radius(100%);
+    border: 2px solid #94d0e8;  
+    padding: 4px;
+
+    &.default{
+      padding: 0;
+    }
+  }
+}
+
+.tcbl-avatar-small{
+  max-width: 50px;
+  img{
+    border: 1px solid #94d0e8;
+    padding: 1px;
+  }
+}
+
+// ** BANNER **
+// ------------
+
+.node-settings{
+  .field-type-entityreference{
+    .field-label{
+      font-weight: @font-weight-bold;
+      .margin-b(0.5);
+    }
+  }
+
+  &.node-unpublished{
+    background: none;
+  }
+}
+
+.node-banner{
+  &.node-unpublished{
+    background: none;
+  }
+}
+
+// ** ONLINE USER **
+// -----------------
+
+#block-user-online{
+  padding: 10px;
+  border: 1px dashed @gray-light;
+  font-size: @font-size-small;
+
+  p{
+    margin-bottom: 0;
+  }
+
+  ul{
+    list-style: none;
+    padding: 0;
+    margin-bottom: 0;
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+
+  li{
+    display: inline-block;
+    font-weight: @font-weight-bold;
+    margin: 3px 15px;
+  }
+}
 
 // ** MEDIA QUERY EXAMPLE **
 // -------------------------
 // @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max){}
-
-/* Feed item by Jack ;) */
-.feed-item {
-
-  .content{
-    margin:10px;
-    /*border: 1px solid #dedede;*/
-    position: relative;
-    overflow: hidden;
-
-    .image-content{
-      position: relative;
-      width: 100%;
-      height: 180px;
-      overflow: hidden;
-      img {
-        /*object-fit: cover;*/
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        height: auto;
-        width: 100%;
-        -webkit-transform: translate(-50%,-50%);
-        -ms-transform: translate(-50%,-50%);
-        transform: translate(-50%,-50%);
-      }
-    }
-
-    .feed-title{
-      position: absolute;
-      top:5px;
-      width:90%;
-      padding: 5px 10px;
-      font-size: 16px;
-      font-weight: 600;
-      font-style: italic;
-      color: @primary;
-    }
-  }
-
-  &.feed-item-tcbl-labs{
-    .content{
-      .image-content:after {
-        content: "";
-        display: block;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: rgba(255,255,255, 0.7);
-      }
-
-
-    }
-  }
-
-  &.feed-item-tcbl-zine{
-    .content{
-      .image-content{
-        img{
-          height: 100%;
-          width: auto;
-        }
-      }
-      .feed-title{
-        position: relative;
-        padding: 5px 15px;
-        font-size: 12px;
-        font-weight: 600;
-        font-style: italic;
-        color: @primary;
-      }
-    }
-  }
-
-  &.feed-item-social{
-    .content{
-      /*border: 1px dashed #dedede;*/
-      margin:0;
-      height:150px;
-      background: @gray-lightest;
-
-      i.fa{
-        color: white;
-        position:absolute;
-        left:7px;
-        top:7px;
-      }
-
-      .image-content{
-        img{
-          height: 100%;
-          width: auto;
-        }
-      }
-      a .image-content img{
-        filter: blur(2px) grayscale(100%);
-        -webkit-filter: blur(2px) grayscale(100%);
-        -moz-filter: blur(2px) grayscale(100%);
-      }
-      a:hover .image-content img{
-        filter: none;
-        -webkit-filter: none;
-        -moz-filter: none;
-      }
-
-      .feed-date{
-        position: absolute;
-        font-size: 11px;
-        top:7px;
-        right:7px;
-        color: @gray-dark;
-        font-weight: bold;
-      }
-
-      .feed-message{
-        position: absolute;
-        font-size: 9px;
-        line-height: 12px;
-        font-style: italic;
-        top: 50px;
-        left: 0;
-        right: 0;
-        padding: 0 10px;
-        height: 65px;
-        overflow: hidden;
-      }
-
-      .feed-author{
-        position: absolute;
-        font-size: 12px;
-        font-weight: bold;
-        bottom: 10px;
-        left: 0;
-        right: 0;
-        padding: 0 10px;
-        height: 20px;
-        overflow: hidden;
-      }
-
-    }
-
-
-    /*
-    &.feed-item-facebook{
-      .content{
-        background: #dfe3ee;
-        i.fa{
-          color: #3b5998;
-        }
-      }
-    }
-    &.feed-item-instagram{
-      .content{
-        background: #efefef;
-        i.fa{
-          color: #000000;
-        }
-      }
-    }
-    &.feed-item-twitter{
-      .content{
-        background: #c0deed;
-        i.fa{
-          color: #00aced;
-        }
-      }
-    }
-    */
-
-  }
-
-
-  pre.dump{
-    font-size: 9px;
-    color: #c7254e;
-    background-color: #f9f2f4;
-    padding: 2px;
-  }
-
-
-}
-
-
-/* Feed item by Jack ;) */

@@ -32,14 +32,14 @@
           </div>
         </div>
 
-        <?php //if ($show_sign_up) : ?>
+        <?php if ($show_sign_up) : ?>
         <div class="text-center">
           <a href="https://tcblsso.ilabt.iminds.be/usermanager/user/register"
              class="btn btn-primary btn-lg" title="Sign up">
             Sign up
           </a>
         </div>
-        <?php //endif; ?>
+        <?php endif; ?>
       </div>
     </div>
   </div>
@@ -53,11 +53,11 @@
             <?php print render($content['news']); ?>
           </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-6 col-md-4">
           <h2 class="h1 h1-front-cms">Upcoming events</h2>
           <?php print render($content['events']); ?>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-6 col-md-4">
           <h2 class="h1 h1-front-cms">From the forum</h2>
           <?php print render($content['forum']); ?>
         </div>
@@ -66,8 +66,8 @@
   </div>
 
   <div class="wrapper-front-banner">
-    <div class="container">
-      <div class="well"><code>banner</code></div>
+    <div class="container margin-v-2">
+      <?php print render($content['banner']); ?>
     </div>
   </div>
 
@@ -75,7 +75,10 @@
     <div class="container">
       <div class="front-labs-header text-center">
         <h2 class="h1-big text-uppercase">Labs</h2>
-        <p>Lorem ipsum dolor sit amet</p>
+        <p>
+          Labs are the active, physical context in which TCBL's explorations of new models take place.<br/>
+          Check out the latest projects from our Labs.
+        </p>
       </div>
       <div class="row margin-v-1">
         <?php print render($tcbl_feeds["labs"]); ?>
@@ -96,13 +99,13 @@
   </div>
 
   <div class="wrapper-front-feed-zine">
-    <div class="container">
+    <div class="container-fluid">
       <div class="front-feed-header text-center">
         <h2 class="h1-big text-uppercase">TCBL_ZINE</h2>
         <p>Storytelling, case studies, research and more on the world of textile and clothing in Europe</p>
       </div>
-      <div class="row margin-v-1">
-        <?php print render($tcbl_feeds["zine"]); ?>
+      <div class="row margin-v-1 wrapper-zine-sameh">
+        <?php print render($tcbl_feeds['zine']); ?>
       </div>
     </div>
   </div>
@@ -110,7 +113,7 @@
   <div class="wrapper-front-feed-social">
     <div class="container">
       <div class="row margin-v-1">
-        <?php print render($tcbl_feeds["social"]); ?>
+        <?php print render($tcbl_feeds['social']); ?>
       </div>
     </div>
   </div>
