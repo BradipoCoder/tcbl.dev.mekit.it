@@ -67,13 +67,13 @@
   <![endif]-->
   <?php print $scripts; ?>
   <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-115893884-1"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-67804027-1"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
 
-    gtag('config', 'UA-115893884-1');
+    gtag('config', 'UA-67804027-1');
   </script>
 </head>
 <body<?php print $body_attributes; ?>>
