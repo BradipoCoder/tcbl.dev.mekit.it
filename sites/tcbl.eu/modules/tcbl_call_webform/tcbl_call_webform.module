@@ -1,0 +1,146 @@
+<?php
+
+/**
+ * Implements hook_node_view().
+ */
+function tcbl_call_webform_node_view($node, $view_mode, $langcode) {
+  if (!user_access('administer')) return;//@todo: remove me when finished!
+  if ($node->nid != 360) return;
+
+  /** \stdClass $user */
+  global $user;
+
+  $can_sign_up = _tcbl_call_webform_check_if_can_sign_up($user);
+
+  if(!$can_sign_up)
+  {
+    $node->content['webform']['#enabled'] = FALSE;
+    $node->content['body'][0]['#markup'] = '<p>'.t("You have already signed up at Thela. Please follow this link to the ")
+                                           .l("Thela website", "https://thela.cleviria.it/", ["attributes" => ["target"=>"_blank"]]).'</p>';
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * @param array $form
+ * @param array $form_state
+ * @param string $form_id
+ */
+function tcbl_call_webform_form_webform_client_form_360_alter(&$form, &$form_state, $form_id) {
+  if (!user_access('administer')) return;//@todo: remove me when finished!
+
+  /** \stdClass $user */
+  global $user;
+  $account = user_load($user->uid);
+
+  // Default values
+  $form['submitted']['firstname']['#default_value'] = isset($account->field_firstname[LANGUAGE_NONE][0]["value"]) ? $account->field_firstname[LANGUAGE_NONE][0]["value"] : "";
+  $form['submitted']['lastname']['#default_value'] = isset($account->field_lastname[LANGUAGE_NONE][0]["value"]) ? $account->field_lastname[LANGUAGE_NONE][0]["value"] : "";
+
+  // Testing values - @todo: delete these
+  $form['submitted']['companyName']['#default_value'] = "Mekit";
+  $form['submitted']['address']['#default_value'] = "Corso Lecce, 28";
+  $form['submitted']['city']['#default_value'] = "Torino";
+  $form['submitted']['cap']['#default_value'] = "10134";
+  $form['submitted']['country']['#default_value'] = "IT";
+
+
+  $is_submitted = (isset($form_state["input"]["op"]) && $form_state["input"]["op"] === "Submit");
+
+
+  if($is_submitted)
+  {
+    dpm($form_state, "FORM STATE");
+
+    $sign_up_data = [];
+    if(isset($form_state['input']['submitted']) && is_array($form_state['input']['submitted'])) {
+      $sign_up_data = $form_state['input']['submitted'];
+    }
+
+    dpm($sign_up_data, "Thela Sign Up Data");
+
+    try
+    {
+      _tcbl_call_webform_send_submission_to_thela($sign_up_data);
+    } catch(\Exception $e) {
+      form_set_error("email", "Error #".$e->getCode().": " . $e->getMessage());
+    }
+  }
+
+}
+
+
+/**
+ * @param array $data
+ *
+ * @throws \Exception
+ */
+function _tcbl_call_webform_send_submission_to_thela($data) {
+  $error_messages = [
+    "0" => "OK",
+    "1" => "Company name is not set",
+    "2" => "User with this email is already registered",
+    "3" => "Country must be a two digit string",
+    "255" => "Blimey! An unknown error occured!",
+  ];
+
+  $answer = new \stdClass();
+  $answer->errorCode = 255;
+  $answer->message = $error_messages[$answer->errorCode];
+
+  $ch = curl_init();
+
+  curl_setopt($ch, CURLOPT_URL,"http://thelademo.cleviria.it/tcblCall");
+  curl_setopt($ch, CURLOPT_POST, TRUE);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+  curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+  $response = curl_exec($ch);
+  curl_close ($ch);
+
+  //cleanup invalid response
+  $response = trim($response);
+  $response = str_replace('",', '"', $response);//asked to be fixed
+
+  $ro = @json_decode($response);
+  if($ro instanceof \stdClass && isset($ro->returnValue))
+  {
+    $answer->errorCode = $ro->returnValue;
+    $answer->message = array_key_exists($ro->returnValue, $error_messages) ? $error_messages[$ro->returnValue] : $answer->message;
+  }
+
+  dpm($ro, "JSON RESPONSE");
+  dpm($answer, "Answer");
+
+  //handle Error
+  if($answer->errorCode) {
+    throw new \Exception($answer->message, $answer->errorCode);
+  }
+}
+
+
+/**
+ * Check if user can sign up to Thela.
+ * For now an existing submission will suffice
+ *
+ * @param \stdClass $user
+ *
+ * @return bool
+ */
+function _tcbl_call_webform_check_if_can_sign_up($user) {
+  $answer = true;
+
+  if(isset($user->uid)) {
+    $submissionCount = intval(webform_get_submission_count(360, $user->uid));
+    $answer = $submissionCount == 0;
+  }
+
+  return $answer;
+}
+
+
+
+
+
+
