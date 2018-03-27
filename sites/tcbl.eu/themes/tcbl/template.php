@@ -12,6 +12,7 @@ require('include/form.php');
 require('include/paragraphs.php');
 require('include/feed.php');
 require('include/comment.php');
+require('include/access.php');
 
 /**
  * Implements hook_preprocess_html()
@@ -25,11 +26,6 @@ function tcbl_preprocess_html(&$variables) {
   foreach ($fonts as $key => $css) {
     drupal_add_css($css, array('type' => 'external'));
   }
-
-  /*
-  $ga = _tcbl_get_ga_script();
-  drupal_add_js($ga, array('type' => 'inline', 'scope' => 'header', 'weight' => 5));
-  */
 }
 
 function tcbl_preprocess_page(&$vars){
@@ -45,6 +41,8 @@ function tcbl_preprocess_page(&$vars){
     $vars['container_class'] = 'container-fluid';
   }
 
+  //_tcbl_remove_comment_wall($vars);
+
   _tcbl_add_social_menu($vars);
   _tcbl_add_user_login($vars);
   _tcbl_add_header($vars);
@@ -57,6 +55,19 @@ function tcbl_preprocess_page(&$vars){
 
   $js_scroll_to = libraries_get_path('jquery.scrollto') . '/jquery.scrollto.js';
   drupal_add_js( $js_scroll_to , array('group' => JS_LIBRARY, 'weight' => 1));
+}
+
+function _tcbl_remove_comment_wall(&$vars){
+  if (isset($vars['tabs']['#primary'])){
+    $primary = $vars['tabs']['#primary'];
+    if (!empty($primary)){
+      foreach ($primary as $key => $l) {
+        if (isset($l['#link']['path']) && ($l['#link']['path'] == 'user/%/comment-wall')){
+          unset($vars['tabs']['#primary'][$key]);
+        }
+      }
+    }
+  }
 }
 
 function tcbl_preprocess_user_profile(&$vars){
@@ -104,23 +115,27 @@ function tcbl_form_node_form_alter(&$form, $form_state){
   } else {
     $form['options']['promote']['#access'] = false;
     $form['options']['sticky']['#access'] = false;
-
     field_group_hide_field_groups($form, array('group_hide'));
   }
-}
+  
+  // Can see editor field
+  $is_editor = _tcbl_is_editor();
 
-/**
- * @return string
- */
-function _tcbl_get_ga_script(){
-  $ga = "(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  // Field author | Forum topic
+  if (isset($form['field_author']['und'][0]['uid'])){
+    $form['field_author']['und'][0]['uid']['#default_value'] = $user->uid;
+    if (!$is_editor){
+      $form['field_author']['#disabled'] = true;  
+    }
+  }
 
-  ga('create', 'UA-99587862-1', 'auto');
-  ga('send', 'pageview');";
-  return $ga;
+  // Field by | News
+  if (isset($form['field_by']['und'][0]['uid'])){
+    $form['field_by']['und'][0]['uid']['#default_value'] = $user->uid;
+    if (!$is_editor){
+      $form['field_by']['#disabled'] = true;  
+    }
+  }
 }
 
 // ** THEME **
@@ -171,5 +186,20 @@ function tcbl_form_webform_client_form_20_alter(&$form, &$form_state, $form_id){
     $form['submitted']['info']['#default_value'] = $node->title;
   } else {
     $form['submitted']['info']['#default_value'] = 'Home page';
+  }
+}
+
+function tcbl_preprocess_sadmin(&$vars){
+  $is_editor = _tcbl_is_editor();
+  //dpm($vars['buttons']);
+
+  if (!$is_editor){
+    if (isset($vars['buttons'])){
+      foreach ($vars['buttons'] as $key => $l) {
+         if ($l['#path'] == 'node/355'){
+            unset($vars['buttons'][$key]);
+         }
+       } 
+    }  
   }
 }

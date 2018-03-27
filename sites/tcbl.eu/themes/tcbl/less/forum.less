@@ -11,7 +11,10 @@
 .topic-item--content{
   position: relative;
   padding: 20px 20px 20px 40px;
-  margin-right: @topic-box-width * 2;
+
+  @media(min-width: @screen-sm-min){
+    margin-right: @topic-box-width * 2;
+  }
 
   h3 a{
     position: relative;
@@ -31,19 +34,35 @@
 
 .topic-item--comments,
 .topic-item--date{
-  position: absolute;
-  width: @topic-box-width;
-  text-align: center;
-  border-left: 1px solid @primary-light;
-  height: 100%;
+  @media(max-width: @screen-xs-max){
+    padding: 0 40px;
+  }
+  @media(min-width: @screen-sm-min){
+    position: absolute;
+    width: @topic-box-width;
+    text-align: center;
+    border-left: 1px solid @primary-light;
+    height: 100%;  
+  }
   background: @primary-lightest;
 }
 
+@media(max-width: @screen-xs-max){
+  .topic-item--comments{
+    .padding-b(0.25);
+  }
+  .topic-item--date{
+    .padding-t(0.25);
+  }
+}
+
 .topic-v-center{
-  position: absolute;
-  top: 50%;
-  width: 100%;
-  margin-top: -13px;
+  @media(min-width: @screen-sm-min){
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    margin-top: -13px;
+  }
 }
 
 .topic-item--comments{
@@ -79,9 +98,6 @@
 }
 
 .wrapper-topic{
-  @media (max-width: @screen-xs-max){
-    .margin-t(2);
-  }
   @media (min-width: @screen-sm-min){
     margin-left: 40px;
   }

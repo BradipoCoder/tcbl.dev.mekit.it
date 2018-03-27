@@ -64,6 +64,7 @@ function _tcbl_preprocess_node_event(&$vars){
       '#key' => 'AIzaSyD4-faaQay2GTDdD6RlEqADHdyL4Ouj1rw',
       '#height' => '250',
     );
+    _tcbl_add_comments_cta($vars);
   }
 
   if ($vars['view_mode'] == 'teaser'){
@@ -153,6 +154,8 @@ function _tcbl_preprocess_node_forum(&$vars){
       $avat = _tcbl_get_avatar_path($f_user);
       $vars['avatar'] = $avat;
     }
+
+    _tcbl_add_comments_cta($vars);
   }
 
   if ($vars['view_mode'] == 'teaser'){
@@ -200,6 +203,8 @@ function _tcbl_preprocess_node_blog(&$vars){
         '#weight' => 8,
       );
     }
+
+    _tcbl_add_comments_cta($vars);
   }
 
   if ($vars['view_mode'] == 'child'){

@@ -268,15 +268,22 @@ body.cke_editable, body.mceContentBody{
   position: relative;
 
   .field-name-field-img{
-    position: absolute;
-    top: 0;
-    left: 0;
-    max-width: 150px;
+    max-width: 80px;
+    .margin-t(1);
+    @media (min-width: @screen-sm-min){
+      margin-top: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      max-width: 150px;
+    }
   }
 
   .field-name-field-short{
-    margin-left: 170px;
-    min-height: 150px;
+    @media (min-width: @screen-sm-min){
+      margin-left: 170px;
+      min-height: 150px;
+    }
   }
 }
 

@@ -197,15 +197,18 @@ function _tcbl_add_light_footer(&$vars){
       ),
     );
 
-    foreach ($keys as $key) {
-      $item = $nav[$key];
-      $l = $item['#original_link'];
-    
-      $menu[$key] = array(
-        '#prefix' => '<li>',
-        '#suffix' => '</li>',
-        '#markup' => l($l['link_title'], $l['link_path'], $opt),
-      );
+    foreach ($keys as $key){
+      // Remove TCBL Conference link
+      if ($key !== 3265){
+        $item = $nav[$key];
+        $l = $item['#original_link'];
+      
+        $menu[$key] = array(
+          '#prefix' => '<li>',
+          '#suffix' => '</li>',
+          '#markup' => l($l['link_title'], $l['link_path'], $opt),
+        );  
+      }
     }
     $content['menu'] = $menu;
   }
@@ -260,7 +263,7 @@ function _tcbl_faq_link($node){
   );
 
   $data['link'] = array(
-    '#prefix' => '<div class="wrapper-faq-link margin-b-1 text-right"><span class="h4 small">',
+    '#prefix' => '<div class="wrapper-faq-link margin-b-05 text-right"><span class="h4 small">',
     '#suffix' => '</span></div>',
     '#markup' => l($text, '', $opt),
   );

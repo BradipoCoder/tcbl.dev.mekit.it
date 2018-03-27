@@ -14,7 +14,7 @@
 ftpsync.settings
 tcbl.sublime-project
 tcbl.sublime-workspace
-
+sftp-config.json
 
 # DRUPAL - Configuration files containing sensitive information
 # -------------------------------------------------------------
