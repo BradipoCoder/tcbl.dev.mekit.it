@@ -4,20 +4,122 @@
  * Implements hook_node_view().
  */
 function tcbl_call_webform_node_view($node, $view_mode, $langcode) {
-  if (!user_access('administer')) return;//@todo: remove me when finished!
   if ($node->nid != 360) return;
 
   /** \stdClass $user */
   global $user;
+
+  if (!user_has_role(2))
+  {
+    $node->content['webform']['#enabled'] = FALSE;
+    $node->content['body'][0]['#markup'] = '<p>'
+                                           . t("Please log in to view this resource.")
+                                           .'</p>';
+    return;
+  }
+
+  //@todo: remove when finished
+  if (!user_has_role(3) || !user_has_role(4)) {
+    $node->content['webform']['#enabled'] = FALSE;
+    $markup = '<h3>Registration will be opened soon.</h3>';
+    $node->content['body'][0]['#markup'] = $markup;
+    return;
+  }
 
   $can_sign_up = _tcbl_call_webform_check_if_can_sign_up($user);
 
   if(!$can_sign_up)
   {
     $node->content['webform']['#enabled'] = FALSE;
-    $node->content['body'][0]['#markup'] = '<p>'.t("You have already signed up at Thela. Please follow this link to the ")
-                                           .l("Thela website", "https://thela.cleviria.it/", ["attributes" => ["target"=>"_blank"]]).'</p>';
+
+    $markup = [];
+    $markup[] = '<p>' . t("You have already signed up at the Thela Platform.") . '</p>';
+    $opt = [
+      'attributes' => [
+        'class' => ['btn','btn-primary'],
+        'target' => '_blank'
+      ]
+    ];
+    $markup[] = '<p>' . l(t('Go to the Thela Platform'),'https://thela.cleviria.com', $opt) .'</p>';
+
+    $node->content['body'][0]['#markup'] = implode("\n", $markup);
+
   }
+}
+
+/**
+ * BIG PINK BUTTON in https://tcbl.eu/call-associate-enterprises (nid=340)
+ *
+ * @param array $vars
+ */
+function tcbl_call_webform_preprocess_field(&$vars)
+{
+  if(isset($vars["element"]["#object"]) && $vars["element"]["#object"] instanceof \ParagraphsItemEntity) {
+    /** @var \ParagraphsItemEntity $pi */
+    $pi = $vars["element"]["#object"];
+    if($pi->hostEntityType() == "node" &&  $pi->hostEntityId() == 340) {
+      if($pi->field_name == "field_content") {
+        $button = '';
+
+        //if (user_access('administer')) {
+          /** \stdClass $user */
+          global $user;
+
+          $opt = [
+            'attributes' => [
+              'class' => ['btn','btn-info', 'btn-lg']
+            ]
+          ];
+
+          if (!user_has_role(2)) {
+            $button = l(t('Login with TCBL'), 'user/gluuSSO', $opt);
+          } else {
+            $can_sign_up = _tcbl_call_webform_check_if_can_sign_up($user);
+
+            if($can_sign_up)
+            {
+              $button = l(t('Sign up'),'node/360', $opt);
+            } else {
+              $opt['attributes']['target'] = '_blank';
+              $button = l(t('Go to the Thela Platform'),'https://thela.cleviria.com', $opt);
+            }
+          }
+        //}
+
+        // Substitute {{{THELA-SIGNUP-BUTTON}}} in the text
+        $vars['items'][0]['#markup'] = str_replace('{{{THELA-SIGNUP-BUTTON}}}', $button, $vars['items'][0]['#markup']);
+
+      }
+    }
+  }
+}
+
+
+/**
+ *
+ * Confirmation page
+ *
+ * Implements hook_preprocess_HOOK().
+ * @see sites/all/themes/mekit/templates/webform/webform-confirmation.tpl.php
+ *
+ * @param array $variables
+ */
+function tcbl_call_webform_preprocess_webform_confirmation(&$variables) {
+  $cm = [];
+  $cm[] = '<h1 class="text-success">' . t("Your registration was succesful.") .'</h1>';
+  $cm[] = '<p>' . t("A confirmation e-mail has been sent to your mailbox.") .'</p>';
+  $cm[] = '<p>' . t("Now you can proceed to the Thela platform.") .'</p>';
+  $opt = [
+    'attributes' => [
+      'class' => ['btn','btn-primary'],
+      'target' => '_blank'
+    ]
+  ];
+  $cm[] = '<p>' . l(t('Go to the Thela Platform'),'https://thela.cleviria.com', $opt) .'</p>';
+
+
+  $variables["confirmation_message"] = implode("\n", $cm);
+  $variables["hide_back_to_home_link"] = true;
 }
 
 /**
@@ -51,14 +153,14 @@ function tcbl_call_webform_form_webform_client_form_360_alter(&$form, &$form_sta
 
   if($is_submitted)
   {
-    dpm($form_state, "FORM STATE");
+    //dpm($form_state, "FORM STATE");
 
     $sign_up_data = [];
     if(isset($form_state['input']['submitted']) && is_array($form_state['input']['submitted'])) {
       $sign_up_data = $form_state['input']['submitted'];
     }
 
-    dpm($sign_up_data, "Thela Sign Up Data");
+    //dpm($sign_up_data, "Thela Sign Up Data");
 
     try
     {
@@ -110,8 +212,8 @@ function _tcbl_call_webform_send_submission_to_thela($data) {
     $answer->message = array_key_exists($ro->returnValue, $error_messages) ? $error_messages[$ro->returnValue] : $answer->message;
   }
 
-  dpm($ro, "JSON RESPONSE");
-  dpm($answer, "Answer");
+  //dpm($ro, "JSON RESPONSE");
+  //dpm($answer, "Answer");
 
   //handle Error
   if($answer->errorCode) {
@@ -129,6 +231,7 @@ function _tcbl_call_webform_send_submission_to_thela($data) {
  * @return bool
  */
 function _tcbl_call_webform_check_if_can_sign_up($user) {
+  require_once("sites/all/modules/webform/includes/webform.submissions.inc");
   $answer = true;
 
   if(isset($user->uid)) {
