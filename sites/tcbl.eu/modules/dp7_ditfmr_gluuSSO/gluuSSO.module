@@ -39,6 +39,9 @@ function gluuSSO_loginSSO() {
   define("CLIENT_SECRET", "752e0b97-853b-47f0-a87d-bc15b8487339");
 
 
+  $postSSOredirect = isset($_SERVER["HTTP_REFERER"]) && !empty($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : '<front>';
+
+
   $client = new OpenIDConnectClient(
     ISSUER,
     CLIENT_ID,
@@ -68,7 +71,7 @@ function gluuSSO_loginSSO() {
       "exception" => $e
     ], WATCHDOG_ALERT
     );
-    drupal_goto('<front>');
+    drupal_goto($postSSOredirect);
     return $error_number;
   }
 
@@ -85,7 +88,7 @@ function gluuSSO_loginSSO() {
     $error_message = t("Unable to get e-mail address for user identification.");
     drupal_set_message($error_message, "error");
     watchdog("GLUU-SSO", $error_message, ["error_number" => $error_number], WATCHDOG_ALERT);
-    drupal_goto('<front>');
+    drupal_goto($postSSOredirect);
     return $error_number;
   }
 
@@ -168,7 +171,7 @@ function gluuSSO_loginSSO() {
     watchdog('gluu-sso', 'Session opened for %user (Gluu-Information: %name|%email|%inum) via TCBL login.', $info);
 
     //update user avatar
-    echo("<br />user:" . print_r($user, TRUE));
+    //echo("<br />user:" . print_r($user, TRUE));
 
     user_save(
       $user, [
@@ -203,7 +206,7 @@ function gluuSSO_loginSSO() {
   }
 
 
-  drupal_goto('<front>');
+  drupal_goto($postSSOredirect);
   //echo('<br/><a href="/user/gluuSSO">again</a>');
   return 1;
 }
