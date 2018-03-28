@@ -114,12 +114,12 @@ function tcbl_call_webform_preprocess_webform_confirmation(&$variables) {
   }
 
   $cm = [];
-  $cm[] = '<h1 class="text-success">' . t("Your registration was succesful.") .'</h1>';
-  $cm[] = '<p>' . t("A confirmation e-mail has been sent to your mailbox.") .'</p>';
-  $cm[] = '<p>' . t("Now you can proceed to the Thela platform.") .'</p>';
+  $cm[] = '<h1 class="margin-b-1">' . t("Your registration was successful") .'</h1>';
+  $cm[] = '<p>' . t("A confirmation e-mail has been sent to your mailbox.") . '<br/>';
+  $cm[] = t("Now you can proceed to the Thela platform.") .'</p>';
   $opt = [
     'attributes' => [
-      'class' => ['btn','btn-primary'],
+      'class' => ['btn','btn-primary', 'margin-t-1'],
       'target' => '_blank'
     ]
   ];

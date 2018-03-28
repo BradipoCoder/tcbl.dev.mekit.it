@@ -15,46 +15,32 @@
     print drupal_render($form['preview_message']);
     print '</div>';
   }
-
-  $form['submitted']['type']['#options'][''] = '- Tipologia * - ';
-
 ?>
 
 <?php // Print out the main part of the form. ?>
 <?php // Feel free to break this up and move the pieces within the array. ?>
 
-<div class="row">
-  <div class="col-md-6">
-    <?php print drupal_render($form['submitted']['name']); ?>
+
+<div class="row margin-v-2">
+  <div class="col-sm-6">
+    <?php print drupal_render($form['submitted']['firstname']); ?>
+    <?php print drupal_render($form['submitted']['lastname']); ?>
+    <?php print drupal_render($form['submitted']['email']); ?>
+    <?php print drupal_render($form['submitted']['companyName']); ?>
+  </div>
+  <div class="col-sm-6">
+    <?php print drupal_render($form['submitted']['address']); ?>
     <div class="row">
       <div class="col-sm-6">
-        <?php print drupal_render($form['submitted']['company']); ?>
+        <?php print drupal_render($form['submitted']['city']); ?>
       </div>
       <div class="col-sm-6">
-        <?php print drupal_render($form['submitted']['type']); ?>
+        <?php print drupal_render($form['submitted']['cap']); ?>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-6">
-        <?php print drupal_render($form['submitted']['e_mail']); ?>
-      </div>
-      <div class="col-sm-6">
-        <?php print drupal_render($form['submitted']['phone']); ?>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-6">
-    <?php print drupal_render($form['submitted']['phone']); ?>
-    <?php print drupal_render($form['submitted']['message']); ?>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-6">
-    <?php print drupal_render($form['submitted']['privacy']); ?>
-  </div>
-  <div class="col-md-6">
     <?php print drupal_render($form['submitted']); ?>
-    <div class="text-right">
+    
+    <div class="text-right margin-t-1">
       <?php print drupal_render_children($form); ?>
     </div>
   </div>
