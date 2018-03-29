@@ -18,7 +18,7 @@
   <?php print render($title_suffix); ?>
 
   <div class="node-content"<?php print $content_attributes; ?>>
-    <div class="conference-card">
+    <div class="conference-card-basic">
       
       <div class="conference-overview-head margin-b-1">
         <h1><?php print $node->title; ?></h1>

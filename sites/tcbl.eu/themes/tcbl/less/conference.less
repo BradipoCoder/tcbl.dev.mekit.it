@@ -40,6 +40,49 @@
   }
 }
 
+/** 
+ * Different spacing for day
+ */
+.conference-card-basic{
+  border: 1px solid @primary-light;  
+
+  .conference-overview-head{
+    .margin-h(1);
+    .margin-t(1);
+     @media (min-width: @screen-md-min){
+      .margin-h(2);
+      .margin-t(2);
+    }
+  }
+}
+
+.conference-card-basic{
+  .field-name-field-content{
+    > .field-items > .field-item{
+      .clearfix();
+
+      &.odd{
+        background: lighten(@gray-lightest, 4%);
+      }
+
+      .paragraphs-item-text-img,
+      .paragraphs-item-activity{
+        .padding-h(1);
+         @media (min-width: @screen-md-min){
+          .padding-h(2);
+        }
+        .content{
+          .margin-b(1);
+        }
+      }
+
+      .paragraphs-item-copy{
+        background: @gray-lighter;   
+      }
+    }
+  }  
+}
+
 .conference-overview-head{
   position: relative;
   padding-bottom: 15px;
@@ -47,6 +90,9 @@
 
   h1{
     margin: 0;
+    @media (max-width: @screen-sm-max){
+      .margin-b(0.5);
+    }
     @media (min-width: @screen-md-min){
       margin-right: 500px;  
     }
@@ -69,8 +115,10 @@
   }
 }
 
-.conference-tabs{
-  margin-top: -48px;
+@media (min-width: @screen-sm-min){
+  .conference-tabs{
+    margin-top: -48px;
+  }
 }
 
 .ul-conference-tabs{
@@ -80,11 +128,18 @@
   margin: 0;
   margin-bottom: -1px;
   border-bottom: 1px solid @gray-lighter;
+  @media (max-width: @screen-xs-max){
+    border-left: 1px solid @primary-light;  
+  }
   .clearfix();
 
   li{
     display: inline-block;
-    width: 25%;
+
+    width: 50%;
+    @media (min-width: @screen-sm-min){
+      width: 25%;
+    }
     text-align: center;
 
     a{
@@ -92,15 +147,21 @@
       .padding-v(0.25);
       border-right: 1px solid @primary-light;
 
+      @media (max-width: @screen-xs-max){
+        border-top: 1px solid @primary-light;
+      }
+
       &.active{
         background: @brand-primary;
         .color-and-hover(#fff);
       }
     }
 
-    &:last-child{
-      a{
-        border-right: none;
+    @media (min-width: @screen-sm-min){
+      &:last-child{
+        a{
+          border-right: none;
+        }
       }
     }
   }

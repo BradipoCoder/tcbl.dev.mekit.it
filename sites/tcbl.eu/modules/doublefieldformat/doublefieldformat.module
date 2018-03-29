@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * Implements hook_field_widget_form_alter().
+ */
+function doublefieldformat_field_widget_form_alter(&$element, &$form_state, $context) {
+  if (isset($element['#field_name']) && $element['#field_name'] === 'field_activity') {
+    $element['second']['#type'] = 'text_format';
+    $element['second']['#base_type'] = 'textarea';
+    $element['second']['#format'] = 'filtered_html';
+    $element['#element_validate'] = array('doublefieldformat_example_validation');
+  }
+}
+/**
+ * Validation handler for doublefieldformat_field_widget_form_alter().
+ */
+function doublefieldformat_example_validation($element, &$form_state, $form) {
+  // Remove the format field as it will not save, this is hard coded on output.
+  foreach (array('input', 'values') as $type) {
+    $values = &drupal_array_get_nested_value($form_state[$type], $element['#array_parents']);
+
+    foreach (array('second', 'first') as $subfield) {
+      if (isset($values[$subfield])) {
+        // Check if subfield has been modified.
+        if (isset($values[$subfield]['format']) && isset($values[$subfield]['value'])) {
+          // Replace entire array with string value from the value key.
+          $values[$subfield] = $values[$subfield]['value'];
+        }
+        // Check for empty string values, if so remove them so they don't get
+        // processed in later validation.
+        if ($values[$subfield] === '') {
+          unset($values);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+name = Double Field Format
+description = Aggiunge l'editor al double field
+package = Mekit
+core = 7.x
+version = 7.x-1.x-dev
+
+dependencies[] = double_field
