@@ -22,6 +22,15 @@ function _tcbl_add_header(&$vars){
     }
 
     _tcbl_event_header($vars, $node);
+
+    // Alter title for day content
+    if ($node->type == 'day'){
+      if (isset($node->nodehierarchy_menu_links[0]['pnid'])){
+        $cnid = $node->nodehierarchy_menu_links[0]['pnid'];
+        $conference = node_load($cnid);
+        $vars['page_title'] = $conference->title;
+      }
+    }
   }
 }
 

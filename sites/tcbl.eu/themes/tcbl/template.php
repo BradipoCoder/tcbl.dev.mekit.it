@@ -204,27 +204,39 @@ function tcbl_preprocess_sadmin(&$vars){
 function _tcbl_add_conference_cover(&$vars){
   if (isset($vars['node'])){
     $node = $vars['node'];  
-    if ($node->type == 'conference'){
-      
-      $tab_links[] = array(
-        'path' => '<front>',
+
+    $conference = false;
+    if ($node->type == 'conference' || $node->type == 'day'){
+      if (!arg(2)){    
+        if ($node->type == 'conference'){
+          $conference = $node;  
+        } else {
+          if (isset($node->nodehierarchy_menu_links[0]['pnid'])){
+            $c_nid = $node->nodehierarchy_menu_links[0]['pnid'];
+            $conference = node_load($c_nid);
+          }
+        }
+      }
+    }
+
+    if ($conference){
+      $cnid = $conference->nid;
+      $tab_links[$cnid] = array(
+        'path' => 'node/' . $cnid,
         'title' => 'Overview', 
       );
 
-      $tab_links[] = array(
-        'path' => '<front>',
-        'title' => 'Day one', 
-      );
-
-      $tab_links[] = array(
-        'path' => '<front>',
-        'title' => 'Day two', 
-      );
-
-      $tab_links[] = array(
-        'path' => '<front>',
-        'title' => 'Speaker', 
-      );
+      $links = _nodehierarchy_get_children_menu_links($conference->nid);
+      foreach ($links as $key => $link) {
+        if (isset($link['nid'])){
+          $nid = $link['nid'];
+          $day = node_load($nid);
+          $tab_links[$nid] = array(
+            'path' => 'node/' . $nid,
+            'title' => $day->title, 
+          );
+        }
+      }
 
       $tabs = array(
         '#prefix' => '<ul class="ul-conference-tabs">',
@@ -235,11 +247,21 @@ function _tcbl_add_conference_cover(&$vars){
       foreach ($tab_links as $key => $link) {
         $n++;
 
-        $markup = '<span>0' . $n  . '.</span> <span class="title">' . $link['title'] . '</span>';
+        $markup = '<span class="number">0' . $n  . '.</span> <span class="title">' . $link['title'] . '</span>';
 
         $opt = array(
           'html' => 'true',
         );
+
+        //dpm($key, $cnid);
+
+        if ($key != $cnid){
+          $opt['fragment'] = 'conference';  
+        }
+
+        if ($node->nid == $key){
+          $opt['attributes']['class'][] = 'active';
+        }
 
         $tabs[$key] = array(
           '#prefix' => '<li class="conf-tab">',
@@ -249,12 +271,12 @@ function _tcbl_add_conference_cover(&$vars){
       }
 
       // Cover image and content
-      if (isset($node->field_img['und'][0]['uri'])){
-        $uri = $node->field_img['und'][0]['uri'];
+      if (isset($conference->field_img['und'][0]['uri'])){
+        $uri = $conference->field_img['und'][0]['uri'];
         $url_img = file_create_url($uri);
 
-        $content['title'] = field_view_field('node', $node, 'field_description', 'default');
-        $content['sub'] = field_view_field('node', $node, 'field_subtitle', 'default');
+        $content['title'] = field_view_field('node', $conference, 'field_description', 'default');
+        $content['sub'] = field_view_field('node', $conference, 'field_subtitle', 'default');
         $content['tabs'] = $tabs;
 
         $vars['page']['conference_cover'] = array(

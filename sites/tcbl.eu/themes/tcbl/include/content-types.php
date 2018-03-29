@@ -50,6 +50,10 @@ function tcbl_preprocess_node(&$vars){
       _tcbl_preprocess_node_conference($vars);
       break;
 
+    case 'day':
+      _tcbl_preprocess_node_day($vars);
+      break;
+
 
     default:
       # code...
@@ -258,17 +262,37 @@ function _tcbl_preprocess_node_conference(&$vars){
   $node = $vars['node'];
 
   if ($vars['view_mode'] == 'full'){
-    $vars['content']['where'] = array(
-      '#prefix' => '<i class="fa fa-map-marker"></i>',
-    );
+    _add_conference_where($vars, $node);  
+  }
+}
 
-    if (isset($node->field_location['und'][0]['city']) && $node->field_location['und'][0]['city']){
-      $vars['content']['where']['city']['#markup'] = $node->field_location['und'][0]['city'];
+function _tcbl_preprocess_node_day(&$vars){
+  $node = $vars['node'];
+  if ($vars['view_mode'] == 'full'){
+
+    $conference = false;
+    if (isset($node->nodehierarchy_menu_links[0]['pnid'])){
+      $cnid = $node->nodehierarchy_menu_links[0]['pnid'];
+      $conference = node_load($cnid);
     }
 
-    if (isset($node->field_location['und'][0]['country_name']) && $node->field_location['und'][0]['country_name']){
-      $vars['content']['where']['country_name']['#prefix'] = ' / ';
-      $vars['content']['where']['country_name']['#markup'] = $node->field_location['und'][0]['country_name'];
+    if ($conference){
+      _add_conference_where($vars, $conference);
     }
+  }
+}
+
+function _add_conference_where(&$vars, $conference){
+  $vars['content']['where'] = array(
+    '#prefix' => '<i class="fa fa-map-marker"></i>',
+  );
+
+  if (isset($conference->field_location['und'][0]['city']) && $conference->field_location['und'][0]['city']){
+    $vars['content']['where']['city']['#markup'] = $conference->field_location['und'][0]['city'];
+  }
+
+  if (isset($conference->field_location['und'][0]['country_name']) && $conference->field_location['und'][0]['country_name']){
+    $vars['content']['where']['country_name']['#prefix'] = ' / ';
+    $vars['content']['where']['country_name']['#markup'] = $conference->field_location['und'][0]['country_name'];
   }
 }

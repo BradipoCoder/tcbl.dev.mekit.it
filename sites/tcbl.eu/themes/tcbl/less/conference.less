@@ -1,11 +1,24 @@
 /* less/conference.less */
 
+.parallax-content-conference{
+  .padding-v(1);
+  @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max){
+    .padding-t(2);
+    .padding-b(3);  
+  }
+  @media (min-width: @screen-md-min){
+    .padding-t(2);
+    .padding-b(3);  
+  }
+}
+
 .confcover-content{
   max-width: 850px;
   margin-left: auto;
   margin-right: auto;
 }
 
+.node-type-day,
 .node-type-conference{
   .main-container{
     padding-top: 0;
@@ -16,23 +29,21 @@
   }
 }
 
-
-.node-conference.node-full{
-  .conference-card{
-    border: 1px solid @primary-light;
-    
-    .padding-h(1);
-    .padding-v(1);
-    @media (min-width: @screen-md-min){
-      .padding-h(2);
-      .padding-v(2);
-    }
+.conference-card{
+  border: 1px solid @primary-light;
+  
+  .padding-h(1);
+  .padding-v(1);
+  @media (min-width: @screen-md-min){
+    .padding-h(2);
+    .padding-v(2);
   }
 }
 
 .conference-overview-head{
   position: relative;
   padding-bottom: 15px;
+  border-bottom: 1px solid @primary-light;
 
   h1{
     margin: 0;
@@ -59,7 +70,7 @@
 }
 
 .conference-tabs{
-  margin-top: -41px;
+  margin-top: -48px;
 }
 
 .ul-conference-tabs{
@@ -68,7 +79,7 @@
   padding: 0;
   margin: 0;
   margin-bottom: -1px;
-  border-bottom: 1px solid @primary-light;
+  border-bottom: 1px solid @gray-lighter;
   .clearfix();
 
   li{
@@ -80,6 +91,11 @@
       display: block;
       .padding-v(0.25);
       border-right: 1px solid @primary-light;
+
+      &.active{
+        background: @brand-primary;
+        .color-and-hover(#fff);
+      }
     }
 
     &:last-child{
@@ -87,5 +103,17 @@
         border-right: none;
       }
     }
+  }
+
+  .title{
+    font-style: italic;
+    font-size: @font-size-h3;
+    font-weight: @font-weight-bold;
+  }
+
+  .number{
+    font-style: italic;
+    font-weight: @font-weight-bold;
+    font-size: @font-size-small;
   }
 }
