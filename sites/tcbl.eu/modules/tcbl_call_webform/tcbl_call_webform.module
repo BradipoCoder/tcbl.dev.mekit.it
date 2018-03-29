@@ -18,17 +18,6 @@ function tcbl_call_webform_node_view($node, $view_mode, $langcode) {
     return;
   }
 
-
-
-  //@todo: remove when finished
-  if (!user_has_role(3) && !user_has_role(4)) {
-    $node->content['webform']['#enabled'] = FALSE;
-    $markup = '<h3>Registration will be opened soon.</h3>';
-    $node->content['body'][0]['#markup'] = $markup;
-    return;
-  }
-
-
   // Check if already signed up to Thela
   $can_sign_up = _tcbl_call_webform_check_if_can_sign_up($user);
 
@@ -63,32 +52,28 @@ function tcbl_call_webform_preprocess_field(&$vars)
     $pi = $vars["element"]["#object"];
     if($pi->hostEntityType() == "node" &&  $pi->hostEntityId() == 340) {
       if($pi->field_name == "field_content") {
-        $button = '';
+        /** \stdClass $user */
+        global $user;
 
-        //if (user_access('administer')) {
-          /** \stdClass $user */
-          global $user;
+        $opt = [
+          'attributes' => [
+            'class' => ['btn','btn-info', 'btn-lg']
+          ]
+        ];
 
-          $opt = [
-            'attributes' => [
-              'class' => ['btn','btn-info', 'btn-lg']
-            ]
-          ];
+        if (!user_has_role(2)) {
+          $button = l(t('Login with TCBL'), 'user/gluuSSO', $opt);
+        } else {
+          $can_sign_up = _tcbl_call_webform_check_if_can_sign_up($user);
 
-          if (!user_has_role(2)) {
-            $button = l(t('Login with TCBL'), 'user/gluuSSO', $opt);
+          if($can_sign_up)
+          {
+            $button = l(t('Sign up'),'node/360', $opt);
           } else {
-            $can_sign_up = _tcbl_call_webform_check_if_can_sign_up($user);
-
-            if($can_sign_up)
-            {
-              $button = l(t('Sign up'),'node/360', $opt);
-            } else {
-              $opt['attributes']['target'] = '_blank';
-              $button = l(t('Go to the Thela Platform'),'https://thela.cleviria.com', $opt);
-            }
+            $opt['attributes']['target'] = '_blank';
+            $button = l(t('Go to the Thela Platform'),'https://thela.cleviria.com', $opt);
           }
-        //}
+        }
 
         // Substitute {{{THELA-SIGNUP-BUTTON}}} in the text
         $vars['items'][0]['#markup'] = str_replace('{{{THELA-SIGNUP-BUTTON}}}', $button, $vars['items'][0]['#markup']);
@@ -125,6 +110,23 @@ function tcbl_call_webform_preprocess_webform_confirmation(&$variables) {
   ];
   $cm[] = '<p>' . l(t('Go to the Thela Platform'),'https://thela.cleviria.com', $opt) .'</p>';
 
+  $cm[] = '<p class="margin-t-2">' . t('For information about the Call, please contact @name, <a href="mailto:@mail">@mail</a>.',
+                                       ["@name" => "Paolo Guarnieri",
+                                        "@mail" => "tcbl@comune.prato.it"
+                                       ]) . '</p>';
+
+  $cm[] = '<p>' . t('For technical assistance with your Thela signup,<br /> please contact <a href="mailto:@mail">@mail</a>, @phone',
+                                       [
+                                        "@mail" => "support@cleviria.it",
+                                        "@phone" => "+39 0557 766702",
+                                       ]) . '</p>';
+
+  $opt = [
+    'attributes' => [
+      'class' => ['btn','btn-info', 'margin-t-1'],
+    ]
+  ];
+  $cm[] = '<p>' . l(t('Return to the Call for Associate Enterprises'),'node/340', $opt) .'</p>';
 
   $variables["confirmation_message"] = implode("\n", $cm);
   $variables["hide_back_to_home_link"] = true;
@@ -137,9 +139,8 @@ function tcbl_call_webform_preprocess_webform_confirmation(&$variables) {
  * @param array $form_state
  * @param string $form_id
  */
-function tcbl_call_webform_form_webform_client_form_360_alter(&$form, &$form_state, $form_id) {
-  if (!user_access('administer')) return;//@todo: remove me when finished!
-
+function tcbl_call_webform_form_webform_client_form_360_alter(&$form, &$form_state, $form_id)
+{
   /** \stdClass $user */
   global $user;
   $account = user_load($user->uid);
@@ -148,7 +149,7 @@ function tcbl_call_webform_form_webform_client_form_360_alter(&$form, &$form_sta
   $form['submitted']['firstname']['#default_value'] = isset($account->field_firstname[LANGUAGE_NONE][0]["value"]) ? $account->field_firstname[LANGUAGE_NONE][0]["value"] : "";
   $form['submitted']['lastname']['#default_value'] = isset($account->field_lastname[LANGUAGE_NONE][0]["value"]) ? $account->field_lastname[LANGUAGE_NONE][0]["value"] : "";
 
-  // Testing values - @todo: delete these
+  // Testing values - delete these
 //  $form['submitted']['companyName']['#default_value'] = "Mekit";
 //  $form['submitted']['address']['#default_value'] = "Corso Lecce, 28";
 //  $form['submitted']['city']['#default_value'] = "Torino";
@@ -201,7 +202,7 @@ function _tcbl_call_webform_send_submission_to_thela($data) {
 
   $ch = curl_init();
 
-  curl_setopt($ch, CURLOPT_URL,"http://thelademo.cleviria.it/tcblCall");
+  curl_setopt($ch, CURLOPT_URL,"https://thela.cleviria.it/tcblCall");
   curl_setopt($ch, CURLOPT_POST, TRUE);
   curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -219,9 +220,6 @@ function _tcbl_call_webform_send_submission_to_thela($data) {
     $answer->errorCode = $ro->returnValue;
     $answer->message = array_key_exists($ro->returnValue, $error_messages) ? $error_messages[$ro->returnValue] : $answer->message;
   }
-
-  //dpm($ro, "JSON RESPONSE");
-  //dpm($answer, "Answer");
 
   //handle Error
   if($answer->errorCode) {
