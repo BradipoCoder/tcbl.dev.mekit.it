@@ -84,6 +84,9 @@ hide($header_event['contact']);
       </div>
     </div>
   <?php endif; ?>
+
+  <?php print render($page['conference_cover']); ?>
+
   <div class="main-container <?php print $container_class; ?>">  
     
     <a id="main-content"></a>

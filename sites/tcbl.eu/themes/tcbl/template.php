@@ -41,14 +41,14 @@ function tcbl_preprocess_page(&$vars){
     $vars['container_class'] = 'container-fluid';
   }
 
-  //_tcbl_remove_comment_wall($vars);
-
   _tcbl_add_social_menu($vars);
   _tcbl_add_user_login($vars);
   _tcbl_add_header($vars);
   _tcbl_alter_breadcrumbs($vars);
 
   _tcbl_add_light_footer($vars);
+
+  _tcbl_add_conference_cover($vars);
   
   // Add usefull variables to page template (when views is present)
   _tcbl_is_page_with_view($vars);
@@ -57,18 +57,6 @@ function tcbl_preprocess_page(&$vars){
   drupal_add_js( $js_scroll_to , array('group' => JS_LIBRARY, 'weight' => 1));
 }
 
-function _tcbl_remove_comment_wall(&$vars){
-  if (isset($vars['tabs']['#primary'])){
-    $primary = $vars['tabs']['#primary'];
-    if (!empty($primary)){
-      foreach ($primary as $key => $l) {
-        if (isset($l['#link']['path']) && ($l['#link']['path'] == 'user/%/comment-wall')){
-          unset($vars['tabs']['#primary'][$key]);
-        }
-      }
-    }
-  }
-}
 
 function tcbl_preprocess_user_profile(&$vars){
   if (arg(1)){
@@ -174,6 +162,15 @@ function tcbl_theme(){
       'pattern' => 'tcblfooter__',
       'path' => $path,
     ),
+    'confcover' => array(
+      'template' => 'confcover',
+      'variables' => array(
+        'content' => array(),
+        'path' => NULL,
+      ),
+      'pattern' => 'confcover__',
+      'path' => $path,
+    ),
   );
 }
 
@@ -201,5 +198,74 @@ function tcbl_preprocess_sadmin(&$vars){
          }
        } 
     }  
+  }
+}
+
+function _tcbl_add_conference_cover(&$vars){
+  if (isset($vars['node'])){
+    $node = $vars['node'];  
+    if ($node->type == 'conference'){
+      
+      $tab_links[] = array(
+        'path' => '<front>',
+        'title' => 'Overview', 
+      );
+
+      $tab_links[] = array(
+        'path' => '<front>',
+        'title' => 'Day one', 
+      );
+
+      $tab_links[] = array(
+        'path' => '<front>',
+        'title' => 'Day two', 
+      );
+
+      $tab_links[] = array(
+        'path' => '<front>',
+        'title' => 'Speaker', 
+      );
+
+      $tabs = array(
+        '#prefix' => '<ul class="ul-conference-tabs">',
+        '#suffix' => '</ul>',
+      );
+
+      $n = 0;
+      foreach ($tab_links as $key => $link) {
+        $n++;
+
+        $markup = '<span>0' . $n  . '.</span> <span class="title">' . $link['title'] . '</span>';
+
+        $opt = array(
+          'html' => 'true',
+        );
+
+        $tabs[$key] = array(
+          '#prefix' => '<li class="conf-tab">',
+          '#suffix' => '</li>',
+          '#markup' => l($markup, $link['path'], $opt),
+        );
+      }
+
+      // Cover image and content
+      if (isset($node->field_img['und'][0]['uri'])){
+        $uri = $node->field_img['und'][0]['uri'];
+        $url_img = file_create_url($uri);
+
+        $content['title'] = field_view_field('node', $node, 'field_description', 'default');
+        $content['sub'] = field_view_field('node', $node, 'field_subtitle', 'default');
+        $content['tabs'] = $tabs;
+
+        $vars['page']['conference_cover'] = array(
+          '#theme' => 'confcover',
+          '#content' => $content,
+          '#path' => $url_img,
+        );
+
+        $js_parallax = libraries_get_path('jquery.parallax') . '/jquery.parallax.min.js';
+        drupal_add_js( $js_parallax , array('group' => JS_LIBRARY, 'weight' => 1));
+      }
+    }
   }
 }

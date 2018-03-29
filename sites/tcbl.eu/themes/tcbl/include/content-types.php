@@ -46,6 +46,10 @@ function tcbl_preprocess_node(&$vars){
       _tcbl_preprocess_node_settings($vars);
       break;
 
+    case 'conference':
+      _tcbl_preprocess_node_conference($vars);
+      break;
+
 
     default:
       # code...
@@ -247,5 +251,24 @@ function _tcbl_preprocess_node_settings(&$vars){
   // Install "content access" for only one page is an overkill
   if (!user_is_logged_in()){
     drupal_goto('<front>');
+  }
+}
+
+function _tcbl_preprocess_node_conference(&$vars){
+  $node = $vars['node'];
+
+  if ($vars['view_mode'] == 'full'){
+    $vars['content']['where'] = array(
+      '#prefix' => '<i class="fa fa-map-marker"></i>',
+    );
+
+    if (isset($node->field_location['und'][0]['city']) && $node->field_location['und'][0]['city']){
+      $vars['content']['where']['city']['#markup'] = $node->field_location['und'][0]['city'];
+    }
+
+    if (isset($node->field_location['und'][0]['country_name']) && $node->field_location['und'][0]['country_name']){
+      $vars['content']['where']['country_name']['#prefix'] = ' / ';
+      $vars['content']['where']['country_name']['#markup'] = $node->field_location['und'][0]['country_name'];
+    }
   }
 }
