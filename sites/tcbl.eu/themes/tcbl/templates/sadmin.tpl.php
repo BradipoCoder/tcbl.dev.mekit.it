@@ -1,12 +1,12 @@
 <div class="wrapper-simple-admin">
   <div class="container">
     <div class="row simple-admin">
-      <div class="col-sm-6">
+      <div class="col-sm-8">
         <div class="simple-admin-buttons">
           <p><?php print render($buttons); ?></p>
         </div>
       </div>
-      <div class="col-sm-6">
+      <div class="col-sm-4">
         <div class="simple-admin-user-buttons text-right text-xs-left">
           <p>
             <?php print render($comments); ?> | <?php print render($user_buttons); ?>

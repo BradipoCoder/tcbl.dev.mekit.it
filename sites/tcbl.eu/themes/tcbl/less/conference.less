@@ -178,3 +178,57 @@
     font-size: @font-size-small;
   }
 }
+
+// ** FOOTER **
+// ------------
+
+.cf-ul{
+  padding: 0;
+  margin: 0;
+
+  li{
+    display: inline-block;
+    width: 100%;
+    @media (min-width: @screen-sm-min){
+      width: 25%;  
+    }
+
+    a{
+      display: block;
+      text-align: center;
+      font-size: @font-size-h3;
+      .color-and-hover(@brand-primary);
+      font-weight: @font-weight-bold;
+      font-style: italic;
+      padding: 1px;
+
+      @media (min-width: @screen-sm-min){
+        border-left: 1px solid @brand-primary;
+      }
+    }
+
+    @media (min-width: @screen-sm-min){
+      &:first-child{
+        a{
+          border-left: none;
+        }
+      }
+    }
+  }
+}
+
+.conference-footer{
+  background: @gray-lightest;
+  padding-top: 15px;
+  padding-bottom: 15px;
+
+  .margin-h(-1);
+  .margin-b(-1);
+  .margin-t(2);
+  .padding-h(1);
+  @media (min-width: @screen-md-min){
+    .padding-h(2);
+    .margin-h(-2);
+    .margin-b(-2);
+  }
+}

@@ -6,7 +6,6 @@
 
 <?php
   hide($content['field_description']);
-  hide($content['field_subtitle']);
   hide($content['links']);
   hide($content['field_date']);
   hide($content['field_location']);

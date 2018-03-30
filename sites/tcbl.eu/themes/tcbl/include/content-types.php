@@ -262,7 +262,8 @@ function _tcbl_preprocess_node_conference(&$vars){
   $node = $vars['node'];
 
   if ($vars['view_mode'] == 'full'){
-    _add_conference_where($vars, $node);  
+    _add_conference_where($vars, $node);
+    _add_footer_menu($vars, $node);
   }
 }
 
@@ -276,9 +277,22 @@ function _tcbl_preprocess_node_day(&$vars){
       $conference = node_load($cnid);
     }
 
+    _tcbl_node_day_alter_subtitle($vars);
+
     if ($conference){
       _add_conference_where($vars, $conference);
     }
+  }
+}
+
+function _tcbl_node_day_alter_subtitle(&$vars){
+  $node = $vars['node'];
+  if (isset($node->field_subtitle['und'][0]['value']) && $node->field_subtitle['und'][0]['value'] !== ''){
+    $sub = $node->field_subtitle['und'][0]['value'];
+    $sub = str_replace("|", '<span class="pipe">|</span>', $sub);
+    $vars['content']['field_subtitle'][0]['#prefix'] = '<h4 class="text-center text-italic margin-v-05">';
+    $vars['content']['field_subtitle'][0]['#suffix'] = '</h4>';
+    $vars['content']['field_subtitle'][0]['#markup'] = $sub;
   }
 }
 
@@ -295,4 +309,46 @@ function _add_conference_where(&$vars, $conference){
     $vars['content']['where']['country_name']['#prefix'] = ' / ';
     $vars['content']['where']['country_name']['#markup'] = $conference->field_location['und'][0]['country_name'];
   }
+}
+
+function _add_footer_menu(&$vars, $conference){
+  $links = _nodehierarchy_get_children_menu_links($conference->nid);
+  foreach ($links as $key => $link) {
+    if (isset($link['nid'])){
+      $nid = $link['nid'];
+      $day = node_load($nid);
+      $tab_links[$nid] = array(
+        'path' => 'node/' . $nid,
+        'title' => $day->title,
+      );
+    }
+  }
+  
+  $footer['#prefix'] = '<div class="conference-footer"><ul class="cf-ul">';
+  $footer['#suffix'] = '</ul></div>';
+
+  foreach ($tab_links as $key => $l) {
+
+    $opt['fragment'] = 'conference';
+
+    $footer[$key] = array(
+      '#prefix' => '<li class="cf-li">',
+      '#suffix' => '</li>',
+      '#markup' => l($l['title'], $l['path'], $opt),
+    );
+  }
+
+  $opt = array(
+    'attributes' => array(
+      'target' => '_blank',
+    ),
+  );
+  $footer['form'] = array(
+    '#prefix' => '<li class="cf-li">',
+    '#suffix' => '</li>',
+    '#markup' => l('How to partecipate', '<front>', $opt),
+  );
+  
+  $vars['content']['footer'] = $footer;
+
 }
