@@ -68,7 +68,7 @@ function tcbl_call_webform_preprocess_field(&$vars)
 
           if($can_sign_up)
           {
-            $button = l(t('Sign up'),'node/360', $opt);
+            $button = l(t('Apply'),'node/360', $opt);
           } else {
             $opt['attributes']['target'] = '_blank';
             $button = l(t('Go to the Thela Platform'),'https://thela.cleviria.com', $opt);
@@ -99,9 +99,11 @@ function tcbl_call_webform_preprocess_webform_confirmation(&$variables) {
   }
 
   $cm = [];
-  $cm[] = '<h1 class="margin-b-1">' . t("Your registration was successful") .'</h1>';
-  $cm[] = '<p>' . t("A confirmation e-mail has been sent to your mailbox.") . '<br/>';
-  $cm[] = t("Now you can proceed to the Thela platform.") .'</p>';
+  $cm[] = '<h1 class="margin-b-1">' . t("You have successfully registered for the 2018 Call for Associate Enterprises") .'</h1>';
+  $cm[] = '<p>' . t("You have been granted a free Supplier license on the Thela platform, you have been linked as a “Supplier” to TCBL, and you have been assigned the Assessment questionnaire for the 2018 Call. A confirmation email has been sent to your mailbox.") .'</p>';
+  $cm[] = '<p>' . t("To access the Assessment questionnaire, you must go to the Thela homepage and click “Login with TCBL”. This takes you to your personal homepage on Thela, where you click “Compiling” to enter the Assessment questionnaire.") .'</p>';
+  $cm[] = '<p>' . t("Save the Assessment questionnaire as you work (you can generate a PDF at any time), and click on “Complete” when you have finished or at any rate before the final deadline.") .'</p>';
+
   $opt = [
     'attributes' => [
       'class' => ['btn','btn-primary', 'margin-t-1'],
