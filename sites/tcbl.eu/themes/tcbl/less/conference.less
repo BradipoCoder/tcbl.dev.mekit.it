@@ -1,0 +1,234 @@
+/* less/conference.less */
+
+.parallax-content-conference{
+  .padding-v(1);
+  @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max){
+    .padding-t(2);
+    .padding-b(3);  
+  }
+  @media (min-width: @screen-md-min){
+    .padding-t(2);
+    .padding-b(3);  
+  }
+}
+
+.confcover-content{
+  max-width: 850px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.node-type-day,
+.node-type-conference{
+  .main-container{
+    padding-top: 0;
+  }
+
+  .tabs--primary{
+    margin: 10px 0;
+  }
+}
+
+.conference-card{
+  border: 1px solid @primary-light;
+  
+  .padding-h(1);
+  .padding-v(1);
+  @media (min-width: @screen-md-min){
+    .padding-h(2);
+    .padding-v(2);
+  }
+}
+
+/** 
+ * Different spacing for day
+ */
+.conference-card-basic{
+  border: 1px solid @primary-light;  
+
+  .conference-overview-head{
+    .margin-h(1);
+    .margin-t(1);
+     @media (min-width: @screen-md-min){
+      .margin-h(2);
+      .margin-t(2);
+    }
+  }
+}
+
+.conference-card-basic{
+  .field-name-field-content{
+    > .field-items > .field-item{
+      .clearfix();
+
+      &.odd{
+        background: lighten(@gray-lightest, 4%);
+      }
+
+      .paragraphs-item-text-img,
+      .paragraphs-item-activity{
+        .padding-h(1);
+         @media (min-width: @screen-md-min){
+          .padding-h(2);
+        }
+        .content{
+          .margin-b(1);
+        }
+      }
+
+      .paragraphs-item-copy{
+        background: @gray-lighter;   
+      }
+    }
+  }  
+}
+
+.conference-overview-head{
+  position: relative;
+  padding-bottom: 15px;
+  border-bottom: 1px solid @primary-light;
+
+  h1{
+    margin: 0;
+    @media (max-width: @screen-sm-max){
+      .margin-b(0.5);
+    }
+    @media (min-width: @screen-md-min){
+      margin-right: 500px;  
+    }
+  }
+
+  .conference-details{
+    @media (min-width: @screen-md-min){
+      position: absolute;
+      top: 8px;
+      right: 0;
+    }
+    font-weight: @font-weight-bold;
+    .text-color(@brand-info);
+    font-style: italic;
+    font-size: @font-size-h4;
+  }
+
+  i{
+    margin: 0 10px;
+  }
+}
+
+@media (min-width: @screen-sm-min){
+  .conference-tabs{
+    margin-top: -48px;
+  }
+}
+
+.ul-conference-tabs{
+  background: #fff;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-bottom: -1px;
+  border-bottom: 1px solid @gray-lighter;
+  @media (max-width: @screen-xs-max){
+    border-left: 1px solid @primary-light;  
+  }
+  .clearfix();
+
+  li{
+    display: inline-block;
+
+    width: 50%;
+    @media (min-width: @screen-sm-min){
+      width: 25%;
+    }
+    text-align: center;
+
+    a{
+      display: block;
+      .padding-v(0.25);
+      border-right: 1px solid @primary-light;
+
+      @media (max-width: @screen-xs-max){
+        border-top: 1px solid @primary-light;
+      }
+
+      &.active{
+        background: @brand-primary;
+        .color-and-hover(#fff);
+      }
+    }
+
+    @media (min-width: @screen-sm-min){
+      &:last-child{
+        a{
+          border-right: none;
+        }
+      }
+    }
+  }
+
+  .title{
+    font-style: italic;
+    font-size: @font-size-h3;
+    font-weight: @font-weight-bold;
+  }
+
+  .number{
+    font-style: italic;
+    font-weight: @font-weight-bold;
+    font-size: @font-size-small;
+  }
+}
+
+// ** FOOTER **
+// ------------
+
+.cf-ul{
+  padding: 0;
+  margin: 0;
+
+  li{
+    display: inline-block;
+    width: 100%;
+    @media (min-width: @screen-sm-min){
+      width: 25%;  
+    }
+
+    a{
+      display: block;
+      text-align: center;
+      font-size: @font-size-h3;
+      .color-and-hover(@brand-primary);
+      font-weight: @font-weight-bold;
+      font-style: italic;
+      padding: 1px;
+
+      @media (min-width: @screen-sm-min){
+        border-left: 1px solid @brand-primary;
+      }
+    }
+
+    @media (min-width: @screen-sm-min){
+      &:first-child{
+        a{
+          border-left: none;
+        }
+      }
+    }
+  }
+}
+
+.conference-footer{
+  background: @gray-lightest;
+  padding-top: 15px;
+  padding-bottom: 15px;
+
+  .margin-h(-1);
+  .margin-b(-1);
+  .margin-t(2);
+  .padding-h(1);
+  @media (min-width: @screen-md-min){
+    .padding-h(2);
+    .margin-h(-2);
+    .margin-b(-2);
+  }
+}
