@@ -111,7 +111,9 @@ function tcbl_form_node_form_alter(&$form, $form_state){
 
   // Field author | Forum topic
   if (isset($form['field_author']['und'][0]['uid'])){
-    $form['field_author']['und'][0]['uid']['#default_value'] = $user->uid;
+    if (!$form['field_author']['und'][0]['uid']['#default_value']){
+      $form['field_author']['und'][0]['uid']['#default_value'] = $user->uid;
+    }
     if (!$is_editor){
       $form['field_author']['#disabled'] = true;  
     }
@@ -119,7 +121,10 @@ function tcbl_form_node_form_alter(&$form, $form_state){
 
   // Field by | News
   if (isset($form['field_by']['und'][0]['uid'])){
-    $form['field_by']['und'][0]['uid']['#default_value'] = $user->uid;
+    if (!$form['field_by']['und'][0]['uid']['#default_value']){
+      $form['field_by']['und'][0]['uid']['#default_value'] = $user->uid;
+    }
+
     if (!$is_editor){
       $form['field_by']['#disabled'] = true;  
     }

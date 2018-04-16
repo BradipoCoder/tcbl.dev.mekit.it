@@ -77,7 +77,10 @@ function _tcbl_preprocess_p_imgs(&$vars){
           'data' => $vars['content']['field_img_2'][$n],
         ),
       );
-      $vars['content'][$n]['img']['data']['#display_settings']['colorbox_node_style'] = $style;
+      //dpm($vars['content'][$n]['img']);
+
+      $vars['content'][$n]['img']['data']['#image_style'] = $style;
+      //$vars['content'][$n]['img']['data']['#display_settings']['colorbox_node_style'] = $style;
 
       //if (isset($vars['content']['field_img_2'][$n]['#item']['title']) && $vars['content']['field_img_2'][$n]['#item']['title'] !== ''){
       //  $title = $vars['content']['field_img_2'][$n]['#item']['title'];
