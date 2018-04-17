@@ -346,7 +346,7 @@ function _add_footer_menu(&$vars, $conference){
   $footer['form'] = array(
     '#prefix' => '<li class="cf-li">',
     '#suffix' => '</li>',
-    '#markup' => l('How to partecipate', '<front>', $opt),
+    '#markup' => l('How to participate', 'https://tcbl2018prato.eventbrite.it', $opt),
   );
   
   $vars['content']['footer'] = $footer;

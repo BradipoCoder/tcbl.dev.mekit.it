@@ -247,7 +247,8 @@ function _tcbl_add_conference_cover(&$vars){
       foreach ($tab_links as $key => $link) {
         $n++;
 
-        $markup = '<span class="number">0' . $n  . '.</span> <span class="title">' . $link['title'] . '</span>';
+        //$markup = '<span class="number">0' . $n  . '.</span> <span class="title">' . $link['title'] . '</span>';
+        $markup = '<span class="title">' . $link['title'] . '</span>';
 
         $opt = array(
           'html' => 'true',
@@ -277,6 +278,20 @@ function _tcbl_add_conference_cover(&$vars){
 
         $content['title'] = field_view_field('node', $conference, 'field_description', 'default');
         $content['sub'] = field_view_field('node', $conference, 'field_subtitle', 'default');
+
+        $opt = array(
+          'attributes' => array(
+            'class' => array(
+              'btn', 'btn-info', 'btn-lg',
+            ),
+            'target' => '_blank',
+          ),
+        );
+
+        $content['more'] = array(
+          '#markup' => l('Sign up for free', 'https://tcbl2018prato.eventbrite.it ', $opt),
+        );
+
         $content['tabs'] = $tabs;
 
         $vars['page']['conference_cover'] = array(
