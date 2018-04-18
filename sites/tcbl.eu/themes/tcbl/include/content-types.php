@@ -263,6 +263,7 @@ function _tcbl_preprocess_node_conference(&$vars){
 
   if ($vars['view_mode'] == 'full'){
     _add_conference_where($vars, $node);
+    _add_cta_event($vars);
     _add_footer_menu($vars, $node);
   }
 }
@@ -281,7 +282,11 @@ function _tcbl_preprocess_node_day(&$vars){
 
     if ($conference){
       _add_conference_where($vars, $conference);
+      _add_footer_menu($vars, $conference);
     }
+
+    _add_cta_event($vars);
+
   }
 }
 
@@ -311,7 +316,34 @@ function _add_conference_where(&$vars, $conference){
   }
 }
 
+function _add_cta_event(&$vars){
+  $opt = array(
+    'attributes' => array(
+      'class' => array(
+        'btn', 'btn-info', 'btn-lg',
+      ),
+      'target' => '_blank',
+    ),
+  );
+
+  $vars['content']['more'] = array(
+    '#prefix' => '<div class="wrapper-sign-up text-center margin-v-1">',
+    '#suffix' => '</div>',
+    '#markup' => l('Sign up for free', 'https://tcbl2018prato.eventbrite.it ', $opt),
+    '#weight' => 40,
+  );
+}
+
 function _add_footer_menu(&$vars, $conference){
+  
+  if ($conference){
+    $cnid = $conference->nid;
+    $tab_links[$cnid] = array(
+      'path' => 'node/' . $cnid,
+      'title' => 'Overview', 
+    );
+  }
+
   $links = _nodehierarchy_get_children_menu_links($conference->nid);
   foreach ($links as $key => $link) {
     if (isset($link['nid'])){
@@ -338,16 +370,16 @@ function _add_footer_menu(&$vars, $conference){
     );
   }
 
-  $opt = array(
-    'attributes' => array(
-      'target' => '_blank',
-    ),
-  );
-  $footer['form'] = array(
-    '#prefix' => '<li class="cf-li">',
-    '#suffix' => '</li>',
-    '#markup' => l('How to participate', 'https://tcbl2018prato.eventbrite.it', $opt),
-  );
+  //$opt = array(
+  //  'attributes' => array(
+  //    'target' => '_blank',
+  //  ),
+  //);
+  //$footer['form'] = array(
+  //  '#prefix' => '<li class="cf-li">',
+  //  '#suffix' => '</li>',
+  //  '#markup' => l('How to participate', 'https://tcbl2018prato.eventbrite.it', $opt),
+  //);
   
   $vars['content']['footer'] = $footer;
 

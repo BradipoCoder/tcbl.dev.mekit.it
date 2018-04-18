@@ -17,11 +17,11 @@ hide($content['more']);
             <div class="negative">
               <?php print render($content['title']); ?>
             </div>
-            <div class="text-center">
-              <?php print render($content['more']); ?>
-            </div>
             <div class="negative">
               <?php print render($content['sub']); ?>
+            </div>
+            <div class="text-center margin-t-1">
+              <?php print render($content['more']); ?>
             </div>
             <a name="conference"></a>
           </div>

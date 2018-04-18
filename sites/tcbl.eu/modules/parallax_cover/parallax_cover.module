@@ -41,7 +41,6 @@ function parallax_cover_block_view($delta = '') {
 }
 
 function _parallax_cover_create_block($node, $uri){
-
   $url_img = file_create_url($uri);
   $prefix = '<div class="parallax-w" data-bleed="1" data-parallax="scroll" data-image-src="' . $url_img . '" data-position-y="center">';
   $content['parallax_cover'] = array(

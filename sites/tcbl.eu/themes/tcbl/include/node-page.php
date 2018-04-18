@@ -12,6 +12,8 @@
  */
 function _tcbl_preprocess_node_page(&$vars){
   $node = $vars['node'];
+  
+  // Usato solo nella cover in home page
   if ($vars['view_mode'] == 'teaser'){
     $opt = array(
       'attributes' => array(
@@ -25,6 +27,14 @@ function _tcbl_preprocess_node_page(&$vars){
       '#suffix' => '</div>',
       '#markup' => l('Read more', 'node/' . $node->nid, $opt),
     );
+
+    // Settings || add video from settings
+    $vars['has_video'] = false;
+    $set = _tcbl_get_tcbl_settings();
+    if (isset($set->field_video['und'][0]['video_url']) && $set->field_video['und'][0]['video_url'] !== ''){
+      $vars['has_video'] = true;
+      $vars['content']['video'] = field_view_field('node', $set, 'field_video', 'default');
+    }
   }
 
   if ($vars['view_mode'] == 'full'){

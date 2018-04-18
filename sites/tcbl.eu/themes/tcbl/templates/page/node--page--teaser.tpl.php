@@ -23,7 +23,13 @@
       <div class="row">
         <div class="col-md-6 col-lg-5">
           <?php print render($content['field_short']); ?>
+          <?php print render($content['more']); ?>
         </div>
+        <?php if ($has_video) : ?>
+          <div class="col-md-6 col-lg-5 col-lg-offset-1">
+            <?php print render($content['video']); ?>  
+          </div>  
+        <?php endif; ?>
       </div>
       <?php print render($content); ?>
     </div>
