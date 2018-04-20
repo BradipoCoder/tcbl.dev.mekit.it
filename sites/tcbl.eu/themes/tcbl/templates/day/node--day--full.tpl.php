@@ -9,6 +9,7 @@
   hide($content['links']);
   hide($content['field_date']);
   hide($content['field_location']);
+  hide($content['footer']);
 ?>
 
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?>"<?php print $attributes; ?>>
@@ -27,6 +28,8 @@
         </div>
       </div>
       <?php print render($content); ?>
+      
+      <?php print render($content['footer']); ?>
     </div>
   </div>
 

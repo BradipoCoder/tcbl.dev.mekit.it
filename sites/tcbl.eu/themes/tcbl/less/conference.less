@@ -221,14 +221,21 @@
   background: @gray-lightest;
   padding-top: 15px;
   padding-bottom: 15px;
-
-  .margin-h(-1);
-  .margin-b(-1);
+  
   .margin-t(2);
   .padding-h(1);
   @media (min-width: @screen-md-min){
     .padding-h(2);
-    .margin-h(-2);
-    .margin-b(-2);
   }
+}
+
+.conference-card{
+  .conference-footer{
+    .margin-h(-1);
+    .margin-b(-1);
+    @media (min-width: @screen-md-min){
+      .margin-h(-2);
+      .margin-b(-2);  
+    }
+  }  
 }
