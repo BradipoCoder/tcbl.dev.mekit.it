@@ -80,23 +80,24 @@ class FacebookFeedPlugin extends FeedPlugin implements FeedPluginInterface {
             $message = isset($item["message"]) ? $item["message"] : "";
             $link = isset($item["link"]) ? $item["link"] : "";
             $full_picture = isset($item["full_picture"]) ? $item["full_picture"] : "";
+            $from = isset($item["from"]["name"]) ? $item["from"]["name"] : "Unknown";
 
+            if($from == "TCBL") {
+              $feedItem = new FeedItem();
+              $feedItem->setId($item["id"]);
+              $feedItem->setSource($this->feed_source);
+              $feedItem->setType($item["type"]);
+              $feedItem->setTitle($name);
+              $feedItem->setCaption($caption);
+              $feedItem->setDescription($description);
+              $feedItem->setMessage($message);
+              $feedItem->setCreationDate(new \DateTime($item["created_time"]));
+              $feedItem->setUrl($link);
+              $feedItem->setPostedByName($from);
+              $feedItem->setPictureUrl($full_picture);
 
-
-            $feedItem = new FeedItem();
-            $feedItem->setId($item["id"]);
-            $feedItem->setSource($this->feed_source);
-            $feedItem->setType($item["type"]);
-            $feedItem->setTitle($name);
-            $feedItem->setCaption($caption);
-            $feedItem->setDescription($description);
-            $feedItem->setMessage($message);
-            $feedItem->setCreationDate(new \DateTime($item["created_time"]));
-            $feedItem->setUrl($link);
-            $feedItem->setPostedByName("TCBL");
-            $feedItem->setPictureUrl($full_picture);
-
-            array_push($feeds, $feedItem);
+              array_push($feeds, $feedItem);
+            }
           }
         }
       }
@@ -114,13 +115,14 @@ class FacebookFeedPlugin extends FeedPlugin implements FeedPluginInterface {
     $fields = [
       'id',
       'name',
+      'from',
       'type',
       'caption',
       'created_time',
       'description',
       'message',
       'full_picture',
-      'link',
+      'link'
     ];
 
     $answer .= implode(",", $fields);

@@ -45,6 +45,7 @@ function tcbl_feed_get_default_generation_options() {
  * Implements hook_cron().
  */
 function tcbl_feed_cron() {
+  //variable_set('tcbl_feed_cron_last_exec', 0);
   $default_interval = 0.5 * 60 * 60; // Half an hour
   if(!variable_get('tcbl_feed_cron_interval')) {
     variable_set('tcbl_feed_cron_interval', $default_interval);
@@ -61,17 +62,22 @@ function tcbl_feed_cron() {
 
   //--------------------------------------------FEED GENERATION
   $generate_feed_options = tcbl_feed_get_default_generation_options();
-  $res = tcbl_feed_generate_feeds($generate_feed_options);
-  watchdog('TCBL Feed', 'Feeds updated. ' . json_encode($res));
+  tcbl_feed_generate_feeds($generate_feed_options);
+  watchdog('TCBL Feed', 'Feeds updated. ');// json_encode($res)
 }
 
 /**
  * @param array $getFeedOptions
  *
- * @returns array
+ * @return array
  */
 function tcbl_feed_get_renderable_feeds($getFeedOptions = []) {
   $answer = [];
+
+  //--------------------------------------------FEED GENERATION [NOW DONE BY CRON]
+  //$generate_feed_options = tcbl_feed_get_default_generation_options();
+  //tcbl_feed_generate_feeds($generate_feed_options);
+
 
   $feeds = \Mekit\TcblFeed\FeedFactory::getFeeds($getFeedOptions);
 
@@ -79,7 +85,7 @@ function tcbl_feed_get_renderable_feeds($getFeedOptions = []) {
     //$answer['content'] = t('Number of feeds: ' . count($feeds));
     $answer['content'] = [];
     $answer['content']['feeds'] = [];
-    
+
     $n = 0;
     /** @var \Mekit\TcblFeed\FeedItem $feed */
     foreach ($feeds as $feed) {
