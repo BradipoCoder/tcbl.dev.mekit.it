@@ -112,7 +112,7 @@
         
         <p>Fermo restando quanto precede, il Titolare informa che l’Utente può avvalersi di <a href="https://www.youronlinechoices.com/" target="_blank">Your Online Choices</a>. Attraverso tale servizio è possibile gestire le preferenze di tracciamento della maggior parte degli strumenti pubblicitari. Il Titolare, pertanto, consiglia agli Utenti di utilizzare tale risorsa in aggiunta alle informazioni fornite dal presente documento.</p>
 
-        <h2>Titolare del Trattamento dei Dati</h2>
+        <h2>Titolare del trattamento dei dati</h2>
 
         <p>
           Titolare: <strong><?php print render($owner); ?></strong><br/>
