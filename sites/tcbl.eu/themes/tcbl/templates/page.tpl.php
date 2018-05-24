@@ -75,10 +75,10 @@ hide($header_event['contact']);
 
         <div class="row">
           <div class="col-sm-6">
-            <?php print render($header_event['address']); ?>    
+            <?php print render($header_event['address']); ?>
           </div>
           <div class="col-sm-6">
-            <?php print render($header_event['contact']); ?>   
+            <?php print render($header_event['contact']); ?>
           </div>
         </div>
       </div>
@@ -87,10 +87,10 @@ hide($header_event['contact']);
 
   <?php print render($page['conference_cover']); ?>
 
-  <div class="main-container <?php print $container_class; ?>">  
-    
+  <div class="main-container <?php print $container_class; ?>">
+
     <a id="main-content"></a>
-    
+
     <?php if ($messages) : ?>
       <div class="messages">
         <?php print $messages; ?>
@@ -112,7 +112,7 @@ hide($header_event['contact']);
       <ul class="action-links"><?php print render($action_links); ?></ul>
     <?php endif; ?>
 
-    <?php print render($page['content']); ?>    
+    <?php print render($page['content']); ?>
   </div>
 </div>
 
@@ -139,6 +139,9 @@ hide($header_event['contact']);
       <p class="small text-center text-italic">This project has received funding from the European Union's Horizon 2020 Programme for research, technology development, and innovation under grant Agreement n.646133</p>
       <div class="wrapper-footer-img">
         <img src="/sites/tcbl.eu/files/images/euh2020.png" class="img-responsive"/>
+      </div>
+      <div class="privacy-cookie-links text-center text-italic">
+        <a href="/privacy">Privacy policy</a> | <a href="/cookies-policy">Cookies Policy</a>
       </div>
     </div>
   </footer>

@@ -7,7 +7,7 @@ function footer_block_info() {
   $blocks = array();
 
   $blocks['footer'] = array(
-    'info' => t('Footer'), 
+    'info' => t('Footer'),
     'cache' => DRUPAL_NO_CACHE,
   );
 
@@ -16,21 +16,21 @@ function footer_block_info() {
 
 /**
  * Implements hook_block_view();
- * @param $delta 
+ * @param $delta
  *    the name of the requested block
  */
 function footer_block_view($delta = '') {
   $block = array();
   switch ($delta) {
     case 'footer':
-      
+
       $block['subject'] = 'Footer';
 
       /* immagine */
       $fid = variable_get('FOOTER_IMAGE' , false);
       if ($fid) {
         $file = file_load($fid);
-        
+
         $image['#theme'] = 'image';
         $image['#path'] = $file->uri;
 
@@ -50,7 +50,7 @@ function footer_block_view($delta = '') {
         }
       }
       $columns = 12 / $columns;
-      
+
 
       /* sezione contatti */
       $contatti = variable_get('FOOTER_CONTATTI', FALSE);
@@ -67,7 +67,7 @@ function footer_block_view($delta = '') {
         }
       }
       $menu_social_title = variable_get('FOOTER_SOCIAL_TITLE', false);
-      
+
       /* main menu */
       $main_menu = false;
       if (isset($menu_attivi['main-menu']) && $menu_attivi['main-menu'] !== 0){
@@ -84,7 +84,7 @@ function footer_block_view($delta = '') {
       if ($theme_default) {
         $theme_settings = variable_get('theme_' . $theme_default . '_settings', false);
         $site_name = variable_get('site_name', false);
-        
+
         $brand_classes = false;
         $site_slogan = false;
         if ($theme_settings['toggle_slogan']){
@@ -92,7 +92,7 @@ function footer_block_view($delta = '') {
           $brand_classes = 'with-slogan';
         }
       }
-      
+
       $block['content'] = array(
         '#theme' => 'footer',
         '#image' => $image,
@@ -108,7 +108,7 @@ function footer_block_view($delta = '') {
         '#main_menu_title' => $main_menu_title,
         '#common_link' => get_common_link(),
       );
-      
+
     break;
   }
   return $block;
@@ -118,15 +118,22 @@ function get_common_link(){
   $site_name = variable_get('site_name');
 
   $common_link = '<p>&copy; Copyright ' . date('Y') . ' ' . $site_name . ' - All rights reserved | ';
-  $common_link .= l('Web Design by Mekit', 'http://www.mekit.it') . ' | ';
-  $common_link .= l('Admin', 'user') . '</p>'; 
+
+  if(module_exists("cookprivacy"))
+  {
+    $common_link .= l('Cookie Policy', 'cookie') . ' | ';
+    $common_link .= l('Privacy Policy', 'privacy') . ' | ';
+  }
+
+  $common_link .= 'Web Design by ' . l('Mekit', 'http://www.mekit.it') . ' | ';
+  $common_link .= l('Admin', 'user') . '</p>';
 
   return $common_link;
 }
 
 /**
  * Implements hook_block_configure();
- * @param $delta 
+ * @param $delta
  *    the name of the requested block
  */
 function footer_block_configure($delta) {
@@ -136,10 +143,10 @@ function footer_block_configure($delta) {
       $form['v_tabs']['#type'] = 'vertical_tabs';
 
       $form['options'] = array(
-        '#type' => 'fieldset', 
+        '#type' => 'fieldset',
         '#title' => t('Opzioni'),
-        '#weight' => -1, 
-        '#collapsible' => FALSE, 
+        '#weight' => -1,
+        '#collapsible' => FALSE,
         '#collapsed' => FALSE,
         '#group' => 'v_tabs'
       );
@@ -170,10 +177,10 @@ function footer_block_configure($delta) {
       );
 
       $form['image'] = array(
-        '#type' => 'fieldset', 
+        '#type' => 'fieldset',
         '#title' => t('Logo'),
-        '#weight' => -1, 
-        '#collapsible' => FALSE, 
+        '#weight' => -1,
+        '#collapsible' => FALSE,
         '#collapsed' => FALSE,
         '#group' => 'v_tabs'
       );
@@ -196,10 +203,10 @@ function footer_block_configure($delta) {
       );
 
       $form['contatti'] = array(
-        '#type' => 'fieldset', 
+        '#type' => 'fieldset',
         '#title' => t('Contatti'),
-        '#weight' => -1, 
-        '#collapsible' => FALSE, 
+        '#weight' => -1,
+        '#collapsible' => FALSE,
         '#collapsed' => FALSE,
         '#group' => 'v_tabs'
       );
@@ -245,15 +252,15 @@ function footer_block_save($delta, $edit = array()) {
 
       // Load the file via file.fid.
       $file = file_load($edit['footer_image']);
-      
+
       if ($file){
         // Change status to permanent.
         $file->status = FILE_STATUS_PERMANENT;
         // Save.
         file_save($file);
-        // Record that the module (in this example, user module) is using the file. 
+        // Record that the module (in this example, user module) is using the file.
         file_usage_add($file, 'footer', 'user', 1);
-      } 
+      }
 
     break;
   }
