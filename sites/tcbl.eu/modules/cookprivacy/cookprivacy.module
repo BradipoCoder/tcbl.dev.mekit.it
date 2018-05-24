@@ -17,12 +17,15 @@ function _cookprivacy_add_cookie(){
     ),
   );
 
-  $msg = 'Questo sito utilizza cookie tecnici e di terze parti per migliorare la tua navigazione. Proseguendo la navigazione acconsenti all\'utilizzo dei cookie.';
-  $msg .= '&nbsp;<span>' . l('Informativa', 'cookie', $opt) . '</span>';
+  //$msg = 'Questo sito utilizza cookie tecnici e di terze parti per migliorare la tua navigazione. Proseguendo la navigazione acconsenti all\'utilizzo dei cookie.';
+  //$msg = 'This site uses cookies(session, persistent, third party) to offer you a better browsing experience. If you continue to browse this website we will assume that you agree to the contents of our cookie policy.';
+  $msg = 'This Site uses cookies, which could include third-party cookies, to ensure its technical functioning and analyse visitor information in aggregate form. 
+By closing this banner, selecting any link or continuing to browse by accessing any other sections of this Site, you consent to the use of cookies. If you want to learn more about cookies or change your cookie settings click on the "Cookies Policy" button.';
+  $msg .= '&nbsp;<span>' . l('Cookies Policy', 'cookies-policy', $opt) . '</span>';
 
   $opt['attributes']['id'] = 'cookie-agree';
 
-  $msg .= ' <span>' . l('Acconsento', 'cookie', $opt) . '</span>';
+  $msg .= ' <span>' . l('I agree', 'cookies-policy', $opt) . '</span>';
 
   $data = array(
     '#prefix' => '<div class="wrapper-cookie messages hide">',
