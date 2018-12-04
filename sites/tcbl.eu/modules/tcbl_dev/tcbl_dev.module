@@ -1,0 +1,71 @@
+<?php
+
+/**
+ * Implement hook_menu()
+ */
+function tcbl_dev_menu(){
+  $items = array();
+  $items['dev'] = array (
+    'title' => 'TCBL DEV Programmatically',
+    'description' => 'Effettua alcune modifice programmaticamente',
+    'page callback' => 'tcbl_dev_page',
+    'page arguments' => array(1),
+    'access arguments' => array('access administration pages')
+  );
+  return $items;
+}
+
+/**
+ * pagina di match
+ */
+function tcbl_dev_page($nid){
+  
+  $page = array(
+    '#markup' => '<h2>TCBL DEV</h2>',
+  );
+
+  $news = _tcbl_dev_get_news(array());
+  
+  // Bisogna salvarli tutti con tid 27
+  $count = 0;
+  foreach ($news as $key => $new) {
+    if (isset($new->field_ref_cat['und'][0]['tid'])){
+      $count++;
+    }
+    //$new->field_ref_cat['und'][0]['tid'] = '27';
+    //node_save($new);
+  }
+
+  return $page;
+}
+
+/**
+ * Gets all section nodes
+ */
+function _tcbl_dev_get_news($options){
+  // Get all nodes related by region
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', array('blog'));
+    
+    //->fieldOrderBy('field_photo', 'fid', 'DESC')
+  if (isset($options['ref_nid'])){
+    $query->fieldCondition('field_ref_brand', 'target_id', $options['ref_nid']);
+  }
+  $query->addMetaData('account', user_load(1)); // Run the query as user 1.
+  $query->execute();
+
+  if (isset($query->ordered_results)){
+    $nodes = $query->ordered_results;
+    $nodes_id = array();
+    foreach ( $nodes as $node ) {
+      array_push ($nodes_id, $node->entity_id );
+    }
+    $nodes = node_load_multiple($nodes_id);
+  } else {
+    $nodes = false;
+  }
+  return $nodes;
+}
+
+?>

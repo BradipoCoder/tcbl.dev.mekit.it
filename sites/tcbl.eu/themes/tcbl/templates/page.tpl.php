@@ -68,6 +68,7 @@ hide($header_event['contact']);
       </div>
     </div>
   <?php endif; ?>
+  
   <?php if (isset($header_event['date']['item'])): ?>
     <div class="wrapper-blue-header bg-blue">
       <div class="container">
@@ -81,6 +82,14 @@ hide($header_event['contact']);
             <?php print render($header_event['contact']); ?>
           </div>
         </div>
+      </div>
+    </div>
+  <?php endif; ?>
+  
+  <?php if (isset($archive_menu) && $archive_menu) : ?>
+    <div class="wrapper-blue-header bg-blue">
+      <div class="container">
+        <?php print render($archive_menu); ?>
       </div>
     </div>
   <?php endif; ?>

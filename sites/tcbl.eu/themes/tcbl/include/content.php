@@ -31,6 +31,10 @@ function _tcbl_add_header(&$vars){
         $vars['page_title'] = $conference->title;
       }
     }
+
+    if ($node->nid == 312){
+      _tcbl_event_news_archive($vars);
+    }
   }
 }
 
@@ -116,6 +120,53 @@ function _tcbl_event_header(&$vars, $node){
       } 
     }
     
+  }
+}
+
+function _tcbl_event_news_archive(&$vars){
+  $vars['archive_menu'] = false;
+
+  $active_tid = false;
+  if (isset($_GET['cat'])){
+    $active_tid = $_GET['cat'];
+  }
+
+  $news = _tcbl_get_news();
+  $tids = false;
+  foreach ($news as $nid => $new) {
+    if (isset($new->field_ref_cat['und'][0]['tid'])){
+      $tid = $new->field_ref_cat['und'][0]['tid'];
+      $tids[$tid] = $tid; 
+    }
+  }
+
+  if ($tids){
+    $terms = taxonomy_term_load_multiple($tids);
+    $list = array(
+      '#prefix' => '<ul class="category-menu">',
+      '#suffix' => '</ul>',
+    );
+    foreach ($terms as $key => $term) {
+
+      $opt = [
+        'query' => [
+          'cat' => $term->tid,
+        ],
+      ];
+
+      if ($active_tid && $active_tid == $term->tid){
+        $opt['attributes']['class'][] = 'active-filter';
+      }
+
+      $list[$key] = [
+        '#prefix' => '<li>',
+        '#suffix' => '</li>',
+        '#markup' => l($term->name, 'node/312', $opt),
+        '#weight' => $term->weight,
+      ];
+    }
+
+    $vars['archive_menu'] = $list;
   }
 }
 
@@ -242,6 +293,26 @@ function _tcbl_alter_breadcrumbs(&$vars){
       $bcs[] = l('Community', 'node/325');
       $bcs[] = l('Forum', 'node/327');
       drupal_set_breadcrumb($bcs);
+    }
+
+    if ($node->type == 'blog'){
+      $bcs = [];
+      $bcs[] = t('Home');
+      $bcs[] = l('Community', 'node/325');
+      $bcs[] = l('News and blog', 'node/312');
+      
+      if (isset($node->field_ref_cat['und'][0]['tid'])){
+        $tid = $node->field_ref_cat['und'][0]['tid'];
+        $term = taxonomy_term_load($tid);
+        $opt = [
+          'query' => [
+            'cat' => $tid,
+          ],
+        ];
+        $bcs[] = l($term->name, 'node/312', $opt);
+      }
+
+      drupal_set_breadcrumb($bcs);  
     }
   }
 }
@@ -575,7 +646,7 @@ function _tcbl_get_news(){
     
     //->fieldOrderBy('field_photo', 'fid', 'DESC')
   if (isset($options['ref_nid'])){
-    $query->fieldCondition('field_ref_brand', 'target_id', $options['ref_nid']);
+    $query->fieldCondition('field_ref_cat', 'target_id', $options['ref_nid']);
   }
   $query->addMetaData('account', user_load(1)); // Run the query as user 1.
   $query->execute();

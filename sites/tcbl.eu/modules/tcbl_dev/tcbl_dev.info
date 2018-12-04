@@ -1,0 +1,4 @@
+name = TCBL DEV
+description = Abilita alcune pagine per l'editing programmatico dei nodi
+package = TCBL
+core = 7.x

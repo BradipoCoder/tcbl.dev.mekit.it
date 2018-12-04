@@ -4,6 +4,9 @@
  */
 /** @type array $content */
 /** @type array $tcbl_feeds */
+
+hide($content['forum']);
+
 ?>
 
 <div class="wrapper-tcbl-front row row-front">
@@ -47,20 +50,24 @@
   <div class="wrapper-front-cms">
     <div class="container">
       <div class="row margin-v-1">
-        <div class="col-md-4 margin-b-1">
+        <div class="col-sm-6 margin-b-1">
           <h2 class="h1 h1-front-cms">Latest news</h2>
           <div class="margin-md-r-1">
             <?php print render($content['news']); ?>
           </div>
         </div>
-        <div class="col-sm-6 col-md-4">
-          <h2 class="h1 h1-front-cms">Upcoming events</h2>
-          <?php print render($content['events']); ?>
+        <div class="col-sm-6">
+          <div class="margin-md-l-1">
+            <h2 class="h1 h1-front-cms">Upcoming events</h2>
+            <?php print render($content['events']); ?>
+          </div>
         </div>
+
+        <?php /*
         <div class="col-sm-6 col-md-4">
           <h2 class="h1 h1-front-cms">From the forum</h2>
           <?php print render($content['forum']); ?>
-        </div>
+        </div> */ ?>
       </div>
     </div>
   </div>

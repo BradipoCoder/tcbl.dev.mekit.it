@@ -111,7 +111,15 @@ function _tcbl_preprocess_node_page_events(&$vars){
 }
 
 function _tcbl_preprocess_node_page_news(&$vars){
-  $vars['content']['news']['#markup'] = views_embed_view('news', 'archive');
+
+  // Filtro la vista per categoria  
+  if (isset($_GET['cat'])){
+    $tid = $_GET['cat'];
+    $vars['content']['news']['#markup'] = views_embed_view('news', 'archive', $tid);
+  } else {
+    $vars['content']['news']['#markup'] = views_embed_view('news', 'archive');
+  }
+  
   add_same_h_by_selector('.news-sameh');
 }
 

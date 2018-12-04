@@ -312,6 +312,45 @@ small{
   }
 }
 
+// ** MENU CATEGORY **
+// -------------------
+
+.category-menu{
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-size: @font-size-small;
+  //font-style: italic;
+  margin-left: -10px;
+  margin-right: -10px;
+
+  li{
+    display: inline-block;
+
+    a{
+      padding: 3px 10px;
+      text-transform: uppercase;
+
+      &.active-filter{
+        font-weight: @font-weight-bold;
+      }
+
+      &:after{
+        font-weight: @font-weight-base;
+        content: '/';
+        margin-left: 10px;
+        margin-right: -10px;
+      }
+    }
+
+    &:last-child{
+      a:after{
+        display: none;
+      }
+    }
+  }
+}
+
 // ** COLLABSIBLE LIST **
 // ----------------------
 
