@@ -63,7 +63,7 @@ function tcbl_feed_cron() {
   //--------------------------------------------FEED GENERATION
   $generate_feed_options = tcbl_feed_get_default_generation_options();
   tcbl_feed_generate_feeds($generate_feed_options);
-  watchdog('TCBL Feed', 'Feeds updated. ');// json_encode($res)
+  watchdog('TCBL Feed', 'Feeds updated. ', NULL, WATCHDOG_INFO);// json_encode($res)
 }
 
 /**
