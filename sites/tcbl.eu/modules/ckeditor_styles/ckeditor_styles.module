@@ -49,10 +49,9 @@ function ckeditor_styles_wysiwyg_editor_settings_alter(&$settings, $context) {
     // Finally add the settings to JS, so ckeditor_styles.js can use it.
     drupal_add_js(array('ckeditor_styles' => array($format => $styleset)), 'setting');
 
-    $base_path = base_path();
     $path = drupal_get_path('module', 'ckeditor_styles') . '/js';
 
-    $settings['stylesSet'] = "$format:$base_path$path/ckeditor_styles.js";
+    $settings['stylesSet'] = "$format:/$path/ckeditor_styles.js";
 
     // Some additional settings for ckeditor.
     if (variable_get("ckeditor_styles:stylesheetparser:$format", FALSE)) {

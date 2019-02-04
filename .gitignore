@@ -1,5 +1,12 @@
 
-/modules
+modules
+includes
+misc
+profiles
+scripts
+themes
+
+sites/all/libraries
 
 # Ignore configuration files that may contain sensitive information.
 sites/*/settings*.php
@@ -7,6 +14,9 @@ sites/*/settings*.php
 # Ignore paths that contain user-generated content.
 sites/*/files
 sites/*/private
+sites/private
+sites/tmp
+
 
 sftp-config.json
 .DS_Store
