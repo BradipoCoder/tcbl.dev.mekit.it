@@ -31,7 +31,8 @@
 
 .conference-card{
   border: 1px solid @primary-light;
-  
+  background: #fff;
+
   .padding-h(1);
   .padding-v(1);
   @media (min-width: @screen-md-min){
@@ -81,6 +82,17 @@
       }
     }
   }  
+}
+
+.conference-card-basic{
+  .field-name-field-files{
+    .margin-h(1);
+    .margin-t(1);
+     @media (min-width: @screen-md-min){
+      .margin-h(2);
+      .margin-t(2);
+    }  
+  }
 }
 
 .conference-overview-head{

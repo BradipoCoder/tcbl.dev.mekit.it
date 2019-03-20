@@ -284,6 +284,8 @@ function _tcbl_add_conference_cover(&$vars){
         $content['title'] = field_view_field('node', $conference, 'field_description', 'default');
         $content['sub'] = field_view_field('node', $conference, 'field_subtitle', 'default');
 
+        $url = _tcbl_get_eventbride_url_from_node($conference);
+
         $opt = array(
           'attributes' => array(
             'class' => array(
@@ -293,11 +295,15 @@ function _tcbl_add_conference_cover(&$vars){
           ),
         );
 
+        // @todo: link a eventbride.it
         $content['more'] = array(
-          '#markup' => l('Sign up for free', 'https://tcbl2018prato.eventbrite.it ', $opt),
+          '#markup' => l('Sign up for free', $url, $opt),
         );
 
-        $content['tabs'] = $tabs;
+        $display_tabs = _tcbl_display_tabs($conference);
+        if ($display_tabs){
+          $content['tabs'] = $tabs;
+        }
 
         $vars['page']['conference_cover'] = array(
           '#theme' => 'confcover',

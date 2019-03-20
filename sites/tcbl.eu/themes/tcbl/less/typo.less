@@ -297,6 +297,7 @@ small{
 // ----------------
 
 .breadcrumb{
+  text-align: left;
   font-size: @font-size-small;
   font-style: italic;
   font-weight: @font-weight-bold;
@@ -328,6 +329,7 @@ small{
     display: inline-block;
 
     a{
+      display: inline-block;
       padding: 3px 10px;
       text-transform: uppercase;
 
@@ -338,8 +340,8 @@ small{
       &:after{
         font-weight: @font-weight-base;
         content: '|';
-        margin-left: 10px;
-        margin-right: -10px;
+        position: relative;
+        left: 10px;
         color: @gray-light;
       }
     }

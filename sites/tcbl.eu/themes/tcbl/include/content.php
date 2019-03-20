@@ -365,13 +365,28 @@ function _tcbl_get_avatar_path($profile_user){
   $data['path'] = $base_url . '/' . drupal_get_path('theme', 'tcbl') . '/img/tcbl-avatar.png'; 
   $data['type'] = 'default';
 
-  if (isset($profile_user->field_sso_avatar_uri['und'][0]['value'])){
-    $value = $profile_user->field_sso_avatar_uri['und'][0]['value'];
-    if ($value !== '' && $value !== '_'){
-      $data['path'] = $value;
-      $data['type'] = 'sso';
-    }
+  //dpm($profile_user->uid);
+
+  if ($profile_user->uid !== '1'){
+    if (isset($profile_user->field_sso_avatar_uri['und'][0]['value'])){
+      $value = $profile_user->field_sso_avatar_uri['und'][0]['value'];
+      if ($value !== '' && $value !== '_'){
+
+        // Aggiungo l'https alle immagini che non ce l'hanno
+        $sub = substr($value, 0, 7);
+        if ($sub == 'http://'){
+          $suf = substr($value, 7);
+          $value = 'https://' . $suf;
+        }
+
+        //dpm($value);
+        $data['path'] = $value;
+        $data['type'] = 'sso';
+      }
+    }  
   }
+
+  
   return $data;
 }
 

@@ -317,6 +317,10 @@ function _add_conference_where(&$vars, $conference){
 }
 
 function _add_cta_event(&$vars){
+  
+  $node = $vars['node'];
+  $url = _tcbl_get_eventbride_url_from_node($node);
+
   $opt = array(
     'attributes' => array(
       'class' => array(
@@ -329,13 +333,19 @@ function _add_cta_event(&$vars){
   $vars['content']['more'] = array(
     '#prefix' => '<div class="wrapper-sign-up text-center margin-v-1">',
     '#suffix' => '</div>',
-    '#markup' => l('Sign up for free', 'https://tcbl2018prato.eventbrite.it ', $opt),
+    '#markup' => l('Sign up for free', $url, $opt),
     '#weight' => 40,
   );
 }
 
 function _add_footer_menu(&$vars, $conference){
-  
+
+  $display_tabs = _tcbl_display_tabs($conference);
+
+  if (!$display_tabs){
+    return false;
+  }
+
   if ($conference){
     $cnid = $conference->nid;
     $tab_links[$cnid] = array(
@@ -383,4 +393,42 @@ function _add_footer_menu(&$vars, $conference){
   
   $vars['content']['footer'] = $footer;
 
+}
+
+function _tcbl_display_tabs($conference){
+  $display_tabs = false;
+  if (isset($conference->field_display_tabs['und'][0]['value']) && $conference->field_display_tabs['und'][0]['value']){
+    $display_tabs = true;
+  }
+  global $user;
+  $roles = $user->roles;
+  // If user is Aministrator or Editor
+  if (isset($roles[2]) || isset($roles[3])){
+    $display_tabs = true;
+  }
+  return $display_tabs;
+}
+
+function _tcbl_get_eventbride_url_from_node($node){
+
+  $nid = $node->nid;
+
+  if ($node->type == 'day'){
+    if (isset($node->nodehierarchy_menu_links[0]['pnid'])){
+      $nid = $node->nodehierarchy_menu_links[0]['pnid'];
+    }
+  }
+
+  switch ($nid) {
+    case '428':
+      // 2019
+      $url = 'https://tcbl2019.eventbrite.com';
+      break;
+    
+    default:
+      // 2018
+      $url = 'https://tcbl2018prato.eventbrite.it';
+      break;
+  }
+  return $url;  
 }
