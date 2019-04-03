@@ -54,6 +54,9 @@ function tcbl_preprocess_node(&$vars){
       _tcbl_preprocess_node_day($vars);
       break;
 
+    case 'company':
+      _tcbl_preprocess_node_company($vars);
+      break;
 
     default:
       # code...

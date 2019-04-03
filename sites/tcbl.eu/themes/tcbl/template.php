@@ -13,6 +13,7 @@ require('include/paragraphs.php');
 require('include/feed.php');
 require('include/comment.php');
 require('include/access.php');
+require('include/company.php');
 
 /**
  * Implements hook_preprocess_html()
@@ -39,6 +40,12 @@ function tcbl_preprocess_page(&$vars){
   $vars['container_class'] = 'container';
   if ($vars['is_front']){
     $vars['container_class'] = 'container-fluid';
+  }
+
+  if (isset($vars['node'])){
+    if ($vars['node']->type == 'company'){
+      $vars['container_class'] = 'container-fluid';  
+    }
   }
 
   _tcbl_add_social_menu($vars);
