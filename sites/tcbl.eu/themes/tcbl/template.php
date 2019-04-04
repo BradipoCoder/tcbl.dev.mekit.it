@@ -183,6 +183,14 @@ function tcbl_theme(){
       'pattern' => 'confcover__',
       'path' => $path,
     ),
+    'companytabs' => array(
+      'template' => 'companytabs',
+      'variables' => array(
+        'items' => NULL,
+      ),
+      'pattern' => 'companytabs__',
+      'path' => $path,
+    ),
   );
 }
 

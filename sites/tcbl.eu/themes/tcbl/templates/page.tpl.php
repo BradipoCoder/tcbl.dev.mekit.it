@@ -60,17 +60,19 @@ hide($header_event['contact']);
 
 <div class="wrapper-content">
   <?php if (!empty($breadcrumb) || $page_title): ?>
-    <div class="wrapper-pink-header bg-pink negative">
+    <div class="wrapper-header <?php print $header_class; ?> negative">
       <div class="container">
         <?php print $breadcrumb;?>
-        <h1 class="margin-v-0"><?php print $page_title; ?></h1>
+        <?php if ($page_title) : ?>
+          <h1 class="margin-v-0"><?php print $page_title; ?></h1>
+        <?php endif; ?>
         <?php print render($date); ?>
       </div>
-    </div>
+    </div><!-- standard breadcrumbs -->
   <?php endif; ?>
   
   <?php if (isset($header_event['date']['item'])): ?>
-    <div class="wrapper-blue-header bg-blue">
+    <div class="wrapper-header bg-blue">
       <div class="container">
         <?php print render($header_event); ?>
 
@@ -83,11 +85,11 @@ hide($header_event['contact']);
           </div>
         </div>
       </div>
-    </div>
+    </div><!-- header event -->
   <?php endif; ?>
   
   <?php if (isset($archive_menu) && $archive_menu) : ?>
-    <div class="wrapper-blue-header bg-blue">
+    <div class="wrapper-header bg-blue">
       <div class="container">
         <?php print render($archive_menu); ?>
       </div>

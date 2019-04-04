@@ -65,11 +65,15 @@ body.cke_editable, body.mceContentBody{
 .bg-blue{
   background: @primary-lightest;
 }
+.bg-blue-dark{
+  background: @primary;
+}
 
 // ** MAIN CONTAINER **
 // --------------------
 
 // Padding vertical in every page
+
 .main-container {
   .padding-t(2);
   .padding-b(4);
@@ -83,17 +87,13 @@ body.cke_editable, body.mceContentBody{
   }
 }
 
-.wrapper-pink-header{
+.wrapper-header{
   .padding-v(0.75);
 
   .field-name-field-submitted{
     font-weight: @font-weight-bold;
     .text-color(#fff);
   }
-}
-
-.wrapper-blue-header{
-  .padding-v(0.75);
 
   .tcbl-contact{
     .margin-t(0.5);

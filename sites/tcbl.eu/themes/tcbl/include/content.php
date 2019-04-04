@@ -8,6 +8,7 @@
 function _tcbl_add_header(&$vars){
   // Page title
   $vars['page_title'] = false;
+  $vars['header_class'] = 'bg-pink';
   $node = menu_get_object();
   if ($node){
     $vars['page_title'] = $node->title;
@@ -34,6 +35,12 @@ function _tcbl_add_header(&$vars){
 
     if ($node->nid == 312){
       _tcbl_event_news_archive($vars);
+    }
+
+    // Hide company title
+    if ($node->type == 'company'){
+      $vars['page_title'] = false;
+      $vars['header_class'] = 'bg-blue-dark';
     }
   }
 }
@@ -311,9 +318,30 @@ function _tcbl_alter_breadcrumbs(&$vars){
         ];
         $bcs[] = l($term->name, 'node/312', $opt);
       }
-
       drupal_set_breadcrumb($bcs);  
     }
+
+    if ($node->type == 'company'){
+      $bcs = [];
+      $bcs[] = t('Home');
+      $bcs[] = l('Labs', 'node/441');
+
+      if (isset($node->field_location['und'][0]['country_name'])){
+        $country_name = $node->field_location['und'][0]['country_name'];
+        $opt = array(
+          'query' => array(
+            'contry' => $country_name,
+          ),
+        );
+        $bcs[] = l($country_name, 'node/441', $opt);
+      }
+
+      $bcs[] = $node->title;
+
+      drupal_set_breadcrumb($bcs);    
+    }
+
+
   }
 }
 

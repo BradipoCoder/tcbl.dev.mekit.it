@@ -19,7 +19,7 @@
   &:hover,
   &:focus,
   &:active{
-    color: darken(@color,10%);
+    color: fade(@color,80%);
   }  
 }
 
@@ -88,6 +88,10 @@ h6, .h6{
   letter-spacing: 1px;
 }
 
+.text-normal{
+  font-style: normal;
+}
+
 .text-primary-light{
   color: @primary-light;
 }
@@ -152,6 +156,10 @@ hr{
 .small,
 small{
   font-size: @font-size-small;
+}
+
+.xs{
+  font-size: @font-size-small - 3px;
 }
 
 .node-form{
@@ -308,12 +316,22 @@ small{
   margin: 0;
   .margin-b(0.25);
 
+  > li {
+    color: #fff;
+  }
+
   > li + li:before{
     color: #fff;  
   }
 
   > .active{
     color: #fff;
+  }
+}
+
+.node-type-company{
+  .breadcrumb{
+    margin-bottom: 0;
   }
 }
 
