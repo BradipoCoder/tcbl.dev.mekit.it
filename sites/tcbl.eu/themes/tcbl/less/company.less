@@ -217,6 +217,50 @@
 }
 
 /**
+ * Teaser
+ */
+
+.node-company.node-teaser{
+  .node-content{
+    position: relative;
+    min-height: 80px;
+  }
+
+  .field-name-field-img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80px;
+    padding: 5px;
+    background: #fff;
+    border: 1px solid @gray-lighter;
+    .border-top-radius(100%);
+    .border-bottom-radius(100%);
+
+    img{
+      .border-top-radius(100%);
+      .border-bottom-radius(100%);
+    }
+  }
+
+  .company-contacts{
+    .margin-v(0.125);
+    font-size: @font-size-small;
+    li{
+      padding-left: 25px;
+      color: @gray-light;
+    }
+    i{
+      top: 4px;
+    }
+  }
+}
+
+.company-teaser-content{
+  padding-left: 100px;
+}
+
+/**
  * Admin Stuff
  */
 

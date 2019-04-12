@@ -5,6 +5,24 @@
  * content.php
  */
 
+function _tcbl_alter_container_class(&$vars){
+  // Container class
+  $vars['container_class'] = 'container';
+  if ($vars['is_front']){
+    $vars['container_class'] = 'container-fluid';
+  }
+
+  if (isset($vars['node'])){
+    if ($vars['node']->type == 'company'){
+      $vars['container_class'] = 'container-fluid';  
+    }
+
+    if ($vars['node']->nid == '441'){
+      $vars['container_class'] = 'container-fluid';     
+    }
+  }
+}
+
 function _tcbl_add_header(&$vars){
   // Page title
   $vars['page_title'] = false;
@@ -330,7 +348,7 @@ function _tcbl_alter_breadcrumbs(&$vars){
         $country_name = $node->field_location['und'][0]['country_name'];
         $opt = array(
           'query' => array(
-            'contry' => $country_name,
+            'country' => $country_name,
           ),
         );
         $bcs[] = l($country_name, 'node/441', $opt);

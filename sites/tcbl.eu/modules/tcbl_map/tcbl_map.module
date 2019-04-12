@@ -36,6 +36,28 @@ function tcbl_map_library() {
     ),
   );
 
+  $libraries['leafletjsmulti'] = array(
+    'title' => 'Leaflet JS',
+    'website' => 'https://leafletjs.com/',
+    'version' => '1.4.0',
+    'js' => array(
+      'https://unpkg.com/leaflet@1.4.0/dist/leaflet.js' => array(
+        'type' => 'external',
+        'weight' => '2',
+      ),
+      drupal_get_path('module', 'tcbl_map') . '/js/tcbl-map-multiple.js' => array(
+        'type' => 'file',
+        'weight' => '3',
+      ),
+    ),
+    'css' => array(
+      'https://unpkg.com/leaflet@1.4.0/dist/leaflet.css' => array(
+        'type' => 'external',
+        'weight' => '1',
+      ),
+    ),
+  );
+
   return $libraries;
 }
 
@@ -49,6 +71,7 @@ function tcbl_map_theme(){
       'template' => 'tcbl-map',
       'variables' => array(
         'data' => NULL,
+        'multiple' => false,
       ),
       'pattern' => 'tcbl-map__',
     ),
@@ -57,8 +80,15 @@ function tcbl_map_theme(){
 
 function template_preprocess_tcbl_map(&$vars){
 
+  $js = libraries_get_path('underscore') . '/underscore-min.js';
+  drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 1));
+
   // Aggiungo le librerie necessarie a Leaflet Js
-  drupal_add_library('tcbl_map', 'leafletjs');
+  if ($vars['multiple']){
+    drupal_add_library('tcbl_map', 'leafletjsmulti');
+  } else {
+    drupal_add_library('tcbl_map', 'leafletjs');  
+  }
 
   if (!isset($vars['data']['mid'])){
     $vars['data']['mid'] = 'map';  

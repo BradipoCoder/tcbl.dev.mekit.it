@@ -78,7 +78,7 @@ jQuery().ready(function(){
    * Costruisce la mappa e aggiunge il popup
    */
   function tcblMapBuilMapCoord(mid, coord, title, address){
-    var mymap = L.map(mid).setView(coord, 13);
+    var mymap = L.map(mid).setView(coord, 7);
 
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',

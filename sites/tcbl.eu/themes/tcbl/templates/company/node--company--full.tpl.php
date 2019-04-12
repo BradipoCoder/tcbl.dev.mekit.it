@@ -34,7 +34,7 @@
           <?php if ($has_networks) : ?>
           <div class="col-md-5">
           <?php else : ?>
-          <div class="col-md-8"
+          <div class="col-md-8">
           <?php endif; ?>
 
             <div class="margin-md-r-1">
@@ -53,7 +53,7 @@
           <?php endif; ?>
         </div>
 
-        
+
       </div>
     </div>
 

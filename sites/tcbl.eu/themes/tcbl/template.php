@@ -36,17 +36,7 @@ function tcbl_preprocess_page(&$vars){
     '#markup' => '<img src="/' . $path . 'tcbl-logo.svg" class="img-logo"/>',
   );
 
-  // Container class
-  $vars['container_class'] = 'container';
-  if ($vars['is_front']){
-    $vars['container_class'] = 'container-fluid';
-  }
-
-  if (isset($vars['node'])){
-    if ($vars['node']->type == 'company'){
-      $vars['container_class'] = 'container-fluid';  
-    }
-  }
+  _tcbl_alter_container_class($vars);
 
   _tcbl_add_social_menu($vars);
   _tcbl_add_user_login($vars);
@@ -63,6 +53,7 @@ function tcbl_preprocess_page(&$vars){
   $js_scroll_to = libraries_get_path('jquery.scrollto') . '/jquery.scrollto.js';
   drupal_add_js( $js_scroll_to , array('group' => JS_LIBRARY, 'weight' => 1));
 }
+
 
 
 function tcbl_preprocess_user_profile(&$vars){

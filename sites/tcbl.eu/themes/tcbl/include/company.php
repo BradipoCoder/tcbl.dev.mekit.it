@@ -37,9 +37,13 @@ function _tcbl_preprocess_node_company(&$vars){
     _tcbl_company_add_workers_icons($vars);
     _tcbl_company_add_population_gf($vars);
   }
+
+  if ($vars['view_mode'] == 'teaser'){
+    _tcbl_company_format_contacts($vars, 'teaser');
+  }
 }
 
-function _tcbl_company_format_contacts(&$vars){
+function _tcbl_company_format_contacts(&$vars, $view_mode = 'default'){
   $node = $vars['node'];
 
   $list = array(
@@ -61,29 +65,19 @@ function _tcbl_company_format_contacts(&$vars){
     ),
   );
 
+  if ($view_mode == 'teaser'){
+    unset($list['email']);
+    unset($list['phone']);
+    unset($list['website']);
+  }
+
   $vars['plain_address'] = false;
 
   // Field location
   if (isset($node->field_location['und'][0])){
     $field = $node->field_location['und'][0];
 
-    $loop = array(
-      'street',
-      'city',
-      'province_name',
-      'postal_code',
-      'country_name',
-    );
-
-    $plainAddress = false;
-    foreach ($loop as $key) {
-      if (isset($field[$key]) && $field[$key] !== ''){
-        if ($plainAddress){
-          $plainAddress .= ', ';
-        }
-        $plainAddress .= $field[$key];  
-      }
-    }
+    $plainAddress = _tcbl_company_get_plain_address($field);
     $vars['plain_address'] = $plainAddress;
 
     if ($plainAddress){
@@ -91,17 +85,23 @@ function _tcbl_company_format_contacts(&$vars){
     }
 
     if (isset($field['email']) && $field['email'] !== ''){
-      $list['email']['value'] = $field['email'];
+      if (isset($list['email'])){
+        $list['email']['value'] = $field['email'];  
+      }
     }
 
     if (isset($field['phone']) && $field['phone'] !== ''){
-      $list['phone']['value'] = $field['phone'];
+      if (isset($list['phone'])){
+        $list['phone']['value'] = $field['phone'];
+      }
     }
   }
 
   // Website
   if (isset($node->field_url['und'][0]['url']) && $node->field_url['und'][0]['url'] !== ''){
-    $list['website']['value'] = $node->field_url['und'][0]['url'];
+    if (isset($list['website'])){
+      $list['website']['value'] = $node->field_url['und'][0]['url'];  
+    }
   }
 
   $build = array();
@@ -527,6 +527,29 @@ function _tcbl_company_add_population_gf(&$vars){
 
 }
 
+// ** UTILITY **
+// -------------
+
+function _tcbl_company_get_plain_address($address){
+  $loop = array(
+    'street',
+    'city',
+    'province_name',
+    'postal_code',
+    'country_name',
+  );
+
+  $plainAddress = false;
+  foreach ($loop as $key) {
+    if (isset($address[$key]) && $address[$key] !== ''){
+      if ($plainAddress){
+        $plainAddress .= ', ';
+      }
+      $plainAddress .= $address[$key];  
+    }
+  }
+  return $plainAddress;
+}
 
 
 
