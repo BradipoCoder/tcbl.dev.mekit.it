@@ -1,0 +1,90 @@
+<?php
+
+function tcbl_map_menu(){
+  $items['tcbl-map/save/%/%/%'] = array(
+    'title' => 'Tcbl Map Save Page',
+    'description' => 'Tcbl Map Save Page',
+    'page callback' => '_tcbl_map_save_page',
+    'page arguments' => array(2,3,4),
+    'access callback' => true,
+  );
+  return $items;
+}
+
+function tcbl_map_library() {
+
+  // Library One.
+  $libraries['leafletjs'] = array(
+    'title' => 'Leaflet JS',
+    'website' => 'https://leafletjs.com/',
+    'version' => '1.4.0',
+    'js' => array(
+      'https://unpkg.com/leaflet@1.4.0/dist/leaflet.js' => array(
+        'type' => 'external',
+        'weight' => '2',
+      ),
+      drupal_get_path('module', 'tcbl_map') . '/js/tcbl-map.js' => array(
+        'type' => 'file',
+        'weight' => '3',
+      ),
+    ),
+    'css' => array(
+      'https://unpkg.com/leaflet@1.4.0/dist/leaflet.css' => array(
+        'type' => 'external',
+        'weight' => '1',
+      ),
+    ),
+  );
+
+  return $libraries;
+}
+
+/**
+ * Implementes hook_theme();
+ */
+function tcbl_map_theme(){
+  return array(
+    'tcbl_map' => array(
+      // use a template and give the template's name.
+      'template' => 'tcbl-map',
+      'variables' => array(
+        'data' => NULL,
+      ),
+      'pattern' => 'tcbl-map__',
+    ),
+  );
+}
+
+function template_preprocess_tcbl_map(&$vars){
+
+  // Aggiungo le librerie necessarie a Leaflet Js
+  drupal_add_library('tcbl_map', 'leafletjs');
+
+  if (!isset($vars['data']['mid'])){
+    $vars['data']['mid'] = 'map';  
+  }
+
+  drupal_add_js(array(
+    'tcbl_map' => $vars['data'],
+  ), array('type' => 'setting'));
+
+}
+
+function _tcbl_map_save_page($nid, $lat, $lon){
+  if ($nid){
+    $company = node_load($nid);
+    if ($company->type == 'company'){
+      $data['coord'] = 'ok';
+      $company->field_geolocation['und'][0]['first'] = $lat;
+      $company->field_geolocation['und'][0]['second'] = $lon;
+      $data['result'] = 'saved';
+      node_save($company);
+    }
+  } else {
+    $data['coord'] = 'false';
+    $data['result'] = 'nothing to do';
+  }
+  drupal_json_output($data);
+}
+
+

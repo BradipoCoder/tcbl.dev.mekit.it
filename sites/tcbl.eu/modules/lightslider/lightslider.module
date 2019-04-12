@@ -1,0 +1,90 @@
+<?php
+
+
+/**
+ * Crea uno slide passando un array di slide e le opzioni
+ * @todo:   implementare ID dello slide
+ *          passare le impostazioni al javascript
+ * 
+ * @param  [type] $slides  [description]
+ * @param  array  $options [description]
+ * @return [type]          [description]
+ */
+function _lightslider_create_slider($slides, $lsid, $options = array()){
+
+  // Add Light Gallery JS
+  $js = libraries_get_path('jquery.lightslider') . '/js/lightslider.min.js';
+  drupal_add_js($js , array('group' => JS_LIBRARY, 'weight' => 1));
+
+  $js = drupal_get_path('module', 'lightslider') . '/light-slider.js';
+  drupal_add_js($js , array('group' => JS_LIBRARY, 'weight' => 2));
+
+  $css = libraries_get_path('jquery.lightslider') . '/css/lightslider.min.css';
+  drupal_add_css($css, array('group' => CSS_SYSTEM));
+
+  $data['content'] = array(
+    '#theme' => 'light-slider',
+    '#lsid' => $lsid,
+    '#content' => $slides,
+  );
+
+  if (!empty($options)){
+    drupal_add_js(
+      array('lightslider' => array($lsid => $options)),
+      array('type' => 'setting'));
+  }
+
+  return $data;
+}
+
+/**
+ * Implementes hook_theme();
+ */
+function lightslider_theme(){
+  return array(
+    'light-slider' => array(
+      // use a template and give the template's name.
+      'template' => 'light-slider',
+      'variables' => array(
+        'lsid' => NULL,
+        'content' => NULL,
+      ),
+      'pattern' => 'light-slider__',
+    ),
+  );
+}
+
+// Options example
+// $options = array(
+//   'item' =>  8,
+//   'mode' => 'slide',
+//   //'loop' => true,
+//   'slideMargin' => 40,
+//   'slideMove' => 8,
+//   'slideEndAnimation' => false,
+//   'auto' => true,
+//   'speed' => 2000,
+//   'pause' => 10000,
+//   'prevHtml' => '<i class="fa fa-lg fa-angle-left"></i>',
+//   'nextHtml' => '<i class="fa fa-lg fa-angle-right"></i>',
+//   'controls' => false,
+//   //'pager' => false,
+//   'responsive' => array(
+//     array(
+//       'slideMargin' => 20,
+//       'breakpoint' => 1192,
+//       'settings' => array(
+//         'item' => 6,
+//         'slideMove' => 6,
+//       ),
+//     ),
+//     array(
+//       'breakpoint' => 768,
+//       'settings' => array(
+//         'slideMargin' => 10,
+//         'item' => 3,
+//         'slideMove' => 3,
+//       ),
+//     ),
+//   ),
+// );

@@ -1,0 +1,57 @@
+<?php
+
+/**
+ * @file
+ * Contains chart.module.
+ */
+
+// ** THEME FUNCTION **
+// --------------------
+
+/**
+ * Implements hook_theme().
+ */
+function chart_theme($existing, $type, $theme, $path) {
+  $themes = array(
+    'chart' => array(
+      'template' => 'chart',
+      'variables' => array(
+        'data' => false,
+        'cid' => false,
+        'type' => false,
+      ),
+      'pattern' => 'chart__',
+    ),
+  );
+  return $themes;
+}
+
+function chart_preprocess_chart(&$vars){
+
+  $js = libraries_get_path('underscore') . '/underscore-min.js';
+  drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 1));
+
+  $js = drupal_get_path('module', 'chart') . '/js/Chart.min.js';
+  drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 1));
+
+  $js = drupal_get_path('module', 'chart') . '/js/chartjs-plugin-annotation.min.js';
+  drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 2));
+
+  $js = drupal_get_path('module', 'chart') . '/js/chart-visual.js';
+  drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 3));
+
+  drupal_add_js(
+    array('charts' => 
+      array(
+        $vars['cid'] => [
+          'data' => $vars['data'],
+          'type' => $vars['type'],
+        ],
+      )
+    ), 
+    array(
+      'type' => 'setting'
+    )
+  );
+  
+}

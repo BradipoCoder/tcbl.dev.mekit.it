@@ -1,0 +1,271 @@
+/* less/company.less */
+
+.company-map{
+  position: relative;
+  background: @gray-light;
+  min-height: 350px;
+
+  .tcbl-map{
+    min-height: 350px;
+    z-index: 0;
+  }
+
+  .field-name-field-img{
+    z-index: 1;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    max-width: 120px;
+    .border-top-radius(100%);
+    .border-bottom-radius(100%);
+    padding: 5px;
+    background: #fff;
+    border: 1px solid @gray-lighter;
+
+    img{
+      .border-top-radius(100%);
+      .border-bottom-radius(100%);
+    }
+  }
+}
+
+.company-contacts{
+  list-style: none;
+  padding: 0;
+  .margin-v(0.5);
+
+  li{
+    padding-left: 35px;
+    position: relative;
+    color: @gray;
+
+    a{
+      font-weight: @font-weight-bold;
+    }
+  }
+
+  i{
+    position: absolute;
+    top: 5px;
+    left: 0;
+  }
+}
+
+.company-social{
+  list-style: none;
+  padding: 0;
+  margin-left: -2px;
+  margin-right: -2px;
+
+  li{
+    display: inline-block;
+    text-align: center;
+    line-height: 30px;
+    padding: 2px;
+    i{
+      font-size: 16px;
+      color: #fff;
+    }
+  }
+}
+
+.company-social-icon{
+  width: 30px;
+  height: 30px;
+  display: block;
+  background: @brand-primary;
+  .border-bottom-radius(100%);
+  .border-top-radius(100%);
+
+  &__linkedin{
+    background: #0077b5;
+  }
+
+  &__fb{
+    background: #4267b2;
+  }
+
+  &__twitter{
+    background: #1da1f2;
+  }
+
+  &__youtube{
+    background: #ff0001;
+  }
+
+  &__instagram{
+    background: #8542b9;
+  }
+}
+
+.company-networks{
+  list-style: none;
+  padding: 0;
+
+  li{
+    margin-bottom: 5px;
+  }
+
+  img{
+    width: 50px;
+    height: 50px;
+    background: #fff;
+    .border-bottom-radius(100%);
+    .border-top-radius(100%);
+    margin-right: 10px;
+  }
+
+  a{
+    .color-and-hover(@brand-primary);
+  }
+}
+
+/**
+ * Tabs
+ */
+
+@company-tabs-height: 60px;
+
+.row-company-tabs{
+  background: darken(@primary-lightest, 3%);
+}
+
+.company-tabs{
+  list-style: none;
+  height: @company-tabs-height;
+  padding: 0;
+  margin: 0;
+
+  &__item{
+    float: left;
+    width: 33.333333%;
+  }
+
+  &__a{
+    display: block;
+    text-align: center;
+    text-transform: uppercase;
+    line-height: @company-tabs-height;
+    font-size: @font-size-small - 4px;
+    font-weight: @font-weight-bold;
+    font-style: italic;
+    letter-spacing: 1px;
+
+    &.open{
+      background: #fff;
+      color: @brand-primary;
+    }
+  }
+}
+
+.company-contents{
+  .margin-t(2);
+  .margin-b(0.5);
+}
+
+.company-contents__panel{
+  display: none;
+
+  &.open{
+    display: block;
+  }
+}
+
+.company-customers{
+  padding-left: 20px;
+}
+
+/**
+ * Staff
+ */
+
+.workers{
+  margin-left: -4px;
+  margin-right: -4px;
+}
+
+.worker{
+  display: inline-block;
+  width: 25px;
+  height: 40px;
+  margin: 4px;
+  background: @gray-lightest;
+  .margin-b(0.5);
+
+  &__women{
+    background: url('../img/worker-female.png') no-repeat center center;
+  }
+  &__men{
+    background: url('../img/worker-male.png') no-repeat center center;
+  }
+}
+
+.datavisual-population{
+  margin-top: -6px;
+}
+
+/**
+ * Company projects
+ */
+
+.row-company-projects{
+  background: @gray-lightest;
+}
+
+.company-projects{
+  .margin-v(1.5);
+}
+
+/**
+ * Admin Stuff
+ */
+
+.field-widget-location{
+  .panel-body > .description{
+    font-size: @font-size-small - 2px;
+    color: @gray;
+    .margin-v(0.5);
+  }
+}
+
+.double-field-elements{
+  .clearfix();
+  margin-bottom: 0;
+  .form-item{
+    float: left;
+    width: 50%;
+
+    &:first-child{
+      padding-right: 10px;
+    }
+  }
+}
+
+.leaflet-container .leaflet-control-attribution{
+  font-size: 9px;
+}
+.form-item-field-location-und-0-delete-location,
+.form-item-field-location-und-0-re-geocode-location{
+  display: none;
+}
+
+.field-group-tab.group-social{
+  .field-type-link-field{
+    margin-bottom: 0;
+    .form-item{
+      margin-bottom: 0;
+    }
+  }
+}
+
+#population-form-group{
+  input{
+    max-width: 100px;
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  .control-label{
+    width: 150px;
+  }
+}

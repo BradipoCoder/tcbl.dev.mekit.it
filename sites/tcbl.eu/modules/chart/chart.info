@@ -1,0 +1,4 @@
+name = Chart.js Data Visualization
+description = Funzionalità di visualizzazione di dati con Chart.js
+core = 7.x
+package = Mekit

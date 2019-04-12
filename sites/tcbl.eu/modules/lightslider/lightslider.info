@@ -1,0 +1,5 @@
+name = Light Slider
+description = Aggiunge alcune funzionalità per utilizzare light slider
+package = Mekit
+core = 7.x
+version = 7.x-1.x-dev
