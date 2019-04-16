@@ -138,7 +138,7 @@
 
   &__item{
     float: left;
-    width: 33.333333%;
+    width: 25%;
   }
 
   &__a{
@@ -202,6 +202,41 @@
 
 .datavisual-population{
   margin-top: -6px;
+}
+
+/**
+ * Key Activities
+ */
+
+.company-kas{
+  list-style: none;
+  padding: 0;
+
+  &__item{
+    padding-left: 55px;
+    position: relative;
+    min-height: 40px;
+    .margin-b(0.5);
+
+    h5{
+      padding: 12px 0;
+    }
+  }
+}
+
+.kas-circle{
+  background: @gray-darker;
+  width: 40px;
+  height: 40px;
+  .border-top-radius(100%);
+  .border-bottom-radius(100%);
+  line-height: 40px;
+  text-align: center;
+  color: #fff;
+
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 /**

@@ -30,12 +30,16 @@ function _tcbl_preprocess_node_company(&$vars){
     _tcbl_company_add_slider($vars);
 
     // Details
-    _tcbl_company_add_customers($vars);
     _tcbl_company_add_approach_gf($vars);
 
     // Staff
     _tcbl_company_add_workers_icons($vars);
     _tcbl_company_add_population_gf($vars);
+
+    // Key activities
+    _tcbl_company_add_customers($vars);
+    _tcbl_company_add_kas($vars);
+
   }
 
   if ($vars['view_mode'] == 'teaser'){
@@ -285,6 +289,9 @@ function _tcbl_company_add_tabs(&$vars){
     'staff' => array(
       'title' => 'Staff',
     ),
+    'ka' => array(
+      'title' => 'Key activities',
+    ),
   );
 
   $n = 0;
@@ -524,6 +531,35 @@ function _tcbl_company_add_population_gf(&$vars){
     '#cid' => 'population',
     '#type' => 'doughnut',
   );
+
+}
+
+// ** KEY ACTIVITIES **
+// --------------------
+
+function _tcbl_company_add_kas(&$vars){
+  $node = $vars['node'];
+
+  if (isset($node->field_ref_kas['und'][0]['tid'])){
+    $list = $node->field_ref_kas['und'];
+    foreach ($list as $key => $value) {
+      $tid = $value['tid'];
+      $term = taxonomy_term_load($tid);
+
+      $name = $term->name;
+      $letter = substr($name, 0, 1);
+
+      $items[$key]['letter'] = $letter;
+      $items[$key]['title'] = $name;
+      $items[$key]['tid'] = $tid;
+    }
+
+    $vars['content']['kas'] = array(
+      '#theme' => 'companykas',
+      '#items' => $items,
+    );
+
+  }
 
 }
 

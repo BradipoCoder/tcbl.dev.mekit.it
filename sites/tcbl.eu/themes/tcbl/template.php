@@ -182,6 +182,12 @@ function tcbl_theme(){
       'pattern' => 'companytabs__',
       'path' => $path,
     ),
+    'companykas' => array(
+      'template' => 'companykas',
+      'variables' => array(
+        'items' => NULL,
+      ),
+    ),
   );
 }
 

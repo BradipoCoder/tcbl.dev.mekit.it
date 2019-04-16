@@ -1,10 +1,9 @@
 <?php
 
-function _tcbl_labs_get_nodes(){
-  $nids = _tcbl_labs_query_nids(array(), true);
+function _tcbl_labs_get_nodes($nids){
   $nodes = node_load_multiple($nids);
   $content = array(
-    '#prefix' => '<div class="wrapper-nodes">',
+    '#prefix' => '<div id="labs-results" class="wrapper-nodes">',
     '#suffix' => '</div>',
     '#weight' => 20,
   );
@@ -12,8 +11,7 @@ function _tcbl_labs_get_nodes(){
   return $content;
 }
 
-function _tcbl_labs_get_maps_data(){
-  $nids = _tcbl_labs_query_nids(array(), true);
+function _tcbl_labs_get_maps_data($nids){
   $nodes = node_load_multiple($nids);
 
   $data = false;
@@ -44,4 +42,67 @@ function _tcbl_labs_get_maps_data(){
   }
 
   return $data;
+}
+
+function _tcbl_labs_get_filters($nids){
+  $nodes = node_load_multiple($nids);
+
+  $countries = false;
+  $kas = false;
+  foreach ($nodes as $nid => $node) {
+    if (isset($node->field_location['und'][0]['country_name'])){
+      $country_name = $node->field_location['und'][0]['country_name'];
+      $key = $node->field_location['und'][0]['country'];
+      $countries[$key] = $country_name;
+    }
+
+    if (isset($node->field_ref_kas['und'][0]['tid'])){
+      $list = $node->field_ref_kas['und'];
+      foreach ($list as $k => $item) {
+        $tid = $item['tid'];
+        if (!isset($kas[$tid])){
+          $term = taxonomy_term_load($tid);
+          $kas[$tid] = $term->name;  
+        }
+      }
+    }
+  }
+
+  if ($countries){
+    // Sort countries
+    ksort($countries);
+    foreach ($countries as $mn => $value) {
+      $filters['country'][$mn]['title'] = $value;
+      $filters['country'][$mn]['selected'] = false;
+    }
+    // Active item
+    if (isset($_GET['country'])){
+      $csel = $_GET['country'];
+      if (isset($filters['country'][$csel])){
+        $filters['country'][$csel]['selected'] = true;  
+      }
+    }
+  } else {
+    $filters['country'] = false;
+  }
+  
+
+  if ($kas){
+    asort($kas);
+
+    foreach ($kas as $k => $value) {
+      $filters['kas'][$k]['title'] = $value;
+      $filters['kas'][$k]['selected'] = false;
+    }
+    // Active item
+    if (isset($_GET['kas'])){
+      $csel = $_GET['kas'];
+      if (isset($filters['kas'][$csel])){
+        $filters['kas'][$csel]['selected'] = true;  
+      }
+    }
+  } else {
+    $filters['kas'] = false;
+  }
+  return $filters;
 }

@@ -81,9 +81,6 @@
               <div class="col-md-8 margin-b-1">
                 <div class="margin-md-r-2">
                   <h3 class="text-normal text-dark margin-t-0 margin-b-1">Key activities</h3>
-                  <p class="margin-b-1">Something explaining the Lab key activities</p>
-                  <pre class="margin-b-2">Key Activities</pre>
-
                   <h3 class="text-normal text-dark margin-t-0 margin-b-1">Innovation Approach</h3>
                   <p class="margin-b-1">What does Innovation Approach means</p>
                   <div class="row">
@@ -91,21 +88,11 @@
                       <?php print render($content['approach']); ?>
                     </div>
                   </div>
-
-
                 </div>
               </div>
               <div class="col-md-4">
-
-                <?php if ($content['customers']) : ?>
-                  <h3 class="text-normal text-dark margin-t-0 margin-b-1">Target Customers</h3>
-                  <p class="margin-b-1">What kind of customers</p>
-                  <?php print render($content['customers']); ?>
-                <?php endif; ?>
-
                 <h3 class="text-normal text-dark margin-b-1">Collaborations</h3>
                 <pre>Labs list</pre>
-
               </div>
             </div>
           </div><!-- details tab -->
@@ -129,6 +116,23 @@
               </div>
             </div>
           </div><!-- staff tab -->
+
+          <div id="company-contents--ka" class="company-contents__panel">
+            <div class="row">
+              <div class="col-md-8 margin-b-1">
+                <h3 class="text-normal text-dark margin-t-0 margin-b-1">Key activities</h3>
+                <p class="margin-b-1">Something explaining the Lab key activities</p>
+                <?php print render($content['kas']); ?>
+              </div>
+              <div class="col-md-4">
+                <?php if ($content['customers']) : ?>
+                  <h3 class="text-normal text-dark margin-t-0 margin-b-1">Target Customers</h3>
+                  <p class="margin-b-1">What kind of customers</p>
+                  <?php print render($content['customers']); ?>
+                <?php endif; ?>
+              </div>
+            </div>
+          </div><!-- ka tab -->
 
         </div>
         

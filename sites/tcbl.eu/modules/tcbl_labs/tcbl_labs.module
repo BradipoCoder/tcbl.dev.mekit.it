@@ -51,12 +51,35 @@ function _tcbl_labs_preprocess_mainlabs_node(&$vars){
 }
 
 function template_preprocess_tcbl_labsmain(&$vars){
-  // Add some js?
+  $js = drupal_get_path('module', 'tcbl_labs') . '/js/tcbl-labs.js';
+  drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 1));
 }
 
 function _tcbl_labs_build_archive(){
-  $build['nodes'] = _tcbl_labs_get_nodes();
-  $data['list'] = _tcbl_labs_get_maps_data();
+
+  $filters = array();
+  if (isset($_GET['country'])){
+    $filters['country'] = $_GET['country'];  
+  }
+
+  // $filters['country'] = 'GR';
+  // $filters['kas'] = '49';
+  // $filters['key'] = 'pettinengo';
+
+  $nids = _tcbl_labs_query_nids($filters);
+
+  $data = false;
+  if (count($nids)){
+    // Maps data
+    $data['list'] = _tcbl_labs_get_maps_data($nids);  
+    
+    // Listed nodes
+    $build['nodes'] = _tcbl_labs_get_nodes($nids);
+  }
+  
+  // All nids for filters
+  $all_nids = _tcbl_labs_query_nids(array());
+  $build['filters'] = _tcbl_labs_get_filters($all_nids);
 
   $build['map'] = array(
     '#theme' => 'tcbl_map',

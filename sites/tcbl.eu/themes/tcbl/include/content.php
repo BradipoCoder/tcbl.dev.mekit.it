@@ -344,11 +344,12 @@ function _tcbl_alter_breadcrumbs(&$vars){
       $bcs[] = t('Home');
       $bcs[] = l('Labs', 'node/441');
 
-      if (isset($node->field_location['und'][0]['country_name'])){
+      if (isset($node->field_location['und'][0]['country'])){
         $country_name = $node->field_location['und'][0]['country_name'];
+        $country = $node->field_location['und'][0]['country'];
         $opt = array(
           'query' => array(
-            'country' => $country_name,
+            'country' => $country,
           ),
         );
         $bcs[] = l($country_name, 'node/441', $opt);
