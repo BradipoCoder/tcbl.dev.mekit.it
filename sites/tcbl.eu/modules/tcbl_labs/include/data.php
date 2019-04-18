@@ -1,13 +1,21 @@
 <?php
 
 function _tcbl_labs_get_nodes($nids){
-  $nodes = node_load_multiple($nids);
   $content = array(
     '#prefix' => '<div id="labs-results" class="wrapper-nodes">',
     '#suffix' => '</div>',
     '#weight' => 20,
   );
-  $content['nodes'] = node_view_multiple($nodes, 'teaser');
+
+  if ($nids){
+    $nodes = node_load_multiple($nids);
+    $content['nodes'] = node_view_multiple($nodes, 'teaser');  
+  } else {
+    $content['noresults'] = array(
+      '#markup' => '<div><code>no results</code></div>',
+    );
+  }
+  
   return $content;
 }
 
@@ -31,6 +39,7 @@ function _tcbl_labs_get_maps_data($nids){
     if ($coord){
       // Title
       $data[$key]['title'] = $node->title; 
+      $data[$key]['url'] = url('node/' . $node->nid); 
 
       // Address
       if (isset($node->field_location['und'][0])){

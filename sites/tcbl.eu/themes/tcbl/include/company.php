@@ -153,6 +153,9 @@ function _tcbl_company_format_social(&$vars){
     'youtube' => array(
       'icon' => 'youtube-play',
     ),
+    'vimeo' => array(
+      'icon' => 'vimeo-square',
+    ),
   );
 
   $build = array();

@@ -13,7 +13,7 @@ function _tcbl_labs_query_nids($filters){
   $query->condition('n.type', 'company', '=');
 
   // Country
-  if (isset($filters['country'])){
+  if (isset($filters['country']) && $filters['country'] !== 'all'){
     $subquery = db_select('location');
     $subquery->addField('location', 'lid');
     $subquery->condition('location.country', $filters['country']);
@@ -25,13 +25,13 @@ function _tcbl_labs_query_nids($filters){
   }
 
   // Key activities filter
-  if (isset($filters['kas'])){
+  if (isset($filters['kas']) && $filters['kas'] !== 'all'){
     $query->join('taxonomy_index', 'ti', 'n.nid = ti.nid');
     $query->condition('ti.tid', $filters['kas'], '=');
   }
 
   // Key search
-  if (isset($filters['key'])){
+  if (isset($filters['key']) && $filters['key'] !== 'false'){
 
     $query->join('field_data_body', 'bo', 'n.nid = bo.entity_id');
     $query->fields('bo', array('body_value'));
@@ -40,6 +40,12 @@ function _tcbl_labs_query_nids($filters){
     $or->condition('n.title', '%' . db_like($filters['key']) . '%', 'LIKE');
     $or->condition('bo.body_value', '%' . db_like($filters['key']) . '%', 'LIKE');
     $query->condition($or); 
+  }
+
+  if (isset($filters['page'])){
+    $offset = 10;
+    $start = $filters['page'] * $offset - $offset;
+    $query->range($start, $offset);
   }
 
   $nids = array();

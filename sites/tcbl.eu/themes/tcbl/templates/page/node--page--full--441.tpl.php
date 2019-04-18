@@ -55,7 +55,7 @@
       </div>
     </div>
 
-    <div class="row row-labs-archive">
+    <div id="row-labs-archive" class="row row-labs-archive">
       <div class="container margin-v-2">
         <h1 class="margin-t-0 text-dark">Find a textile lab near you</h1>
         <?php print render($content); ?>

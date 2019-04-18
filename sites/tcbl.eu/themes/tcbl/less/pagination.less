@@ -1,0 +1,179 @@
+/* less/pagination.less */
+
+// ** PAGINATION ARCHIVE **
+// ------------------------
+
+@pagination-size: 30px;
+
+.labs-pagination{
+  //border: 1px solid @border-default-color;
+  height: @pagination-size + 2;
+  display: none;
+
+  &.p-active{
+    display: block;
+  }
+
+  ul{
+    text-align: center;
+    list-style: none;
+    position: relative;
+    margin-bottom: 0;
+    padding: 0;
+  }
+
+  li{
+    display: inline-block;
+
+    &.li-arrow{
+      position: absolute;
+      top: 0;  
+    }
+
+    &.li-arrow-prev{
+      left: 0;
+      //border-right: 1px solid @border-default-color;
+    }
+
+    &.li-arrow-next{
+      right: 0;
+      //border-left: 1px solid @border-default-color;
+    }
+
+    &.li-item{
+      //border-left: 1px solid @border-default-color;
+      @media (max-width: @screen-sm-max){
+        display: none;
+        &.active{
+          display: inline-block;
+          border-left: none;
+          border-right: none;
+          .current{
+            background: none;
+            color: @border-default-color;
+          }
+        }
+      }
+    }
+
+    //&.li-item-last{
+    //  border-right: 1px solid @border-default-color; 
+    //}
+
+    .ellipse,
+    .current,
+    .page-link{
+      display: block;
+      width: @pagination-size;
+      height: @pagination-size;
+      text-align: center;
+      line-height: @pagination-size;
+      font-size: @font-size-small;
+    }
+
+    a{
+      &:hover,
+      &:active,
+      &:focus{
+        background: @border-default-color;
+      }
+    }
+
+    &.active .current{
+      background: @brand-primary;
+      color: #fff;  
+    }
+
+    i{
+      line-height: @pagination-size;
+    }
+  }
+}
+
+// ** PAGINATION SLIDER **
+// -----------------------
+
+.lSSlideOuter{
+  position: relative;
+}
+
+.lSSlideOuter .lSPager.lSpg{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: @pagination-size;
+  //border-bottom: 1px solid @border-default-color;
+
+  li{
+    line-height: @pagination-size;  
+  }
+
+  &>li{
+
+    a{
+      border: 1px solid @border-default-color;
+      background: none;
+
+    }
+
+    &:hover{
+      a{
+        background: @gray-darker; 
+      }
+    }
+
+    &.active{
+      a{
+        background: @gray-darker;
+      }
+    }
+  }
+  
+  width: 100%;
+}
+
+.lSSlideOuter.noPager .lSPager.lSpg{
+  display: none;
+}
+
+.lSSlideWrapper{
+  padding-bottom: @pagination-size;
+  margin-bottom: -1px;
+}
+
+.noPager{
+  .lSSlideWrapper{
+    padding-bottom: 0; 
+  }
+}
+
+.lSAction{
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  height: @pagination-size;
+
+  a{
+    height: @pagination-size;
+    width: @pagination-size;
+    text-align: center;
+    top: 0;
+    margin-top: 0;
+    background: none;
+  }
+
+  i{
+    line-height: @pagination-size;  
+  }
+}
+
+.lSAction>.lSPrev{
+  left: 0;
+  border-right: 1px solid @border-default-color;
+}
+
+.lSAction>.lSNext{
+  right: 0;
+  border-left: 1px solid @border-default-color;
+}

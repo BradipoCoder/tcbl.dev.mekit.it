@@ -24,7 +24,7 @@
         <?php endif ?>
       </div>
       <div class="col-md-3">
-        <select name="activities" class="form-control labs-select">
+        <select id="filter-kas" name="kas" class="form-control labs-select">
           <?php if ($content['filters']['kas']) : ?>
             <option value="all">- All Activities -</option>
 
@@ -40,12 +40,16 @@
         </select>
       </div>
     </div>
+    <span class="loader"></span>
   </div>
 
   <div class="labsmain__results">
     <div class="row">
       <div class="col-md-6">
-        <?php print render($content['nodes']); ?>
+        <div id="labs-results">
+          
+        </div>
+        <div id="labs-pagination" class="labs-pagination"></div>
       </div>
       <div class="col-md-6">
         <?php print render($content['map']); ?>
