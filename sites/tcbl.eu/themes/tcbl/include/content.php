@@ -342,7 +342,8 @@ function _tcbl_alter_breadcrumbs(&$vars){
     if ($node->type == 'company'){
       $bcs = [];
       $bcs[] = t('Home');
-      $bcs[] = l('Labs', 'node/441');
+      $opt['query']['scroll'] = true;
+      $bcs[] = l('Labs', 'node/441', $opt);
 
       if (isset($node->field_location['und'][0]['country'])){
         $country_name = $node->field_location['und'][0]['country_name'];
@@ -350,6 +351,7 @@ function _tcbl_alter_breadcrumbs(&$vars){
         $opt = array(
           'query' => array(
             'country' => $country,
+            'scroll' => true,
           ),
         );
         $bcs[] = l($country_name, 'node/441', $opt);

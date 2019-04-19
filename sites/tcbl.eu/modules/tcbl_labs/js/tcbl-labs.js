@@ -14,14 +14,19 @@
       me.page = 1;
       me.context = context;
       me.settings = settings;
+      me.showPagination = false;
 
       me.perPage = Drupal.settings.tcbl_labs.perPage;
+      me.withArgs = Drupal.settings.tcbl_labs.withArgs;
+
+      if (Drupal.settings.tcbl_labs.scroll){
+        scrollTo('#row-labs-archive');
+      }
     
       this.checkCookies();
-      this.updateFilterVals();
-
       this.armFilters();
       this.reloadAll();
+      this.armReset();
     },
 
     /**
@@ -70,6 +75,35 @@
     },
 
     /**
+     * Show reset filters
+     * @return {[type]} [description]
+     */
+    armReset: function(){
+      var reset = $('#reset-filters');
+      reset.click(function(e){
+        e.preventDefault();
+        me.filters = {};
+        me.reloadAll();
+        me.updateFilterVals();
+        me.setCookies();
+      })
+    },
+
+    /**
+     * Update data from filters value
+     * - usefull for query args
+     */
+    setDataFromFilters: function(){
+      var select = jQuery('.labs-select');
+      select.each(function(){
+        var item = jQuery(this);
+        var name = item.attr('name');
+        var value = item.val();
+        me.filters[name] = value; 
+      });
+    },
+
+    /**
      * Reload all labs list
      * @return {[type]} [description]
      */
@@ -112,15 +146,26 @@
       var aurl = '/labs-get-results?' + encodedQuery;
       $('#labs-results').load(aurl + ' #labs-results > div', function(){
         filter.removeClass('loading');
+        var pagination = $('#labs-pagination');
+        if (me.showPagination){
+          pagination.addClass('p-active');  
+        } else {
+          pagination.removeClass('p-active'); 
+        }
       }); 
     },
 
+    /**
+     * Add pagination
+     * @param  {[type]} data [description]
+     * @return {[type]}      [description]
+     */
     createPagination: function(data){
       var count = data.length;
       var pagination = $('#labs-pagination');
       
-      if (count > me.perPage){  
-        pagination.addClass('p-active');
+      if (count > me.perPage){
+        me.showPagination = true;
         pagination.pagination({
           items: data.length,
           itemsOnPage: me.perPage,
@@ -143,10 +188,14 @@
           }
         });
       } else {
-        pagination.removeClass('p-active');  
+        me.showPagination = false; 
       }
     },
 
+    /**
+     * Add usefull class to pagination
+     * @return {[type]} [description]
+     */
     paginationUsefullClass: function(){
       var pagination = $('#labs-pagination');
       $('.page-link, span.current, span.ellipse', pagination).not('.prev, .next').parent().addClass('li-item').last().addClass('li-item-last');
@@ -159,11 +208,15 @@
      * @return {[type]} [description]
      */
     checkCookies: function(){
-      var data = Cookies.get('labs');
-      if (data !== undefined){
-        data = JSON.parse(data);
-        me.filters = data;
-        me.page = me.page;
+      if (!me.withArgs){
+        var data = Cookies.get('labs');
+        if (data !== undefined){
+          data = JSON.parse(data);
+          me.filters = data;
+          me.page = me.page;
+        }  
+      } else {
+        me.setDataFromFilters();
       }
     },
 
@@ -175,15 +228,25 @@
       Cookies.set('labs', cData, { expires: 1 }); 
     },
 
+    /**
+     * Update dom filters Vals
+     * @return {[type]} [description]
+     */
     updateFilterVals: function(){
       if (me.filters.country !== undefined){
         $('#filter-country').val(me.filters.country);
+      } else {
+        $('#filter-country').val(false);
       }
       if (me.filters.kas !== undefined){
         $('#filter-kas').val(me.filters.kas);
+      } else {
+        $('#filter-kas').val(false);
       }
       if ((me.filters.key !== undefined) && (me.filters.key)){
         $('#labs-search').val(me.filters.key);
+      } else {
+        $('#labs-search').val('');
       }
     }
 

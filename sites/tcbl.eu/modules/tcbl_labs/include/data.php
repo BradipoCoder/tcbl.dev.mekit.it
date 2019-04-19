@@ -12,7 +12,7 @@ function _tcbl_labs_get_nodes($nids){
     $content['nodes'] = node_view_multiple($nodes, 'teaser');  
   } else {
     $content['noresults'] = array(
-      '#markup' => '<div><code>no results</code></div>',
+      '#theme' => 'tcbl_labs_noresults',
     );
   }
   

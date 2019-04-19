@@ -15,10 +15,18 @@
   <?php print render($title_suffix); ?>
 
   <div class="node-content margin-b-15">
-    <?php print render($content['field_logo']); ?>
-    <div class="company-teaser-content">
-      <?php print render($content); ?>
-    </div>
+    <a href="<?php print $node_url; ?>" class="a-block">
+      <span class="company-logo">
+        <?php print render($content['field_img'][0]); ?>
+      </span>
+      <span class="company-teaser-content">
+        <?php print render($content['title_field'][0]); ?>
+        <?php print render($content['contacts']); ?>
+        <span class="small">
+          <?php print render($content['body'][0]); ?>
+        </span>
+      </span>
+    </a>
   </div>
 
 </div>

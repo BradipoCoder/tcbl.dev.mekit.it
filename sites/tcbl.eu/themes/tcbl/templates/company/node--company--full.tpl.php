@@ -22,21 +22,12 @@
     <div class="row row-company-head bg-blue">
       <div class="container margin-v-15">
         <div class="row">
-          <div class="col-md-4">
-            <div class="margin-md-r-1">
-              <div class="company-map">
-                <?php print render($content['field_img']); ?>
-                <?php print render($content['map']); ?>
-              </div>
-            </div>
-          </div>
 
           <?php if ($has_networks) : ?>
-          <div class="col-md-5">
+          <div class="col-md-5 col-md-push-4">
           <?php else : ?>
-          <div class="col-md-8">
+          <div class="col-md-8 col-md-push-4">
           <?php endif; ?>
-
             <div class="margin-md-r-1">
               <h5 class="text-italic margin-b-025">Company: <?php print render($content['field_ref_memb'][0]); ?></h5>
               <h1 class="margin-t-0 margin-b-05 text-dark"><?php print render($content['title_field'][0]); ?></h1>
@@ -46,14 +37,22 @@
           </div>
 
           <?php if ($has_networks) : ?>
-            <div class="col-md-3">
+            <div class="col-md-3 col-md-push-4">
               <h5 class="text-italic">Networks</h5>
               <?php print render($content['networks']); ?>
             </div>
           <?php endif; ?>
+
+        <div class="col-md-4 col-md-pull-8">
+          <div class="margin-md-r-1">
+            <div class="company-map">
+              <?php print render($content['field_img']); ?>
+              <?php print render($content['map']); ?>
+            </div>
+          </div>
         </div>
 
-
+      </div>
       </div>
     </div>
 

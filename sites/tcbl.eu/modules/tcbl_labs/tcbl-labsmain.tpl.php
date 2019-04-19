@@ -1,5 +1,9 @@
 <div id="labsmain" class="labsmain">
   <div id="labs-filters" class="labsmain__filters">
+    <a id="reset-filters" class="btn btn-default reset-filters">
+      Reset
+    </a>
+
     <div class="row">
       <div class="col-md-6">
         <div class="input-group">

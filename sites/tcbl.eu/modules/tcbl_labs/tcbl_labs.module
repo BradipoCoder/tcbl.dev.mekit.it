@@ -62,6 +62,14 @@ function tcbl_labs_theme(){
       ),
       'pattern' => 'tcbl-labsmain__',
     ),
+    'tcbl_labs_noresults' => array(
+      // use a template and give the template's name.
+      'template' => 'tcbl-labs-noresults',
+      'variables' => array(
+        'content' => NULL,
+      ),
+      'pattern' => 'tcbl-labs-noresults__',
+    ),
   );
 }
 
@@ -91,6 +99,17 @@ function _tcbl_labs_preprocess_mainlabs_node(&$vars){
 
   $data['perPage'] = 10;
 
+  // If an argument is present, cookie data need to by refreshed
+  $data['withArgs'] = false;
+  if (isset($_GET['country'])){
+    $data['withArgs'] = true;
+  }
+
+  $data['scroll'] = false;
+  if (isset($_GET['scroll'])){
+    $data['scroll'] = true;
+  }
+
   // Add labs archive
   $vars['content']['archive'] = array(
     '#theme' => 'tcbl_labsmain',
@@ -116,27 +135,7 @@ function template_preprocess_tcbl_labsmain(&$vars){
 }
 
 function _tcbl_labs_build_archive(){
-  // Query example
-  // $filters['country'] = 'GR';
-  // $filters['kas'] = '49';
-  // $filters['key'] = 'Lab';
-
-  $filters = array();
-  if (isset($_GET['country'])){
-    $filters['country'] = $_GET['country'];  
-  }
-
   $data['list'] = false;
-  // Get all nids list
-  // $nids = _tcbl_labs_query_nids($filters);
-  // if (count($nids)){
-  //   // Maps data
-  //   $data['list'] = _tcbl_labs_get_maps_data($nids);  
-  //   
-  //   // Listed nodes
-  //   // $firstPage = array_slice($nids, 0, $data['perPage']);
-  //   // $build['nodes'] = _tcbl_labs_get_nodes($firstPage);
-  // }
   
   // All nids for filters
   $all_nids = _tcbl_labs_query_nids(array());
