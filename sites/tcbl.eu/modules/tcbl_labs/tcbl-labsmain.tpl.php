@@ -50,7 +50,7 @@
   <div class="labsmain__results">
     <div class="row">
       <div class="col-md-6">
-        <div id="labs-results">
+        <div id="labs-results" class="labs-results">
           
         </div>
         <div id="labs-pagination" class="labs-pagination"></div>

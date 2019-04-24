@@ -79,7 +79,6 @@
             <div class="row">
               <div class="col-md-8 margin-b-1">
                 <div class="margin-md-r-2">
-                  <h3 class="text-normal text-dark margin-t-0 margin-b-1">Key activities</h3>
                   <h3 class="text-normal text-dark margin-t-0 margin-b-1">Innovation Approach</h3>
                   <p class="margin-b-1">What does Innovation Approach means</p>
                   <div class="row">
@@ -102,7 +101,7 @@
                 <h3 class="text-normal text-dark margin-t-0 margin-b-1">People</h3>
                 <p class="margin-b-1">Something about the Lab Population</p>
                 <div class="row">
-                  <div class="col-sm-7">
+                  <div class="col-sm-7 margin-b-1">
                     <?php print render($content['population']); ?>
                   </div>
                   <div class="col-sm-5">
@@ -119,9 +118,11 @@
           <div id="company-contents--ka" class="company-contents__panel">
             <div class="row">
               <div class="col-md-8 margin-b-1">
-                <h3 class="text-normal text-dark margin-t-0 margin-b-1">Key activities</h3>
-                <p class="margin-b-1">Something explaining the Lab key activities</p>
-                <?php print render($content['kas']); ?>
+                <div class="margin-md-r-1">
+                  <h3 class="text-normal text-dark margin-t-0 margin-b-1">Key activities</h3>
+                  <p class="margin-b-1">Something explaining the Lab key activities</p>
+                  <?php print render($content['kas']); ?>
+                </div>
               </div>
               <div class="col-md-4">
                 <?php if ($content['customers']) : ?>

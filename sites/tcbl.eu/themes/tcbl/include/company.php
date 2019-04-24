@@ -15,6 +15,8 @@ function _tcbl_preprocess_node_company(&$vars){
     // Add javascript
     $js = drupal_get_path('theme', 'tcbl') . '/js/company.js';
     drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 1));
+    $js = drupal_get_path('theme', 'tcbl') . '/js/company-kas.js';
+    drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 1));
 
     // * Company header *
     // ------------------
@@ -545,6 +547,7 @@ function _tcbl_company_add_kas(&$vars){
 
   if (isset($node->field_ref_kas['und'][0]['tid'])){
     $list = $node->field_ref_kas['und'];
+    $n = 0;
     foreach ($list as $key => $value) {
       $tid = $value['tid'];
       $term = taxonomy_term_load($tid);
@@ -555,13 +558,19 @@ function _tcbl_company_add_kas(&$vars){
       $items[$key]['letter'] = $letter;
       $items[$key]['title'] = $name;
       $items[$key]['tid'] = $tid;
+
+      $items[$key]['class'] = false;
+      if ($n == 0){
+        $items[$key]['class'] = 'open';
+      }
+
+      $n++;
     }
 
     $vars['content']['kas'] = array(
       '#theme' => 'companykas',
       '#items' => $items,
     );
-
   }
 
 }

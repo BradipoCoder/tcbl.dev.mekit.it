@@ -212,24 +212,64 @@
   list-style: none;
   padding: 0;
 
-  &__item{
-    padding-left: 55px;
+  &__head{
+    cursor: pointer;
     position: relative;
     min-height: 40px;
+    padding-left: 55px;
+    padding-right: 55px;
     .margin-b(0.5);
 
     h5{
-      padding: 12px 0;
+      padding: 11px 0;
     }
+
+    &:hover{
+      .kas-circle{
+        .opacity(0.7);  
+      }
+    }
+
+    .toggle{
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      right: 0;
+      top: 0;
+      display: block;
+      text-align: center;
+      line-height: 40px;
+
+      i{
+        .transition(all ease-in-out .2s);
+      }
+    }
+  }
+
+  &__item.open{
+    .company-kas__content{
+      display: block;
+    }
+
+    .toggle i{
+      transform: rotate(180deg);
+    }
+  }
+
+  &__content{
+    display: none;
+    padding-left: 55px;  
   }
 }
 
 .kas-circle{
+  .transition(all ease-in-out .2s);
   background: @gray-darker;
   width: 40px;
   height: 40px;
   .border-top-radius(100%);
   .border-bottom-radius(100%);
+  font-weight: @font-weight-bold;
   line-height: 40px;
   text-align: center;
   color: #fff;
@@ -238,6 +278,14 @@
   top: 0;
   left: 0;
 }
+
+.company-kas__item--45 .kas-circle{
+  background: #24A8E0;
+}
+.company-kas__item--47 .kas-circle{
+  background: #5DD0B1;
+}
+
 
 /**
  * Company projects
@@ -346,5 +394,40 @@
 
   .control-label{
     width: 150px;
+  }
+}
+
+.form-checkboxes{
+  .form-item{
+    .margin-b(0.125);
+    label{
+      position: relative;
+      top: -5px;
+    }
+  }  
+}
+
+.subgroup{
+  h3{
+    margin-top: 0;
+  }
+
+  .form-type-checkboxes > .control-label{
+    display: none;
+  }
+
+  .form-group,
+  > div{
+    margin: 0;
+  }
+
+  .field-type-text{
+    margin-top: -10px;
+  }
+}
+
+.field-group-htab{
+  > .panel-body{
+    padding: 0;
   }
 }
