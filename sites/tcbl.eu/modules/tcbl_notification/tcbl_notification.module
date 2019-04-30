@@ -1,0 +1,60 @@
+<?php
+
+/**
+ * Implements hook_node_insert()
+ */
+function tcbl_notification_node_insert($node){
+  switch ($node->type) {
+    case 'event':
+    case 'blog':
+      _tcbl_notification_send_mail($node);
+      break;
+    
+    default:
+      # code...
+      break;
+  }
+}
+
+/**
+ * Send an e-mail to Alexandra each time a news or and event is created
+ * @param  [type] $node [description]
+ * @return [type]       [description]
+ */
+function _tcbl_notification_send_mail($node){
+  $module = 'tcbl_notification';
+  $key = 'tcbl-update';
+  $to = 'amk@flod.it';
+  global $language;
+
+  $params['node'] = $node;
+
+  // This is not working
+  // $params['headers']['Cc'] = 'luca.cattaneo@mekit.it';
+
+  $result = drupal_mail($module, $key, $to, $language, $params);
+}
+
+function tcbl_notification_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'tcbl-update':
+      global $base_url;
+      $node = $params['node'];
+      $message['subject'] = 'TCBL Update - new content created';
+      $message['body'][] = "A new content has been created on the TCBL website";
+      $message['body'][] = "Title: " . $node->title;
+
+      switch ($node->type) {
+        case 'blog':
+          $message['body'][] = "Type: News";
+          break;
+
+        case 'event':
+          $message['body'][] = "Type: Event";
+          break;
+      }
+      
+      $message['body'][] = "Url: " . $base_url . url('node/' . $node->nid);
+      break;
+  }
+}

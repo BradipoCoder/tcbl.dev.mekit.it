@@ -40,7 +40,7 @@ function armSlider(id){
         wrapper.attr('style','');  
       });
     };
-    jQuery(selector).lightSlider(options);
+    var slider = jQuery(selector).lightSlider(options);
   });
     
 }

@@ -303,11 +303,9 @@
  * Teaser
  */
 
-.node-company.node-teaser{
-  .node-content{
-    position: relative;
-    min-height: 80px;
-  }
+.a-company{
+  position: relative;
+  min-height: 80px;
 
   .company-logo{
     position: absolute;
@@ -337,10 +335,78 @@
       top: 4px;
     }
   }
+
+  .company-content{
+    padding-left: 100px;  
+  }
 }
 
-.company-teaser-content{
-  padding-left: 100px;
+/**
+ * Child
+ */
+
+.node-company.node-child{
+  .a-company{
+    min-height: 50px;
+  } 
+
+  .company-logo{
+    width: 50px;
+    padding: 2px;
+  }
+
+  .company-content{
+    padding-left: 65px;  
+  }
+
+  .h5{
+    .padding-t(0.5);
+  }
+}
+
+/**
+ * External collaboration
+ */
+
+.extcoll{
+  position: relative;
+  
+  &__icon{
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
+    padding: 2px;
+    background: #fff;
+    border: 1px solid lighten(@gray-light, 20%);
+    .border-top-radius(100%);
+    .border-bottom-radius(100%);
+
+    span{
+      display: block;
+      width: 44px;
+      height: 44px;
+      background: @gray;
+      text-align: center;
+      line-height: 44px;
+      .border-top-radius(100%);
+      .border-bottom-radius(100%);
+    }
+
+    i{
+      font-size: @font-size-small;
+      color: #fff;
+      position: relative;
+      left: 2px;
+    }
+  }
+
+  &__title{
+    .padding-t(0.5);
+    padding-left: 65px;   
+  }
 }
 
 /**
@@ -429,5 +495,15 @@
 .field-group-htab{
   > .panel-body{
     padding: 0;
+  }
+}
+
+.group-design-make-place{
+  .panel-body{
+    .field-widget-number{
+      float: left;
+      width: 150px;
+      margin-right: 10px;
+    }
   }
 }

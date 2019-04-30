@@ -9,9 +9,15 @@
       this.tabs = $('#company-tabs');
       this.tlinks = $('.company-tabs__a', this.tabs);
       this.panels = $('.company-contents__panel');
+      this.slider = false;
 
-      this.armCompanyTabs();
-      this.checkForHash();
+      var me = this;
+
+      $('#company-head').once('companyOnce', function(){
+        me.setUpSlider();
+        me.armCompanyTabs();
+        me.checkForHash();
+      });
     },
 
     /**
@@ -23,8 +29,44 @@
       var me = this;
       links.click(function(){
         var id = $(this).attr('data-id');
-        me.openTab(id);  
+        me.openTab(id);
+
+        // Refresh the slider
+        if (id == 'about'){
+          me.slider.refresh();
+        }
+
       });
+    },
+
+    setUpSlider: function(){
+      var me = this;
+      this.domSlider = $('#company-slider');
+      this.domSlider.imagesLoaded(
+        function(){
+          me.createSlider();  
+        }
+      );
+    },
+
+    createSlider: function(){
+      var options = {
+        item:  2,
+        mode: 'slide',
+        loop: false,
+        slideMargin: 10,
+        slideMove: 1,
+        slideEndAnimation: false,
+        auto: true,
+        autoWidth: true,
+        speed: 2000,
+        pause: 10000,
+        prevHtml: '<i class="fa fa-lg fa-angle-left"></i>',
+        nextHtml: '<i class="fa fa-lg fa-angle-right"></i>',
+        controls: false,
+        pager: true,
+      };
+      this.slider = this.domSlider.lightSlider(options);
     },
 
     /**

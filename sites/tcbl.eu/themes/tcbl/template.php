@@ -50,33 +50,61 @@ function tcbl_preprocess_page(&$vars){
   // Add usefull variables to page template (when views is present)
   _tcbl_is_page_with_view($vars);
 
-  $js_scroll_to = libraries_get_path('jquery.scrollto') . '/jquery.scrollto.js';
-  drupal_add_js( $js_scroll_to , array('group' => JS_LIBRARY, 'weight' => 1));
+  $js = libraries_get_path('jquery.scrollto') . '/jquery.scrollto.js';
+  drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 1));
+
+  $js = libraries_get_path('jquery.lightslider') . '/js/lightslider.min.js';
+  drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 1));
+  $css = libraries_get_path('jquery.lightslider') . '/css/lightslider.min.css';
+  drupal_add_css($css, array('group' => CSS_SYSTEM));
 }
 
 
 
 function tcbl_preprocess_user_profile(&$vars){
-  if (arg(1)){
-    $uid = arg(1);
-    $this_user = user_load($uid);
-    $data = _tcbl_get_avatar_path($this_user);
 
-    $vars['user_profile']['avatar'] = array(
-      '#prefix' => '<div class="tcbl-avatar">',
-      '#suffix' => '</div>',
-      '#markup' => '<img src="' . $data['path'] . '" class="img-responsive ' . $data['type'] . '"/>',
-      '#weight' => -1,
+  $vars['theme_hook_suggestions'][] = 'user_profile';
+  $vars['theme_hook_suggestions'][] = 'user_profile__' . $vars['elements']['#view_mode'];
+
+  $uid = $vars['elements']['#account']->uid;
+  $profile = user_load($uid);
+  $avatar = _tcbl_get_avatar_path($profile);
+
+  $vars['url'] = url('user/' . $uid);
+
+  // Standard user profile
+  $vars['user_profile']['avatar'] = array(
+    '#prefix' => '<span class="tcbl-avatar">',
+    '#suffix' => '</span>',
+    '#markup' => '<img src="' . $avatar['path'] . '" class="img-responsive ' . $avatar['type'] . '"/>',
+    '#weight' => -1,
+  );
+
+  // Teaser view mode
+  if ($vars['elements']['#view_mode'] == 'default'){
+    $vars['user_profile']['type']['#markup'] = ', Lab Manager';
+  }
+
+  // New avatar
+  $vars['user_profile']['avatar']['#prefix'] = '<span class="flat-avatar">';
+  $vars['user_profile']['avatar']['#markup'] = '<span class="flat-avatar__icon"><span><i class="fa fa-user"></i></span></span>';
+
+  if ($avatar['type'] == 'sso'){
+    $vars['user_profile']['avatar']['#markup'] = '<span class="flat-avatar__icon"><img src="' . $avatar['path'] . '" class="img-responsive"/></span>';  
+  }
+
+  $vars['show_contact'] = false;
+  if (user_is_logged_in()){
+    $vars['show_contact'] = true;
+  }
+
+  if (isset($profile->mail)){
+    $vars['user_profile']['mail'] = array(
+      '#prefix' => '<span class="text-primary-light">',
+      '#suffix' => '</span>',
+      '#markup' => $profile->mail,
     );
-
-    if (isset($this_user->mail)){
-      $vars['user_profile']['mail'] = array(
-        '#prefix' => '<p>',
-        '#suffix' => '</p>',
-        '#markup' => $this_user->mail,
-        '#weight' => 5,
-      );
-    }
+    
   }
 }
 
@@ -186,6 +214,13 @@ function tcbl_theme(){
       'template' => 'companykas',
       'variables' => array(
         'items' => NULL,
+      ),
+    ),
+    'extcollaboration' => array(
+      'template' => 'extcollaboration',
+      'variables' => array(
+        'url' => NULL,
+        'title' => NULL,
       ),
     ),
   );

@@ -33,6 +33,7 @@ function _tcbl_preprocess_node_company(&$vars){
 
     // Details
     _tcbl_company_add_approach_gf($vars);
+    _tcbl_company_coll_links($vars);
 
     // Staff
     _tcbl_company_add_workers_icons($vars);
@@ -343,9 +344,16 @@ function _tcbl_company_add_slider(&$vars){
 
       $slides[$key]['#markup'] = l(render($img), $img_url, $opt);
 
-      $lsid = 'company-slider';
-      $options = _tcbl_company_get_slider_options();
-      $vars['content']['field_images'] = _lightslider_create_slider($slides, $lsid, $options);
+      // I cannot you the lightslider standard function here due to tabs problems
+      // $lsid = 'company-slider';
+      // $options = _tcbl_company_get_slider_options();
+      // $vars['content']['field_images'] = _lightslider_create_slider($slides, $lsid, $options);
+       
+      $vars['content']['field_images'] = array(
+        '#prefix' => '<div id="company-slider">',
+        '#suffix' => '</div>',
+        'slides' => $slides,
+      );
     }
   }
 }
@@ -446,7 +454,23 @@ function _tcbl_company_add_approach_gf(&$vars){
     '#cid' => 'approach',
     '#type' => 'polarArea',
   );
+}
 
+function _tcbl_company_coll_links(&$vars){
+  $node = $vars['node'];
+
+  if (isset($node->field_coll_links['und'][0]['title'])){
+    $items = $node->field_coll_links['und'];
+    foreach ($items as $key => $item) {
+      $build[$key]['icon'] = array(
+        '#theme' => 'extcollaboration',
+        '#url' => $item['url'],
+        '#title' => $item['title'],
+      );
+    }
+    $vars['content']['field_coll_links'] = $build;
+
+  }
 }
 
 // ** Staff **

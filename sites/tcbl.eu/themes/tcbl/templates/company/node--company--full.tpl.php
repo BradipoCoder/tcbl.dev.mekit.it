@@ -19,7 +19,7 @@
   <?php print render($title_suffix); ?>
 
   <div class="node-content"<?php print $content_attributes; ?>>
-    <div class="row row-company-head bg-blue">
+    <div id="company-head" class="row row-company-head bg-blue">
       <div class="container margin-v-15">
         <div class="row">
 
@@ -90,7 +90,8 @@
               </div>
               <div class="col-md-4">
                 <h3 class="text-normal text-dark margin-b-1">Collaborations</h3>
-                <pre>Labs list</pre>
+                <?php print render($content['field_ref_labs']); ?>
+                <?php print render($content['field_coll_links']); ?>
               </div>
             </div>
           </div><!-- details tab -->
@@ -111,6 +112,7 @@
               </div>
               <div class="col-md-4">
                 <h3 class="text-normal text-dark margin-t-0 margin-b-1">Lab Staff</h3>
+                <?php print render($content['field_ref_user']); ?>
               </div>
             </div>
           </div><!-- staff tab -->

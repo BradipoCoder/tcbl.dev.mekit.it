@@ -416,7 +416,7 @@ function _tcbl_get_avatar_path($profile_user){
 
   //dpm($profile_user->uid);
 
-  if ($profile_user->uid !== '1'){
+  if (isset($profile_user->uid) && $profile_user->uid !== '1'){
     if (isset($profile_user->field_sso_avatar_uri['und'][0]['value'])){
       $value = $profile_user->field_sso_avatar_uri['und'][0]['value'];
       if ($value !== '' && $value !== '_'){
@@ -432,7 +432,13 @@ function _tcbl_get_avatar_path($profile_user){
         $data['path'] = $value;
         $data['type'] = 'sso';
       }
-    }  
+    }
+
+    if (isset($profile_user->field_image['und'][0]['uri'])){
+      $uri = $profile_user->field_image['und'][0]['uri'];
+      $data['path'] = image_style_url('square', $uri);
+      $data['type'] = 'sso';
+    }
   }
 
   

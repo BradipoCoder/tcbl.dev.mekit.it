@@ -1,0 +1,4 @@
+name = TCBL Notification
+description = Send a notification to Alexandra when some nodes are inserted
+package = TCBL
+core = 7.x
