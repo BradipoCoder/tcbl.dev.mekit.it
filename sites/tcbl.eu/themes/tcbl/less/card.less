@@ -16,3 +16,54 @@
     }
   }
 }
+
+.card{
+  background: #fff;
+  border: 1px solid @gray-lightest;
+  .border-top-radius(5px);
+  .border-bottom-radius(5px);
+
+  &:hover{
+    .box-shadow(0px 3px 3px 0px rgba(0, 0, 0, 0.2));
+  }
+  
+  &__content{
+    .padding-h(1);
+    .padding-v(1);
+
+    hr{
+      border-top: 1px solid @gray-lightest;
+      .margin-v(0.5);  
+    }
+  }
+
+  &__logo{
+    margin-top: -10px;
+    margin-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80px;
+    padding: 3px;
+    background: #fff;
+    border: 1px solid lighten(@gray-light, 20%);
+    .border-top-radius(100%);
+    .border-bottom-radius(100%);
+
+    img{
+      .border-top-radius(100%);
+      .border-bottom-radius(100%);
+    }
+  }
+
+  &__cta{
+    font-size: 14px;
+    color: @gray-light;
+    display: inline !important;
+    margin-right: 5px;
+  }
+
+  &__footer{
+    margin-bottom: -20px;
+    margin-top: -10px;
+  }
+}

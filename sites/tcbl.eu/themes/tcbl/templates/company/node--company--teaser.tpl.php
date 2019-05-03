@@ -10,20 +10,18 @@
 ?>
 
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?>"<?php print $attributes; ?>>
-
-  <?php print render($title_prefix); ?>
-  <?php print render($title_suffix); ?>
-
-  <div class="node-content margin-b-15">
-    <a href="<?php print $node_url; ?>" class="a-block a-company">
-      <span class="company-logo">
-        <?php print render($content['field_img'][0]); ?>
-      </span>
-      <span class="company-content">
-        <?php print render($content['title_field'][0]); ?>
-        <?php print render($content['contacts']); ?>
-        <span class="small">
-          <?php print render($content['body'][0]); ?>
+  <div class="node-content">
+    <?php print render($title_prefix); ?>
+    <?php print render($title_suffix); ?>
+    <a href="<?php print $node_url; ?>" class="a-block">
+      <span class="company-head">
+        <span class="company-logo">
+          <?php print render($content['field_img'][0]); ?>
+        </span>
+        <span class="company-content">
+          <span class="company-memb-level"><?php print render($content['field_ref_memb'][0]); ?></span>
+          <?php print render($content['title_field'][0]); ?>
+          <?php print render($content['contacts']); ?>
         </span>
       </span>
     </a>

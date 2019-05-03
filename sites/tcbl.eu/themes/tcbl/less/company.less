@@ -118,6 +118,21 @@
   a{
     .color-and-hover(@brand-primary);
   }
+
+  &--card{
+    margin-bottom: 0;
+    display: inline-block;
+
+    li{
+      margin-bottom: 0;
+    }
+
+    img{
+      width: 20px;
+      height: 20px;
+      margin-right: 3px;
+    }
+  }
 }
 
 /**
@@ -303,16 +318,17 @@
  * Teaser
  */
 
-.a-company{
+.company-head{
+  min-height: 60px;
   position: relative;
-  min-height: 80px;
 
   .company-logo{
     position: absolute;
-    top: 0;
+    top: 50%;
+    margin-top: -30px;
     left: 0;
-    width: 80px;
-    padding: 5px;
+    width: 60px;
+    padding: 3px;
     background: #fff;
     border: 1px solid lighten(@gray-light, 20%);
     .border-top-radius(100%);
@@ -324,26 +340,49 @@
     }
   }
 
-  .company-contacts{
-    .margin-v(0.125);
-    font-size: @font-size-small;
-    li{
-      padding-left: 25px;
-      color: @gray-light;
-    }
-    i{
-      top: 4px;
-    }
-  }
-
   .company-content{
-    padding-left: 100px;  
+    padding-left: 80px;  
   }
+}
+
+.company-body{
+  font-size: 14px;
+}
+
+.company-networks{
+  margin-bottom: -5px;
+}
+
+.company-memb-level{
+  font-size: 12px;
+  text-transform: uppercase;
+  font-style: italic;
+  font-weight: @font-weight-bold;
+  color: @brand-primary;
 }
 
 /**
  * Child
  */
+
+.node-company.node-teaser,
+.node-company.node-card{
+  .company-contacts{
+    .margin-v(0.125);
+    font-size: 14px;
+    li{
+      padding-left: 0;
+      color: @gray-light;
+    }
+    i{
+      position: inherit;
+      top: -1px;
+      left: -4px;
+      margin-right: -2px;
+    }
+  }
+}
+
 
 .node-company.node-child{
   .a-company{
@@ -358,9 +397,22 @@
   .company-content{
     padding-left: 65px;  
   }
+}
 
-  .h5{
-    .padding-t(0.5);
+.node-company.node-teaser{
+  position: relative;
+  border-bottom: 1px solid @gray-lightest;
+  .padding-b(0.5);
+  .margin-b(0.5);
+}
+
+.node-company.node-card{
+  .company-head{
+    .margin-b(0.5);
+  }
+
+  .company-contacts{
+    .margin-b(0.25);
   }
 }
 
@@ -421,15 +473,17 @@
   }
 }
 
-.double-field-elements{
-  .clearfix();
-  margin-bottom: 0;
-  .form-item{
-    float: left;
-    width: 50%;
+.field-name-field-geolocation{
+  .double-field-elements{
+    .clearfix();
+    margin-bottom: 0;
+    .form-item{
+      float: left;
+      width: 50%;
 
-    &:first-child{
-      padding-right: 10px;
+      &:first-child{
+        padding-right: 10px;
+      }
     }
   }
 }

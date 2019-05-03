@@ -1,6 +1,6 @@
 <?php
 
-function _tcbl_labs_get_nodes($nids){
+function _tcbl_labs_get_nodes($nids, $view_mode = 'teaser'){
   $content = array(
     '#prefix' => '<div id="labs-results" class="wrapper-nodes">',
     '#suffix' => '</div>',
@@ -9,7 +9,7 @@ function _tcbl_labs_get_nodes($nids){
 
   if ($nids){
     $nodes = node_load_multiple($nids);
-    $content['nodes'] = node_view_multiple($nodes, 'teaser');  
+    $content['nodes'] = node_view_multiple($nodes, $view_mode);  
   } else {
     $content['noresults'] = array(
       '#theme' => 'tcbl_labs_noresults',

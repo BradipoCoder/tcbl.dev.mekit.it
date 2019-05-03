@@ -28,8 +28,15 @@ function tcbl_labs_menu() {
 function tcbl_labs_get_results_page() {
   $filters = $_GET;
   unset($filters['q']);
+
+  $view_mode = 'teaser';
+  if (isset($filters['view_mode'])){
+    $view_mode = $filters['view_mode'];
+    unset($filters['view_mode']);
+  }
+
   $nids = _tcbl_labs_query_nids($filters);
-  $build['nodes'] = _tcbl_labs_get_nodes($nids);
+  $build['nodes'] = _tcbl_labs_get_nodes($nids, $view_mode);
   return $build;
 }
 

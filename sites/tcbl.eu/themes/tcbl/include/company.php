@@ -10,6 +10,9 @@
 // -------------------
 
 function _tcbl_preprocess_node_company(&$vars){
+  $node = $vars['node'];
+  $view_mode = $vars['view_mode'];
+
   if ($vars['view_mode'] == 'full'){
     
     // Add javascript
@@ -22,7 +25,7 @@ function _tcbl_preprocess_node_company(&$vars){
     // ------------------
     _tcbl_company_format_contacts($vars);
     _tcbl_company_format_social($vars);
-    _tcbl_company_format_networks($vars);
+    _tcbl_company_format_networks($vars, $view_mode);
     _tcbl_company_add_map($vars);
 
     // * Company content *
@@ -45,8 +48,18 @@ function _tcbl_preprocess_node_company(&$vars){
 
   }
 
-  if ($vars['view_mode'] == 'teaser'){
+  if ($vars['view_mode'] == 'teaser' || $vars['view_mode'] == 'card'){
     _tcbl_company_format_contacts($vars, 'teaser');
+  }
+
+  if ($vars['view_mode'] == 'card'){
+
+    $vars['content']['title_field'] = field_view_field('node', $node, 'title_field', 'teaser');
+
+    if (isset($node->body['und'][0]['value'])){
+      $vars['content']['body'] = field_view_field('node', $node, 'body', 'teaser');
+    }
+    _tcbl_company_format_networks($vars, $view_mode);
   }
 }
 
@@ -190,7 +203,7 @@ function _tcbl_company_format_social(&$vars){
   }
 }
 
-function _tcbl_company_format_networks(&$vars){
+function _tcbl_company_format_networks(&$vars, $view_mode){
   $node = $vars['node'];
 
   $list = array(
@@ -222,14 +235,19 @@ function _tcbl_company_format_networks(&$vars){
     if (isset($node->$field_name['und'][0]['url']) && $node->$field_name['und'][0]['url'] !== ''){
       $url = $node->$field_name['und'][0]['url'];
 
-      $img = '<img src="' . $base_path . $key . '.jpg"/>';
-      $text = 'View on ' . $item['name'];
+      $img = '<img src="' . $base_path . $key . '.svg"/>';
+
+      $markup = $img;
+      if ($view_mode == 'full'){
+        $text = 'View on ' . $item['name'];
+        $markup = l($img . $text, $url, $opt);
+      }
 
       // @todo image
       $build[$key] = array(
         '#prefix' => '<li>',
         '#suffix' => '</li>',
-        '#markup' => l($img . $text, $url, $opt),
+        '#markup' => $markup,
       );
     }
   }
@@ -237,7 +255,7 @@ function _tcbl_company_format_networks(&$vars){
   $vars['has_networks'] = false;
   if (count($build)){
     $vars['has_networks'] = true;
-    $build['#prefix'] = '<ul class="company-networks">';
+    $build['#prefix'] = '<ul class="company-networks company-networks--' . $view_mode . '">';
     $build['#suffix'] = '</ul>';
     $vars['content']['networks'] = $build;
   }
