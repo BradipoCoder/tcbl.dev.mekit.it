@@ -1,8 +1,14 @@
 <div id="labsmain" class="labsmain">
   <div id="labs-filters" class="labsmain__filters">
-    <a id="reset-filters" class="btn btn-default reset-filters">
-      Reset
-    </a>
+
+    <div class="labs-filters__tools margin-b-1">
+      <a id="toggle-map" class="btn toggle-map on">
+        <i class="fa fa-toggle-on"></i> Show map
+      </a>
+      <a id="reset-filters" class="btn reset-filters">
+        <i class="fa fa-refresh"></i> Reset filters
+      </a>
+    </div>
 
     <div class="row">
       <div class="col-md-6">
@@ -44,20 +50,17 @@
         </select>
       </div>
     </div>
+
     <span class="loader"></span>
   </div>
 
-  <div class="labsmain__results">
-    <div class="row">
-      <div class="col-md-6">
-        <div id="labs-results" class="labs-results">
-          
-        </div>
-        <div id="labs-pagination" class="labs-pagination"></div>
-      </div>
-      <div class="col-md-6">
-        <?php print render($content['map']); ?>
-      </div>
+  <div id="labsmain-results" class="labsmain__results">
+    <div class="labsmain__list">
+      <div id="labs-results" class="labs-results"></div>
+      <div id="labs-pagination" class="labs-pagination"></div>
+    </div>
+    <div class="labsmain__map">
+      <?php print render($content['map']); ?>
     </div>
   </div>
 

@@ -35,9 +35,11 @@
      */
     armFilters: function(){
       var filter = jQuery('#labs-filters');
+      var toggleMap = jQuery('#toggle-map');
       var select = jQuery('.labs-select', filter);
       var search = jQuery('#labs-search', filter);
       var searchButton = jQuery('#search-button', filter);
+      var results = jQuery('#labsmain-results');
 
       select.change(function(e){
         var item = jQuery(this);
@@ -71,7 +73,27 @@
           // Faccio il refresh dell'archivio
           search.blur();
         }
-      });  
+      });
+
+      // Toggle map
+      toggleMap.click(function(event){
+        event.preventDefault();
+
+        if (toggleMap.hasClass('on')){
+          // Turn off map
+          me.filters['view_mode'] = 'card';
+          toggleMap.removeClass('on');
+          results.addClass('map-off');
+        } else {
+          // Turn on
+          me.filters['view_mode'] = 'teaser';
+          toggleMap.addClass('on');
+          results.removeClass('map-off');
+        }
+        me.page = 1;
+        me.reloadAll();
+      });
+
     },
 
     /**
@@ -144,7 +166,8 @@
 
       // Get filtered nodes
       var aurl = '/labs-get-results?' + encodedQuery;
-      $('#labs-results').load(aurl + ' #labs-results > div', function(){
+      var labsResults = $('#labs-results');
+      labsResults.load(aurl + ' #labs-results > div', function(){
         filter.removeClass('loading');
         var pagination = $('#labs-pagination');
         if (me.showPagination){
@@ -152,6 +175,7 @@
         } else {
           pagination.removeClass('p-active'); 
         }
+        $('.same-h', labsResults).sameh();
       }); 
     },
 

@@ -25,19 +25,62 @@
 }
 
 .labsmain__results{
+  .clearfix();
+  .margin-h(-0.5);
+
   .tcbl-map{
     min-height: 700px;
   }
+
+  &.map-off{
+    .labsmain__map{
+      display: none;
+    }  
+
+    .labsmain__list{
+      width: 100%;
+    }
+
+    .labs-results{
+      .row;
+    }
+  }
 }
 
-.reset-filters{
-  position: absolute;
-  top: -60px;
-  right: 0;
+.labsmain__map,
+.labsmain__list{
+  width: 50%;
+  float: left;
+  .padding-h(0.5);
+}
+
+.labs-filters__tools{
+  text-align: right;
 }
 
 .labs-pagination{
   .margin-b(1);
+}
+
+/**
+ * Toggle
+ */
+
+.toggle-map{
+  .fa-toggle-on{
+    transform: rotate(180deg);
+    position: relative;
+    top: -  1px; 
+  }
+
+  &.on{
+    color: @brand-primary;
+    .fa-toggle-on{
+      display: inherit;
+      transform: rotate(0deg);
+      top: 0; 
+    }
+  }
 }
 
 /**

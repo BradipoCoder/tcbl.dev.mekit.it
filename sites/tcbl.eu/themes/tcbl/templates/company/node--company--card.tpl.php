@@ -18,7 +18,7 @@
   <div class="node-content margin-b-05">
     <a href="<?php print $node_url; ?>" class="a-block">
       <span class="card">
-        <span class="card__content">
+        <span class="card__content same-h">
           <span class="card__logo">
             <?php print render($content['field_img'][0]); ?>
           </span>
