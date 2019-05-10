@@ -51,3 +51,11 @@
     <?php endif; ?>
   </span>
 </div>
+
+<?php if ($company) : ?>
+  <div class="profile-full-company margin-v-1">
+    <div class="row">
+      <?php print render($content); ?>
+    </div>
+  </div>
+<?php endif; 

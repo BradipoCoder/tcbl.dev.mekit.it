@@ -236,12 +236,10 @@ function _tcbl_company_format_networks(&$vars, $view_mode){
       $url = $node->$field_name['und'][0]['url'];
 
       $img = '<img src="' . $base_path . $key . '.svg"/>';
-
-      $markup = $img;
       if ($view_mode == 'full'){
-        $text = 'View on ' . $item['name'];
-        $markup = l($img . $text, $url, $opt);
+        $img = $img . 'View on ' . $item['name'];
       }
+      $markup = l($img, $url, $opt);
 
       // @todo image
       $build[$key] = array(
@@ -476,6 +474,7 @@ function _tcbl_company_add_approach_gf(&$vars){
 
 function _tcbl_company_coll_links(&$vars){
   $node = $vars['node'];
+  $show = false;
 
   if (isset($node->field_coll_links['und'][0]['title'])){
     $items = $node->field_coll_links['und'];
@@ -487,8 +486,13 @@ function _tcbl_company_coll_links(&$vars){
       );
     }
     $vars['content']['field_coll_links'] = $build;
-
+    $show = true;
   }
+
+  if (isset($node->field_ref_labs['und'][0])){
+    $show = true;
+  }
+  $vars['show_colls'] = $show;
 }
 
 // ** Staff **
@@ -568,7 +572,9 @@ function _tcbl_company_add_population_gf(&$vars){
     }
   }
 
+  $vars['show_population'] = true;
   if (count($data) == 0){
+    $vars['show_population'] = false;
     return false;
   }
 

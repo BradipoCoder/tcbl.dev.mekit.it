@@ -33,7 +33,11 @@
 
         // Refresh the slider
         if (id == 'about'){
-          me.slider.refresh();
+          var slider = me.slider;
+          if (typeof slider.destroy === "function"){
+            slider.destroy();  
+          }
+          me.setUpSlider();
         }
 
       });

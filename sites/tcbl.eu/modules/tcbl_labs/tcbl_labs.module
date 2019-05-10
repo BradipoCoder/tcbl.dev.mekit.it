@@ -104,7 +104,7 @@ function _tcbl_labs_preprocess_mainlabs_node(&$vars){
     drupal_add_js( $js_parallax , array('group' => JS_LIBRARY, 'weight' => 1));
   }
 
-  $data['perPage'] = 10;
+  $data['perPage'] = 8;
 
   // If an argument is present, cookie data need to by refreshed
   $data['withArgs'] = false;

@@ -38,18 +38,18 @@
       <div class="container margin-v-2">
         <div class="row">
           <div class="col-md-6">
-            <h3 class="margin-t-0 text-normal text-dark">Who are Labs for?</h3>
+            <h3 class="margin-t-0 text-normal text-dark">What are TCBL Labs?</h3>
             <p>
-              Learn more about TCBL labs and how they can help you as a company, independent designer, student or citizen.
+              Learn more about the values and activities of TCBL Labs
             </p>
-            <a href="#" class="btn btn-default">Learn more</a>
+            <a href="<?php print url('node/482'); ?>" class="btn btn-default">Learn more</a>
           </div>
           <div class="col-md-6">
             <h3 class="margin-t-0 text-normal">Sign up as a Lab</h3>
             <p>
-              Information for lab managers wishing to join TCBL Labs and enter into a world of collaborative opportunities.
+              Information for lab managers wishing to join TCBL Labs.
             </p>
-            <a href="#" class="btn btn-primary">Join the network</a>
+            <a href="<?php print url('node/483'); ?>" class="btn btn-primary">Sign up</a>
           </div>
         </div>
       </div>

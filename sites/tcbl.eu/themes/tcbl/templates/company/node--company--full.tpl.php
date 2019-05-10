@@ -88,11 +88,13 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
-                <h3 class="text-normal text-dark margin-b-1">Collaborations</h3>
-                <?php print render($content['field_ref_labs']); ?>
-                <?php print render($content['field_coll_links']); ?>
-              </div>
+              <?php if ($show_colls) : ?>
+                <div class="col-md-4">
+                  <h3 class="text-normal text-dark margin-b-1">Collaborations</h3>
+                  <?php print render($content['field_ref_labs']); ?>
+                  <?php print render($content['field_coll_links']); ?>
+                </div>
+              <?php endif; ?>
             </div>
           </div><!-- details tab -->
 
@@ -102,18 +104,24 @@
                 <h3 class="text-normal text-dark margin-t-0 margin-b-1">People</h3>
                 <p class="margin-b-1">Something about the Lab Population</p>
                 <div class="row">
-                  <div class="col-sm-7 margin-b-1">
-                    <?php print render($content['population']); ?>
-                  </div>
+                  <?php if ($show_population) : ?>
+                    <div class="col-sm-7 margin-b-1">
+                      <?php print render($content['population']); ?>
+                    </div>
+                  <?php endif ?>
                   <div class="col-sm-5">
                     <?php print render($content['staff']); ?>
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
-                <h3 class="text-normal text-dark margin-t-0 margin-b-1">Lab Staff</h3>
-                <?php print render($content['field_ref_user']); ?>
-              </div>
+
+              <?php if (isset($content['field_ref_user'][0])) : ?>
+                <div class="col-md-4">
+                  <h3 class="text-normal text-dark margin-t-0 margin-b-1">Lab Staff</h3>
+                  <?php print render($content['field_ref_user']); ?>
+                </div>
+              <?php endif; ?>
+
             </div>
           </div><!-- staff tab -->
 
@@ -126,13 +134,13 @@
                   <?php print render($content['kas']); ?>
                 </div>
               </div>
-              <div class="col-md-4">
-                <?php if ($content['customers']) : ?>
+              <?php if ($content['customers']) : ?>
+                <div class="col-md-4">
                   <h3 class="text-normal text-dark margin-t-0 margin-b-1">Target Customers</h3>
                   <p class="margin-b-1">What kind of customers</p>
                   <?php print render($content['customers']); ?>
-                <?php endif; ?>
-              </div>
+                </div>
+              <?php endif; ?>
             </div>
           </div><!-- ka tab -->
 

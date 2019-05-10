@@ -43,7 +43,7 @@ function _tcbl_labs_query_nids($filters){
   }
 
   if (isset($filters['page'])){
-    $offset = 10;
+    $offset = 8;
     $start = $filters['page'] * $offset - $offset;
     $query->range($start, $offset);
   }

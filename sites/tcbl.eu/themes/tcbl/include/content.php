@@ -420,7 +420,6 @@ function _tcbl_get_avatar_path($profile_user){
     if (isset($profile_user->field_sso_avatar_uri['und'][0]['value'])){
       $value = $profile_user->field_sso_avatar_uri['und'][0]['value'];
       if ($value !== '' && $value !== '_'){
-
         // Aggiungo l'https alle immagini che non ce l'hanno
         $sub = substr($value, 0, 7);
         if ($sub == 'http://'){

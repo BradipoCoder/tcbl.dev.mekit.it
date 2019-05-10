@@ -17,6 +17,13 @@
   }
 }
 
+span.card{
+  display: block;
+  span{
+    display: block;
+  }
+}
+
 .card{
   background: #fff;
   border: 1px solid @gray-lightest;
@@ -30,11 +37,11 @@
   &__content{
     .padding-h(1);
     .padding-v(1);
+  }
 
-    hr{
-      border-top: 1px solid @gray-lightest;
-      .margin-v(0.5);  
-    }
+  hr{
+    border-top: 1px solid @gray-lightest;
+    margin: 0;  
   }
 
   &__logo{
@@ -63,7 +70,12 @@
   }
 
   &__footer{
-    margin-bottom: -20px;
-    margin-top: -10px;
+    .padding-h(1);
+    .padding-v(0.25);
+
+    hr{
+      position: relative;
+      top: -8px;
+    }
   }
 }

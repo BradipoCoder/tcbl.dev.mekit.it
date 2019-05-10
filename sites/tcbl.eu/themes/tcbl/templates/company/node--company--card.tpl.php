@@ -16,9 +16,9 @@
   <?php print render($title_suffix); ?>
 
   <div class="node-content margin-b-05">
-    <a href="<?php print $node_url; ?>" class="a-block">
-      <span class="card">
-        <span class="card__content same-h">
+    <span class="card same-h">
+      <a href="<?php print $node_url; ?>" class="a-block">
+        <span class="card__content">
           <span class="card__logo">
             <?php print render($content['field_img'][0]); ?>
           </span>
@@ -28,16 +28,16 @@
           <span class="company-body">
             <?php print render($content['body'][0]); ?>
           </span>
-          <?php if ($has_networks) : ?>
-            <hr>
-            <span class="card__footer">
-              <span class="card__cta">View on</span>
-              <?php print render($content['networks']); ?>
-            </span>
-          <?php endif; ?>
         </span>
-      </span>
-    </a>
+      </a>
+      <?php if ($has_networks) : ?>
+        <span class="card__footer">
+          <hr>
+          <span class="card__cta">View on</span>
+          <?php print render($content['networks']); ?>
+        </span>
+      <?php endif; ?>
+    </span>
   </div>
 
 </div>

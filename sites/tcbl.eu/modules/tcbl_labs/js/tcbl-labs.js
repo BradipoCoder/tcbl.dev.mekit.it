@@ -39,7 +39,6 @@
       var select = jQuery('.labs-select', filter);
       var search = jQuery('#labs-search', filter);
       var searchButton = jQuery('#search-button', filter);
-      var results = jQuery('#labsmain-results');
 
       select.change(function(e){
         var item = jQuery(this);
@@ -83,17 +82,14 @@
           // Turn off map
           me.filters['view_mode'] = 'card';
           toggleMap.removeClass('on');
-          results.addClass('map-off');
         } else {
           // Turn on
           me.filters['view_mode'] = 'teaser';
           toggleMap.addClass('on');
-          results.removeClass('map-off');
         }
-        me.page = 1;
+        //me.page = 1;
         me.reloadAll();
       });
-
     },
 
     /**
@@ -105,6 +101,7 @@
       reset.click(function(e){
         e.preventDefault();
         me.filters = {};
+        me.page = 1;
         me.reloadAll();
         me.updateFilterVals();
         me.setCookies();
@@ -133,6 +130,7 @@
       me.setCookies();
 
       var filter = $('#labs-filters');
+      var results = jQuery('#labsmain-results');
 
       filter.addClass('loading');
 
@@ -162,6 +160,7 @@
       // Update query with current page
       tmpFilters.page = me.page;
       queryString = Object.keys(tmpFilters).map(key => key + '=' + tmpFilters[key]).join('&');
+      console.debug(queryString);
       encodedQuery = encodeURI(queryString);
 
       // Get filtered nodes
@@ -175,7 +174,19 @@
         } else {
           pagination.removeClass('p-active'); 
         }
-        $('.same-h', labsResults).sameh();
+
+        if (me.filters['view_mode'] == 'card'){
+          results.addClass('map-off');
+        } else {
+          results.removeClass('map-off');
+        }
+
+        $(labsResults).imagesLoaded(function(){
+          $('.same-h', labsResults).sameh();
+        });
+        
+        // This ends up in javascript loop?
+        //Drupal.attachBehaviors();
       }); 
     },
 
@@ -237,7 +248,10 @@
         if (data !== undefined){
           data = JSON.parse(data);
           me.filters = data;
-          me.page = me.page;
+          if (data.page !== undefined){
+            me.page = data.page;
+          }
+          me.updateFilterVals();
         }  
       } else {
         me.setDataFromFilters();
@@ -272,7 +286,15 @@
       } else {
         $('#labs-search').val('');
       }
+      if (me.filters.view_mode !== undefined){
+        if (me.filters.view_mode == 'card'){
+          $('#toggle-map').removeClass('on');  
+        } else {
+          $('#toggle-map').addClass('on');
+        }
+      } else {
+        $('#toggle-map').addClass('on');
+      }
     }
-
   };
 })(jQuery, Drupal);
