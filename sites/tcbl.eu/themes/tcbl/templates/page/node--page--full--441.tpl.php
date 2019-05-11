@@ -35,16 +35,16 @@
     </div>
 
     <div class="row row-labs-cta bg-blue">
-      <div class="container margin-v-2">
+      <div class="container margin-t-2 margin-b-1">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-6 margin-b-1">
             <h3 class="margin-t-0 text-normal text-dark">What are TCBL Labs?</h3>
             <p>
               Learn more about the values and activities of TCBL Labs
             </p>
             <a href="<?php print url('node/482'); ?>" class="btn btn-default">Learn more</a>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 margin-b-1">
             <h3 class="margin-t-0 text-normal">Sign up as a Lab</h3>
             <p>
               Information for lab managers wishing to join TCBL Labs.

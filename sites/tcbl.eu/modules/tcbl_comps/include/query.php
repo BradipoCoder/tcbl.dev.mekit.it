@@ -6,11 +6,12 @@
  * verranno utilizzati i filtri negli argomenti
  */
 
-function _tcbl_labs_query_nids($filters){
+function _tcbl_comps_query_nids($filters){
   $query = db_select('node', 'n');
   $query->fields('n', array('nid','title','created','status', 'type'));
   $query->condition('n.status', true, '=');
   $query->condition('n.type', 'company', '=');
+  $query->orderBy('title', 'ASC');
 
   // Country
   if (isset($filters['country']) && $filters['country'] !== 'all'){
@@ -24,21 +25,41 @@ function _tcbl_labs_query_nids($filters){
     $query->condition('loc.field_location_lid', $subquery, 'IN');
   }
 
-  // Key activities filter
+  // Taxonomy filters
+  $tt = array();
   if (isset($filters['kas']) && $filters['kas'] !== 'all'){
-    $query->join('taxonomy_index', 'ti', 'n.nid = ti.nid');
-    $query->condition('ti.tid', $filters['kas'], '=');
+    $tt['kas'] = $filters['kas'];
+  }
+  if (isset($filters['memb']) && $filters['memb'] !== 'all'){
+    $tt['memb'] = $filters['memb'];
+    // 28 - labs
+    // 60 - associate
+  } 
+
+  if (count($tt)){
+    foreach ($tt as $key => $value) {
+      $field_name = 'field_data_field_ref_' . $key;
+      $query->join($field_name, $key, 'n.nid = ' . $key . '.entity_id');
+      $col = $key . '.field_ref_' . $key . '_tid'; 
+      $query->condition($col, $value, '=');
+    }
   }
 
   // Key search
   if (isset($filters['key']) && $filters['key'] !== 'false'){
-
+    $k = urldecode($filters['key']);
+    //dpm($k);
     $query->join('field_data_body', 'bo', 'n.nid = bo.entity_id');
     $query->fields('bo', array('body_value'));
 
+    //$query->join('field_data_title_field', 'tl', 'n.nid = tl.entity_id');
+    //$query->fields('tl', array('title_field_value'));
+
     $or = db_or();
-    $or->condition('n.title', '%' . db_like($filters['key']) . '%', 'LIKE');
-    $or->condition('bo.body_value', '%' . db_like($filters['key']) . '%', 'LIKE');
+    // Not working in the query.. why?
+    $or->condition('n.title', '%' . db_like($k) . '%', 'LIKE');
+    //$or->condition('tl.title_field_value', '%' . db_like($k) . '%', 'LIKE');
+    $or->condition('bo.body_value', '%' . db_like($k) . '%', 'LIKE');
     $query->condition($or); 
   }
 
@@ -49,14 +70,15 @@ function _tcbl_labs_query_nids($filters){
   }
 
   $nids = array();
-  $result = $query->execute();
+  $result = $query->execute()->fetchAll();
   foreach ($result as $item) {
     $nids[] = $item->nid;
   }
   return $nids;
 }
 
-function _tcbl_labs_query_nids_old($filters, $pager){
+/*
+function _tcbl_comps_query_nids_old($filters, $pager){
   
   $query = new EntityFieldQuery();
   $query
@@ -98,4 +120,5 @@ function _tcbl_labs_query_nids_old($filters, $pager){
 
   return $nids;
 }
+*/
 

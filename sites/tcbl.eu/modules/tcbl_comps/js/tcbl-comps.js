@@ -1,5 +1,5 @@
 /**
- * TCBL LABS
+ * TCBL COMPS
  */
 
 (function ($, Drupal) {
@@ -7,37 +7,45 @@
 
     attach: function (context, settings) {
       // Using once() to apply the myCustomBehaviour effect when you want to do just run one function.
-      // $('body', context).once('myCustomBehavior').addClass('well');
+      
       me = this;
 
-      me.filters = {};
       me.page = 1;
       me.context = context;
       me.settings = settings;
       me.showPagination = false;
 
-      me.perPage = Drupal.settings.tcbl_labs.perPage;
-      me.withArgs = Drupal.settings.tcbl_labs.withArgs;
+      me.archiveId = Drupal.settings.tcbl_comps.id;
+      me.filters = Drupal.settings.tcbl_comps.filters;
 
-      if (Drupal.settings.tcbl_labs.scroll){
-        scrollTo('#row-labs-archive');
+      // This should not be referenced
+      me.defaultFilters = Object.assign({}, me.filters);
+      console.debug(me.defaultFilters, 'default filters | load ');
+
+      me.perPage = Drupal.settings.tcbl_comps.perPage;
+      me.withArgs = Drupal.settings.tcbl_comps.withArgs;
+
+      if (Drupal.settings.tcbl_comps.scroll){
+        scrollTo('#row-comps-archive');
       }
-    
-      this.checkCookies();
-      this.armFilters();
-      this.reloadAll();
-      this.armReset();
+
+      $('body', context).once('tcblLabs').each(function(){
+        me.checkCookies();
+        me.armFilters();
+        me.reloadAll();
+        me.armReset();  
+      });
     },
 
     /**
-     * Arm labs filter
+     * Arm comps filter
      * @return {[type]} [description]
      */
     armFilters: function(){
-      var filter = jQuery('#labs-filters');
+      var filter = jQuery('#comps-filters');
       var toggleMap = jQuery('#toggle-map');
-      var select = jQuery('.labs-select', filter);
-      var search = jQuery('#labs-search', filter);
+      var select = jQuery('.comps-select', filter);
+      var search = jQuery('#comps-search', filter);
       var searchButton = jQuery('#search-button', filter);
 
       select.change(function(e){
@@ -100,7 +108,8 @@
       var reset = $('#reset-filters');
       reset.click(function(e){
         e.preventDefault();
-        me.filters = {};
+        console.debug(me.defaultFilters, 'default filters');
+        me.filters = Object.assign({}, me.defaultFilters);
         me.page = 1;
         me.reloadAll();
         me.updateFilterVals();
@@ -113,7 +122,7 @@
      * - usefull for query args
      */
     setDataFromFilters: function(){
-      var select = jQuery('.labs-select');
+      var select = jQuery('.comps-select');
       select.each(function(){
         var item = jQuery(this);
         var name = item.attr('name');
@@ -123,25 +132,25 @@
     },
 
     /**
-     * Reload all labs list
+     * Reload all comps list
      * @return {[type]} [description]
      */
     reloadAll: function(){
       me.setCookies();
 
-      var filter = $('#labs-filters');
-      var results = jQuery('#labsmain-results');
+      var filter = $('#comps-filters');
+      var results = jQuery('#compsmain-results');
 
       filter.addClass('loading');
 
-      var aurl = '/labs-get-results';
+      var aurl = '/comps-get-results';
       var tmpFilters = me.filters;
       delete tmpFilters.page;
       var queryString = Object.keys(tmpFilters).map(key => key + '=' + tmpFilters[key]).join('&');
       var encodedQuery = encodeURI(queryString);
 
       // Get filtered maps data (without pagination)
-      var aurl = '/labs-get-data?' + encodedQuery;
+      var aurl = '/comps-get-data?' + encodedQuery;
       $.ajax({
         url: aurl
       }).done(function(data){
@@ -150,7 +159,7 @@
       });
 
       // Get all nids list (without pagination)
-      var aurl = '/labs-get-nids?' + encodedQuery;
+      var aurl = '/comps-get-nids?' + encodedQuery;
       $.ajax({
         url: aurl
       }).done(function(data){
@@ -164,11 +173,11 @@
       encodedQuery = encodeURI(queryString);
 
       // Get filtered nodes
-      var aurl = '/labs-get-results?' + encodedQuery;
-      var labsResults = $('#labs-results');
-      labsResults.load(aurl + ' #labs-results > div', function(){
+      var aurl = '/comps-get-results?' + encodedQuery;
+      var compsResults = $('#comps-results');
+      compsResults.load(aurl + ' #comps-results > div', function(){
         filter.removeClass('loading');
-        var pagination = $('#labs-pagination');
+        var pagination = $('#comps-pagination');
         if (me.showPagination){
           pagination.addClass('p-active');  
         } else {
@@ -181,8 +190,8 @@
           results.removeClass('map-off');
         }
 
-        $(labsResults).imagesLoaded(function(){
-          $('.same-h', labsResults).sameh();
+        $(compsResults).imagesLoaded(function(){
+          $('.same-h', compsResults).sameh();
         });
         
         // This ends up in javascript loop?
@@ -197,7 +206,7 @@
      */
     createPagination: function(data){
       var count = data.length;
-      var pagination = $('#labs-pagination');
+      var pagination = $('#comps-pagination');
       
       if (count > me.perPage){
         me.showPagination = true;
@@ -216,7 +225,7 @@
             me.paginationUsefullClass();
             me.page = pageNumber;
             me.reloadAll();
-            scrollTo('#row-labs-archive');
+            scrollTo('#row-comps-archive');
           },
           onInit: function() {
             me.paginationUsefullClass();
@@ -232,7 +241,7 @@
      * @return {[type]} [description]
      */
     paginationUsefullClass: function(){
-      var pagination = $('#labs-pagination');
+      var pagination = $('#comps-pagination');
       $('.page-link, span.current, span.ellipse', pagination).not('.prev, .next').parent().addClass('li-item').last().addClass('li-item-last');
       $('.prev', pagination).parent().addClass('li-arrow li-arrow-prev');
       $('.next', pagination).parent().addClass('li-arrow li-arrow-next');  
@@ -244,7 +253,8 @@
      */
     checkCookies: function(){
       if (!me.withArgs){
-        var data = Cookies.get('labs');
+        var cookieName = me.archiveId;
+        var data = Cookies.get(cookieName);
         if (data !== undefined){
           data = JSON.parse(data);
           me.filters = data;
@@ -263,7 +273,8 @@
      */
     setCookies: function(){
       var cData = me.filters;
-      Cookies.set('labs', cData, { expires: 1 }); 
+      var cookieName = me.archiveId;
+      Cookies.set(cookieName, cData, { expires: 1 }); 
     },
 
     /**
@@ -281,10 +292,15 @@
       } else {
         $('#filter-kas').val(false);
       }
-      if ((me.filters.key !== undefined) && (me.filters.key)){
-        $('#labs-search').val(me.filters.key);
+      if (me.filters.memb !== undefined){
+        $('#filter-memb').val(me.filters.memb);
       } else {
-        $('#labs-search').val('');
+        $('#filter-memb').val(false);
+      }
+      if ((me.filters.key !== undefined) && (me.filters.key)){
+        $('#comps-search').val(me.filters.key);
+      } else {
+        $('#comps-search').val('');
       }
       if (me.filters.view_mode !== undefined){
         if (me.filters.view_mode == 'card'){

@@ -1,8 +1,8 @@
 <?php
 
-function _tcbl_labs_get_nodes($nids, $view_mode = 'teaser'){
+function _tcbl_comps_get_nodes($nids, $view_mode = 'teaser'){
   $content = array(
-    '#prefix' => '<div id="labs-results" class="wrapper-nodes">',
+    '#prefix' => '<div id="comps-results" class="wrapper-nodes">',
     '#suffix' => '</div>',
     '#weight' => 20,
   );
@@ -12,14 +12,14 @@ function _tcbl_labs_get_nodes($nids, $view_mode = 'teaser'){
     $content['nodes'] = node_view_multiple($nodes, $view_mode);  
   } else {
     $content['noresults'] = array(
-      '#theme' => 'tcbl_labs_noresults',
+      '#theme' => 'tcbl_comps_noresults',
     );
   }
   
   return $content;
 }
 
-function _tcbl_labs_get_maps_data($nids){
+function _tcbl_comps_get_maps_data($nids){
   $nodes = node_load_multiple($nids);
 
   $data = false;
@@ -53,18 +53,22 @@ function _tcbl_labs_get_maps_data($nids){
   return $data;
 }
 
-function _tcbl_labs_get_filters($nids){
+function _tcbl_comps_get_filters($nids){
   $nodes = node_load_multiple($nids);
 
   $countries = false;
   $kas = false;
+  $memb = false;
+
   foreach ($nodes as $nid => $node) {
+    // Contries
     if (isset($node->field_location['und'][0]['country_name'])){
       $country_name = $node->field_location['und'][0]['country_name'];
       $key = $node->field_location['und'][0]['country'];
       $countries[$key] = $country_name;
     }
 
+    // Activities
     if (isset($node->field_ref_kas['und'][0]['tid'])){
       $list = $node->field_ref_kas['und'];
       foreach ($list as $k => $item) {
@@ -75,10 +79,22 @@ function _tcbl_labs_get_filters($nids){
         }
       }
     }
+
+    // Member type
+    if (isset($node->field_ref_memb['und'][0]['tid'])){
+      $list = $node->field_ref_memb['und'];
+      foreach ($list as $k => $item) {
+        $tid = $item['tid'];
+        if (!isset($memb[$tid])){
+          $term = taxonomy_term_load($tid);
+          $memb[$tid] = $term->name;  
+        }
+      }
+    }
   }
 
+  // Sort countries
   if ($countries){
-    // Sort countries
     ksort($countries);
     foreach ($countries as $mn => $value) {
       $filters['country'][$mn]['title'] = $value;
@@ -95,10 +111,9 @@ function _tcbl_labs_get_filters($nids){
     $filters['country'] = false;
   }
   
-
+  // Sort activities
   if ($kas){
     asort($kas);
-
     foreach ($kas as $k => $value) {
       $filters['kas'][$k]['title'] = $value;
       $filters['kas'][$k]['selected'] = false;
@@ -113,5 +128,24 @@ function _tcbl_labs_get_filters($nids){
   } else {
     $filters['kas'] = false;
   }
+
+  // Sort activities
+  if ($memb){
+    asort($memb);
+    foreach ($memb as $k => $value) {
+      $filters['memb'][$k]['title'] = $value;
+      $filters['memb'][$k]['selected'] = false;
+    }
+    // Active item
+    if (isset($_GET['memb'])){
+      $csel = $_GET['memb'];
+      if (isset($filters['memb'][$csel])){
+        $filters['memb'][$csel]['selected'] = true;  
+      }
+    }
+  } else {
+    $filters['memb'] = false;
+  }
+
   return $filters;
 }

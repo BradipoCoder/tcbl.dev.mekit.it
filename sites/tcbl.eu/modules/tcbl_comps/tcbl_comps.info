@@ -1,0 +1,5 @@
+name = TCBL Companies
+description = TCBL Companies functionality (Labs, Directory, ecc..)
+package = TCBL
+core = 7.x
+
