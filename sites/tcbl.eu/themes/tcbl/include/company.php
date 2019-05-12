@@ -21,6 +21,8 @@ function _tcbl_preprocess_node_company(&$vars){
     $js = drupal_get_path('theme', 'tcbl') . '/js/company-kas.js';
     drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 1));
 
+    _tcbl_company_set_type($vars);
+
     // * Company header *
     // ------------------
     _tcbl_company_format_contacts($vars);
@@ -60,6 +62,18 @@ function _tcbl_preprocess_node_company(&$vars){
       $vars['content']['body'] = field_view_field('node', $node, 'body', 'teaser');
     }
     _tcbl_company_format_networks($vars, $view_mode);
+  }
+}
+
+function _tcbl_company_set_type(&$vars){
+  $node = $vars['node'];
+
+  $vars['is_lab'] = false;
+  if (isset($node->field_ref_memb['und'][0]['tid'])){
+    $tid = $node->field_ref_memb['und'][0]['tid'];
+    if ($tid == '28'){
+      $vars['is_lab'] = true;
+    }
   }
 }
 
