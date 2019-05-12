@@ -101,8 +101,8 @@ function template_preprocess_tcbl_comps_main(&$vars){
   ), array('type' => 'setting'));
 }
 
-// ** ----- PREPROCES SNODES----- **
-// ---------------------------------
+// ** ----- PREPROCES NODES----- **
+// --------------------------------
 
 /**
  * Implements hook_preprocess_node();
@@ -156,6 +156,7 @@ function _tcbl_comps_pre_labs_node(&$vars){
 
   // Archive id (for cookies)
   $data['id'] = 'labs';
+  $data['scrollToElement'] = '#row-labs-archive';
 
   // Add comps archive
   $vars['content']['archive'] = array(
@@ -192,6 +193,7 @@ function _tcbl_comps_pre_directory_node(&$vars){
 
   // Archive id (for cookies)
   $data['id'] = 'directory';
+  $data['scrollToElement'] = '.wrapper-header';
 
   // Add comps archive
   $vars['content']['archive'] = array(
@@ -222,5 +224,3 @@ function _tcbl_comps_build_archive($filters){
 
   return $build;
 }
-
-

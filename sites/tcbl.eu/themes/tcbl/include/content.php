@@ -342,9 +342,27 @@ function _tcbl_alter_breadcrumbs(&$vars){
     if ($node->type == 'company'){
       $bcs = [];
       $bcs[] = t('Home');
-      $opt['query']['scroll'] = true;
-      $bcs[] = l('Labs', 'node/441', $opt);
 
+      // Archive (Directory or Labs)
+      $opt['query']['scroll'] = true;
+      // Directory
+      $url = 'node/486';
+      if (isset($node->field_ref_memb['und'][0]['tid'])){
+        $tid = $node->field_ref_memb['und'][0]['tid'];
+        switch ($tid) {
+          case 28:
+            $url = 'node/441';
+            $bcs[] = l('Labs', $url, $opt);
+            break;
+          
+          default:
+            $url = 'node/486';
+            $bcs[] = l('Directory', $url, $opt);
+            break;
+        }
+      }
+
+      // Country
       if (isset($node->field_location['und'][0]['country'])){
         $country_name = $node->field_location['und'][0]['country_name'];
         $country = $node->field_location['und'][0]['country'];
@@ -354,7 +372,7 @@ function _tcbl_alter_breadcrumbs(&$vars){
             'scroll' => true,
           ),
         );
-        $bcs[] = l($country_name, 'node/441', $opt);
+        $bcs[] = l($country_name, $url, $opt);
       }
 
       $bcs[] = $node->title;

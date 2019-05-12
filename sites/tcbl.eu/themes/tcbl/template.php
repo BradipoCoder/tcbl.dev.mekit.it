@@ -107,7 +107,57 @@ function tcbl_form_node_form_alter(&$form, $form_state){
       $form['field_by']['#disabled'] = true;  
     }
   }
+
+  
+  _tcbl_alter_comps_form($form, $form_state);
 }
+
+function _tcbl_alter_comps_form(&$form, $form_state){
+  
+  // Check if node exists
+  $node = false;
+  if (isset($form['#node'])){
+    $node = $form['#node'];
+    if ($node->type !== 'company'){
+      return;
+    }
+  }
+
+
+  if (isset($node->nid)){
+    if ($node->field_ref_memb['und'][0]['tid'] !== '28'){
+      field_group_hide_field_groups($form, array('group_lab'));
+    }
+  }
+}
+
+function _tcbl_condition_is_lab(){
+  # https://api.drupal.org/api/drupal/includes%21common.inc/function/drupal_process_states/7.x
+  # https://www.drupal.org/node/767268#comment-2881864
+  $condition = array(
+    'visible' => array(
+      ':input[name="field_ref_memb[und]"]' => array('value' => '28'),
+    ),
+  );
+  return $condition;
+}
+
+/**
+ * Implements hook_field_group_build_pre_render_alter().
+ * not working
+ */
+// function tcbl_field_group_build_pre_render_alter(&$element){
+//   $form_id = $element['#form_id'];
+//   if ($form_id == 'company_node_form'){
+//     if (isset($element['group_lab'])){
+//       foreach ($element['group_lab'] as $key => $value) {
+//         //dpm($key);
+//       }
+// 
+//       $element['group_lab']['#states'] = _tcbl_condition_is_lab();
+//     } 
+//   }
+// }
 
 // ** THEME **
 // -----------

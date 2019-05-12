@@ -474,6 +474,13 @@
 }
 
 .field-name-field-geolocation{
+  margin-bottom: 0;
+  margin-top: -8px;
+
+  div > .form-item{
+    margin-bottom: 0;
+  }
+
   .double-field-elements{
     .clearfix();
     margin-bottom: 0;
@@ -496,9 +503,52 @@
   display: none;
 }
 
-.field-group-tab.group-social{
+.group-profile-logo,
+.group-about-description{
+  .control-label{
+    display: none;
+  }
+}
+
+// .location_auto_country{
+//   display: inherit;
+//   width: 25em;
+// }
+
+.field-type-location{
+  .form-item{
+    margin-bottom: 5px;
+  }
+}
+
+.location .form-item{
+  margin-bottom: 5px;
+  position: relative;
+  padding-left: 130px;
+  label{
+    position: absolute;
+    top: 3px;
+    left: 0px;
+  }
+  input{
+    width: 100%;
+  }
+}
+
+.group-profile{
   .field-type-link-field{
-    margin-bottom: 0;
+    position: relative;
+    margin-bottom: 5px;
+
+    label{
+      position: absolute;
+      top: 3px;
+      left: 0;
+    }
+    .link-field-subrow{
+      padding-left: 130px;
+      // width: 25em;
+    }
     .form-item{
       margin-bottom: 0;
     }
@@ -506,14 +556,54 @@
 }
 
 #population-form-group{
-  input{
-    max-width: 100px;
-    display: inline-block;
-    margin-right: 10px;
-  }
+  .field-widget-number{
+    float: left;
+    width: 25%;
+    margin-bottom: 5px;
 
-  .control-label{
-    width: 150px;
+    .form-item{
+      margin-bottom: 0;
+      padding-right: 5px;
+    }
+  }
+}
+
+.group-design-make-place{
+  .field-widget-number{
+    float: left;
+    width: 33.33%;
+    margin-bottom: 5px;
+
+    .form-item{
+      padding-right: 10px;  
+      margin-bottom: 0;
+    }
+  }
+}
+
+.group-lab-staff{
+  .field-widget-number{
+    float: left;
+    width: 50%;
+    margin-bottom: 5px;
+
+    .form-item{
+      margin-bottom: 0;
+      padding-right: 5px;
+    }
+  }
+}
+
+#field-coll-links-values,
+#field-ref-labs-values{
+  .form-item{
+    margin-bottom: 0;
+  }
+}
+
+#field-coll-links-values{
+  .help-block{
+    display: none;
   }
 }
 
@@ -549,15 +639,5 @@
 .field-group-htab{
   > .panel-body{
     padding: 0;
-  }
-}
-
-.group-design-make-place{
-  .panel-body{
-    .field-widget-number{
-      float: left;
-      width: 150px;
-      margin-right: 10px;
-    }
   }
 }

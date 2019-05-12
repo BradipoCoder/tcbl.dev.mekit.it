@@ -27,6 +27,23 @@
   right: 10px;
 }
 
+th.tabledrag-hide{
+  display: none;
+}
+
+.panel-default > .panel-heading{
+  background: @primary-lightest;
+}
+
+.panel-title{
+  color: @primary-dark;
+  font-weight: @font-weight-bold;
+}
+
+.panel-heading{
+  padding: 12px 15px 10px 15px;
+}
+
 @media (max-width: @screen-sm-max){
   .form-wrapper fieldset{
     .panel-heading,
@@ -38,4 +55,51 @@
 
 fieldset.date-combo .container-inline-date .date-padding{
   padding: 0;
+}
+
+.panel-body{
+  .panel-right,
+  .panel-left{
+    @media (min-width: @screen-sm-min){
+      float: left;
+      width: 50%; 
+    }
+  }
+
+  .panel-left{
+    @media (min-width: @screen-sm-min){
+      .padding-r(1);
+    }
+  }
+
+  .btn{
+    padding: 2px 8px;
+    font-size: 10px;
+  }
+}
+
+.manualcrop-style-button-holder{
+  padding-top: 0;
+}
+
+.image-widget-data{
+  .form-group{
+    margin-bottom: 5px;
+    font-size: 12px;
+    .badge{
+      font-size: 12px;
+    }
+  }
+}
+
+.form-radios{
+  .form-item{
+    margin-bottom: 3px;
+  }
+  label{
+    input{
+      position: relative;
+      top: 5px;
+    }
+  }
 }

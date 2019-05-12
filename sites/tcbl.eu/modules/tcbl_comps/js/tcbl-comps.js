@@ -26,7 +26,7 @@
       me.withArgs = Drupal.settings.tcbl_comps.withArgs;
 
       if (Drupal.settings.tcbl_comps.scroll){
-        scrollTo('#row-comps-archive');
+        me.scrollToComps();
       }
 
       $('body', context).once('tcblLabs').each(function(){
@@ -225,7 +225,7 @@
             me.paginationUsefullClass();
             me.page = pageNumber;
             me.reloadAll();
-            scrollTo('#row-comps-archive');
+            me.scrollToComps();
           },
           onInit: function() {
             me.paginationUsefullClass();
@@ -311,6 +311,15 @@
       } else {
         $('#toggle-map').addClass('on');
       }
+    },
+
+    /**
+     * Scroll to the archive
+     * @return {[type]} [description]
+     */
+    scrollToComps: function(){
+      var element = Drupal.settings.tcbl_comps.scrollToElement;
+      scrollTo(element);
     }
   };
 })(jQuery, Drupal);

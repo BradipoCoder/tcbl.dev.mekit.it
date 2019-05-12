@@ -167,12 +167,25 @@ small{
   .tabledrag-toggle-weight-wrapper,
   label{
     font-size: floor(@font-size-small * 0.9);
-    //font-weight: @font-weight-bold;
   }
 
   .panel-heading,
   .panel-title{
-    line-height: floor(@font-size-small * 0.9);
+    font-size: floor(@font-size-small);
+    line-height: floor(@font-size-small);
+  }
+}
+
+.node-form{
+  label{
+    font-weight: @font-weight-bold;
+  }
+
+  .form-type-radio,
+  .form-type-checkbox{
+    label{
+      font-weight: 400;
+    }
   }
 }
 
