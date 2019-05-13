@@ -1,5 +1,5 @@
 <div class="wrapper-simple-admin">
-  <div class="container">
+  <div class="container-fluid">
     <div class="row simple-admin">
       <div class="col-sm-8">
         <div class="simple-admin-buttons">

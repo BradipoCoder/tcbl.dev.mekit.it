@@ -6,21 +6,7 @@
  */
 
 function _tcbl_alter_container_class(&$vars){
-  // Container class
-  $vars['container_class'] = 'container';
-  if ($vars['is_front']){
-    $vars['container_class'] = 'container-fluid';
-  }
-
-  if (isset($vars['node'])){
-    if ($vars['node']->type == 'company'){
-      $vars['container_class'] = 'container-fluid';  
-    }
-
-    if ($vars['node']->nid == '441'){
-      $vars['container_class'] = 'container-fluid';     
-    }
-  }
+  $vars['container_class'] = 'container-fluid';
 }
 
 function _tcbl_add_header(&$vars){
@@ -433,29 +419,26 @@ function _tcbl_get_avatar_path($profile_user){
   $data['type'] = 'default';
 
   //dpm($profile_user->uid);
-
-  if (isset($profile_user->uid) && $profile_user->uid !== '1'){
-    if (isset($profile_user->field_sso_avatar_uri['und'][0]['value'])){
-      $value = $profile_user->field_sso_avatar_uri['und'][0]['value'];
-      if ($value !== '' && $value !== '_'){
-        // Aggiungo l'https alle immagini che non ce l'hanno
-        $sub = substr($value, 0, 7);
-        if ($sub == 'http://'){
-          $suf = substr($value, 7);
-          $value = 'https://' . $suf;
-        }
-
-        //dpm($value);
-        $data['path'] = $value;
-        $data['type'] = 'sso';
+  if (isset($profile_user->field_sso_avatar_uri['und'][0]['value'])){
+    $value = $profile_user->field_sso_avatar_uri['und'][0]['value'];
+    if ($value !== '' && $value !== '_'){
+      // Aggiungo l'https alle immagini che non ce l'hanno
+      $sub = substr($value, 0, 7);
+      if ($sub == 'http://'){
+        $suf = substr($value, 7);
+        $value = 'https://' . $suf;
       }
-    }
 
-    if (isset($profile_user->field_image['und'][0]['uri'])){
-      $uri = $profile_user->field_image['und'][0]['uri'];
-      $data['path'] = image_style_url('square', $uri);
+      //dpm($value);
+      $data['path'] = $value;
       $data['type'] = 'sso';
     }
+  }
+
+  if (isset($profile_user->field_image['und'][0]['uri'])){
+    $uri = $profile_user->field_image['und'][0]['uri'];
+    $data['path'] = image_style_url('square', $uri);
+    $data['type'] = 'sso';
   }
 
   

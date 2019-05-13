@@ -96,6 +96,10 @@ function template_preprocess_tcbl_comps_main(&$vars){
   $js = drupal_get_path('module', 'tcbl_comps') . '/js/tcbl-comps.js';
   drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 1));
 
+  if (user_access('access contextual links')){
+    drupal_add_library('contextual', 'contextual-links');  
+  }
+
   drupal_add_js(array(
     'tcbl_comps' => $vars['data'],
   ), array('type' => 'setting'));

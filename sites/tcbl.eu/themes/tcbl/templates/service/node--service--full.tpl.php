@@ -16,7 +16,6 @@
   <?php print render($title_suffix); ?>
 
   <div class="node-content"<?php print $content_attributes; ?>>
-
     <div class="row">
       <div class="container">
         <div class="wrapper-service-img negative">

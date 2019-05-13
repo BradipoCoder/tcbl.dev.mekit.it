@@ -6,7 +6,7 @@
 ?>
 <div class="row row-tcbl-footer">
   <div class="tcbl-footer bg-blue">
-    <div class="container">
+    <div class="container-fluid">
       <div class="tcbl-footer-content">
         <?php print render($content['logo']); ?>
 

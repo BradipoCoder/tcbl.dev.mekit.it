@@ -10,7 +10,7 @@ hide($header_event['contact']);
 ?>
 
 <header id="navbar" role="banner" class="<?php print $navbar_classes; ?>">
-  <div class="container container-header">
+  <div class="container-fluid container-header">
     <div class="navbar-header">
       <a class="logo navbar-btn pull-left" href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>">
         <?php print render($logo); ?>
@@ -129,7 +129,7 @@ hide($header_event['contact']);
 
 <?php if (!empty($page['bottom'])): ?>
   <div class="bottom">
-    <div class="container">
+    <div class="container-fluid">
       <?php print render($page['bottom']); ?>
     </div>
   </div>

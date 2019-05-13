@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * Implements hook_form_alter().
+ *
+ * @param array $form
+ * @param array $form_state
+ * @param string $form_id
+ */
+function savebtn_form_alter(&$form, &$form_state, $form_id){
+  if (isset($form['#node_edit_form']) && $form['#node_edit_form']){
+    if (isset($form['actions'])){
+      $data['#prefix'] = '<div class="panel panel-default panel-actions-top">';
+      $data['#suffix'] = '</div>';
+      $data['btns'] = $form['actions'];
+      $data['#weight'] = -1;
+
+      if (isset($form['title'])){
+        $type = '';
+        if (isset($form['type']['#value'])){
+          $type = $form['type']['#value'];
+          $type = node_type_get_name($type);
+        }
+
+        $title = $form['title']['#default_value'];
+        $data['title'] = array(
+          '#markup' => '<span class="title-help"><span class="badge">' . $type . '</span> <em>' . $title . '</em></span>',
+        );
+      }
+
+      $form['actions_top'] = $data;
+      //$o_w = $form['actions']['#weight'];
+      $form['actions_bottom'] = $data;
+      $form['actions_bottom']['#weight'] = 100;
+
+      $form['actions']['#access'] = FALSE;
+      $form['actions']['#weight'] = 101;
+    }   
+  }
+}

@@ -1,5 +1,37 @@
 /* less/admin.less */
 
+.panel-actions-top{
+  position: relative;
+  background: @gray-lightest;
+  .size(0.5);
+  margin-bottom: @size;
+  padding: @size;
+  .form-group{
+    margin: 0;
+    text-align: right;
+  }
+
+  .title-help{
+    position: absolute;
+    top: 18px;
+    left: 13px;
+  }
+}
+
+// ** TABS **
+// ----------
+
+.tabs--secondary,
+.tabs--primary {
+  .margin-v(0.5);
+  text-align: center; 
+}
+
+.tabs--primary > li{
+  display: inline-block;
+  float: inherit;
+}
+
 .field-edit-link{
   font-size: @font-size-small * 0.8;
   margin-left: 10px;

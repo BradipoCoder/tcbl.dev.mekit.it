@@ -12,10 +12,11 @@
 
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> col-md-3"<?php print $attributes; ?>>
 
-  <?php print render($title_prefix); ?>
-  <?php print render($title_suffix); ?>
-
   <div class="node-content margin-b-05">
+
+    <?php print render($title_prefix); ?>
+    <?php print render($title_suffix); ?>
+
     <span class="card same-h">
       <a href="<?php print $node_url; ?>" class="a-block">
         <span class="card__content">

@@ -11,8 +11,10 @@
 
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?>"<?php print $attributes; ?>>
   <div class="node-content">
+
     <?php print render($title_prefix); ?>
     <?php print render($title_suffix); ?>
+
     <a href="<?php print $node_url; ?>" class="a-block">
       <span class="company-head">
         <span class="company-logo">

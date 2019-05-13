@@ -1,0 +1,5 @@
+name = Top action buttons
+description = Add action buttons on the top of the page
+package = Mekit
+core = 7.x
+

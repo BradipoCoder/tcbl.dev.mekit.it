@@ -15,10 +15,10 @@
   hide($content['share']);
 ?>
 
-<div class="row">
-  <div class="container">
-    <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?>"<?php print $attributes; ?>>
 
+<div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?>"<?php print $attributes; ?>>
+  <div class="row">
+    <div class="container">
       <?php print render($title_prefix); ?>
       <?php print render($title_suffix); ?>
   

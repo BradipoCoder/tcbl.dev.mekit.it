@@ -123,12 +123,30 @@ function _tcbl_alter_comps_form(&$form, $form_state){
     }
   }
 
-
   if (isset($node->nid)){
+    // Se il nodo è già stato creato
     if ($node->field_ref_memb['und'][0]['tid'] !== '28'){
-      field_group_hide_field_groups($form, array('group_lab'));
+      field_group_hide_field_groups($form, array('group_lab', 'group_kas'));
     }
+  } else {
+    // Se il nodo è in fase di creazione
+    field_group_hide_field_groups($form, array('group_lab', 'group_kas')); 
   }
+
+  global $user;
+  if ($user->uid == 1){
+    // Administrator
+    foreach ($form as $key => $value) {
+      $list[] = $key;
+    }
+    //dpm($list);
+  } else {
+    $form['comment_settings']['#access'] = false;
+    $form['metatags']['#access'] = false;
+    $form['revision_information']['#access'] = false;
+    //field_group_hide_field_groups($form, array('comments'));
+  }
+
 }
 
 function _tcbl_condition_is_lab(){
