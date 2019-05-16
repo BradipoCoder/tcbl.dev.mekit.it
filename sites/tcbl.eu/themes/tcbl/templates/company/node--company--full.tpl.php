@@ -153,7 +153,11 @@
       <div class="row row-company-projects">
         <div class="container">
           <div class="company-projects">
-            <h3 class="text-normal text-dark margin-t-0">Lab projects</h3>
+            <h3 class="text-normal text-dark margin-t-0 margin-b-1">Lab projects</h3>
+
+            <div class="row row-projects">
+              <?php print render($content['field_ref_projects']); ?>
+            </div>
           </div>
         </div>
       </div>

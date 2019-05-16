@@ -57,7 +57,7 @@ function tcbl_preprocess_user_profile(&$vars){
 }
 
 function _tcbl_user_add_company_reference(&$vars, $profile){
-   $vars['company'] = false;
+  $vars['company'] = false;
 
   $uid = $profile->uid;
 
@@ -84,7 +84,6 @@ function _tcbl_user_add_company_reference(&$vars, $profile){
       $vars['content']['company'] = node_view($company, 'card');
     }  
   }
-  
 }
 
 

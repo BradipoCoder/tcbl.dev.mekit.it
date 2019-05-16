@@ -85,7 +85,19 @@ body.cke_editable, body.mceContentBody{
 .front{
   .main-container{
     .padding-t(0);
-    .padding-b(1);
+    .padding-b(0);
+  }
+}
+
+.node-type-company{
+  .footer{
+    margin-top: 0;
+  }
+}
+
+.node-type-project{
+  .main-container{
+    .padding-t(2);  
   }
 }
 
@@ -283,7 +295,6 @@ body.cke_editable, body.mceContentBody{
   }
 }
 
-
 .node-day{
   .paragraphs-item-text-img{
     .field-name-field-img{
@@ -316,12 +327,6 @@ body.cke_editable, body.mceContentBody{
       .text-color(@brand-info);
     }
   }
-}
-
-.paragraphs-item-imgs{
-  max-width: 750px;
-  margin-left: auto;
-  margin: auto;
 }
 
 // ACTIVITY
@@ -472,6 +477,30 @@ body.cke_editable, body.mceContentBody{
     margin-right: auto;
   }
 }
+
+
+// ** NODE PROJECT **
+// ------------------
+
+.node-project.node-child{
+
+  .node-content{
+    position: relative;
+    min-height: 100px;
+  }
+
+  .field-name-field-img{
+    position: absolute;
+    left: 0;
+    top: 0;
+    max-width: 100px;
+  }
+}
+
+.project-child-content{
+  padding-left: 120px;
+}
+
 // ** ARCHIVE **
 // -------------
 

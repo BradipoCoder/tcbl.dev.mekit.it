@@ -58,6 +58,10 @@ function tcbl_preprocess_node(&$vars){
       _tcbl_preprocess_node_company($vars);
       break;
 
+    case 'project':
+      _tcbl_preprocess_node_project($vars);
+      break;
+
     default:
       # code...
       break;
@@ -290,6 +294,43 @@ function _tcbl_preprocess_node_day(&$vars){
 
     _add_cta_event($vars);
 
+  }
+}
+
+function _tcbl_preprocess_node_project(&$vars){
+  $node = $vars['node'];
+  if ($vars['view_mode'] == 'full'){
+    _tcbl_add_lab_reference($vars);
+  }
+}
+
+function _tcbl_add_lab_reference(&$vars){
+  $node = $vars['node'];
+  $nid = $node->nid;
+
+  $vars['company'] = false;
+  $query = new EntityFieldQuery();
+  $query
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', array('company'))
+    ->propertyCondition('status', NODE_PUBLISHED)
+    ->propertyOrderBy('changed', 'DESC')
+    ->fieldCondition('field_ref_projects', 'target_id', $nid);
+
+  $query->execute();
+  if (isset($query->ordered_results)){
+    $results = $query->ordered_results;
+  
+    $nids = [];
+    foreach ( $results as $node ) {
+      array_push($nids, $node->entity_id );
+    }
+   
+    if (count($nids)){
+      $company = node_load($nids[0]);
+      $vars['company'] = true;
+      $vars['content']['company'] = node_view($company, 'teaser');
+    }  
   }
 }
 

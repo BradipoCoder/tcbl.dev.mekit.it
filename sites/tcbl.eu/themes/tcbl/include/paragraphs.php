@@ -46,6 +46,14 @@ function tcbl_preprocess_entity(&$vars){
         _tcbl_preprocess_p_video($vars);
         break;
 
+      case 'links':
+        _tcbl_preprocess_p_links($vars);
+        break;
+
+      case 'files':
+        _tcbl_preprocess_p_files($vars);
+        break;
+
         # code...
         break;
     }
@@ -61,7 +69,7 @@ function _tcbl_preprocess_p_imgs(&$vars){
     $style = 'vertical';
   }
 
-  $vars['content']['#prefix'] = '<div class="row margin-v-2">';
+  $vars['content']['#prefix'] = '<div class="row margin-b-15">';
   $vars['content']['#suffix'] = '</div>';
 
   if ($vars['view_mode'] == 'full'){
@@ -82,15 +90,15 @@ function _tcbl_preprocess_p_imgs(&$vars){
       $vars['content'][$n]['img']['data']['#image_style'] = $style;
       //$vars['content'][$n]['img']['data']['#display_settings']['colorbox_node_style'] = $style;
 
-      //if (isset($vars['content']['field_img_2'][$n]['#item']['title']) && $vars['content']['field_img_2'][$n]['#item']['title'] !== ''){
-      //  $title = $vars['content']['field_img_2'][$n]['#item']['title'];
-      //  $vars['content'][$n]['desc'] = array(
-      //    '#prefix' => '<div class="margin-t-05"><p class="small">',
-      //    '#suffix' => '</p></div>',
-      //    '#markup' => $title,
-      //    '#weight' => 2,
-      //  );
-      //}
+      if (isset($vars['content']['field_img_2'][$n]['#item']['title']) && $vars['content']['field_img_2'][$n]['#item']['title'] !== ''){
+        $title = $vars['content']['field_img_2'][$n]['#item']['title'];
+        $vars['content'][$n]['desc'] = array(
+          '#prefix' => '<div class="margin-t-05"><p class="small">',
+          '#suffix' => '</p></div>',
+          '#markup' => $title,
+          '#weight' => 2,
+        );
+      }
     }
   }
 
@@ -102,8 +110,15 @@ function _tcbl_preprocess_p_imgs(&$vars){
 
 function _tcbl_preprocess_p_img_big(&$vars){
   if ($vars['view_mode'] == 'full'){
-    $vars['content']['#prefix'] = '<div class="text-max-width margin-v-2">';
-    $vars['content']['#suffix'] = '</div>';  
+    if (isset($vars['content']['field_img'][0]['#item']['title']) && $vars['content']['field_img'][0]['#item']['title'] !== ''){
+      $title = $vars['content']['field_img'][0]['#item']['title'];
+      $vars['content'][0]['desc'] = array(
+        '#prefix' => '<div class="margin-t-05"><p class="small">',
+        '#suffix' => '</p></div>',
+        '#markup' => $title,
+        '#weight' => 2,
+      );
+    }
   }
 }
 
@@ -128,7 +143,6 @@ function _tcbl_preprocess_p_text_icon(&$vars){
 
 function _tcbl_preprocess_p_text_img(&$vars){
   $p = $vars['paragraphs_item'];
-
   /*
   $vars['content'] = array(
     'row' => array(
@@ -251,4 +265,45 @@ function _tcbl_preprocess_p_copy(&$vars){
 function _tcbl_preprocess_p_video(&$vars){
   $vars['content']['#prefix'] = '<div class="text-max-width margin-v-2">';
   $vars['content']['#suffix'] = '</div>';
+}
+
+function _tcbl_preprocess_p_links(&$vars){
+  $p = $vars['paragraphs_item'];
+
+  if (isset($p->field_coll_links['und'][0]['title'])){
+    $items = $p->field_coll_links['und'];
+    foreach ($items as $key => $item) {
+      $build[$key]['icon'] = array(
+        '#theme' => 'iconlink',
+        '#url' => $item['url'],
+        '#title' => $item['title'],
+      ); 
+    }
+    $vars['content']['field_coll_links'] = $build;
+  } 
+}
+
+function _tcbl_preprocess_p_files(&$vars){
+  $p = $vars['paragraphs_item'];
+
+  if (isset($p->field_files['und'][0]['fid'])){
+    $items = $p->field_files['und'];
+
+    foreach ($items as $key => $item) {
+
+      $url = file_create_url($item['uri']);
+
+      $description = $item['filename'];
+      if (isset($item['description'])){
+        $description = $item['description'];
+      }
+
+      $build[$key]['icon'] = array(
+        '#theme' => 'icondownload',
+        '#url' => $url,
+        '#title' => $description,
+      ); 
+    }
+    $vars['content']['field_files'] = $build;
+  } 
 }

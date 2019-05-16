@@ -243,6 +243,20 @@ function tcbl_theme(){
         'title' => NULL,
       ),
     ),
+    'iconlink' => array(
+      'template' => 'iconlink',
+      'variables' => array(
+        'url' => NULL,
+        'title' => NULL,
+      ),
+    ),
+    'icondownload' => array(
+      'template' => 'icondownload',
+      'variables' => array(
+        'url' => NULL,
+        'title' => NULL,
+      ),
+    ),
   );
 }
 
