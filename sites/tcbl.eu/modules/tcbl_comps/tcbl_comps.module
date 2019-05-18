@@ -19,6 +19,12 @@ function tcbl_comps_menu() {
     'page callback' => 'tcbl_comps_get_nids',
     'access callback' => true,
   );
+
+  $items['dashboard'] = array(
+    'title' => 'Dashboard',
+    'page callback' => 'tcbl_comps_dashboard',
+    'access callback' => '_tcbl_comps_dashboard_access',
+  );
   return $items;
 }
 
@@ -77,6 +83,13 @@ function tcbl_comps_theme(){
         'content' => NULL,
       ),
       'pattern' => 'tcbl-comps-noresults__',
+    ),
+    'tcbl_comps_dashboard' => array(
+      'template' => 'tcbl-comps-dashboard',
+      'variables' => array(
+        'content' => NULL,
+      ),
+      'pattern' => 'tcbl-comps-dashboard__',
     ),
   );
 }
@@ -228,3 +241,153 @@ function _tcbl_comps_build_archive($filters){
 
   return $build;
 }
+
+// ** ----- UPDATING NODES -----
+// -----------------------------
+
+function tcbl_comps_node_presave($node){
+  if ($node->type == 'company'){
+    _tcbl_comps_update_owners($node);
+  }
+}
+
+/**
+ * Update the owners of the company and projects
+ * @param  class   $node     : node object
+ * @param  boolean $nodesave : force the node saving
+ */
+function _tcbl_comps_update_owners($node, $nodesave = false){
+  if (isset($node->field_ref_user['und'][0]['target_id'])){
+    $uid = $node->field_ref_user['und'][0]['target_id'];
+
+    // Change the author of the company node
+    $node->uid = $uid;
+
+    // By default the node will be saved
+    if ($nodesave){
+      node_save($node);
+    }
+    
+    // Change the author of the projects
+    if (isset($node->field_ref_projects['und'][0])){
+      $projects = $node->field_ref_projects['und'];
+      foreach ($projects as $key => $item) {
+        $nid = $item['target_id'];
+        $project = node_load($nid);
+        $project->uid = $uid;
+        node_save($project);
+      }
+    }
+  }
+}
+
+function tcbl_comps_preprocess_sadmin(&$vars){
+  //dpm($vars);
+  global $user;
+  $roles = $user->roles;
+  // dpm($roles);
+
+  // For lab manager
+  // if (isset($roles[8])){
+  //   $vars['buttons']['my-lab'] = array(
+  //     '#theme' => 'link',
+  //     '#path' => '/user',
+  //     '#text' => 'My lab',
+  //     '#options' => array(
+  //       'attributes' => array(
+  //         'class' => array('small')
+  //       ),
+  //     ),
+  //   );
+  // }
+}
+
+/**
+ * Company Dashboard
+ */
+
+function tcbl_comps_dashboard(){
+
+  $content['title']['#markup'] = '<h2>My dashboard</h2>';
+
+  global $user;
+  $uid = $user->uid;
+
+  $comp_nids = _tcbl_comps_user_get_nodes($uid, 'company');
+  if ($comp_nids) {
+    $comps = node_load_multiple($comp_nids);
+    $content['comps'] = node_view_multiple($comps, 'teaser');
+  }
+
+  $project_nids = _tcbl_comps_user_get_nodes($uid, 'project');
+  if ($project_nids) {
+    $projects = node_load_multiple($project_nids);
+    $content['projects'] = node_view_multiple($projects, 'child');
+  }
+
+  $build = array(
+    '#theme' => 'tcbl_comps_dashboard',
+    '#content' => $content,
+  );
+
+  return $build;
+}
+
+
+function _tcbl_comps_dashboard_access(){
+  global $user;
+  $roles = $user->roles;
+
+  // Administrator
+  if (isset($roles[3])){
+    return true;
+  }
+
+  if (isset($roles[8])){
+    $own_nodes = _tcbl_comps_user_own_nodes($user->uid);
+    return $own_nodes;
+  }
+
+  return false;
+}
+
+function _tcbl_comps_user_own_nodes($uid){
+  $query = new EntityFieldQuery();
+  $query
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', array('company', 'project'))
+    ->propertyCondition('uid', $uid);
+
+  $query->execute();
+  if (isset($query->ordered_results)){
+    $results = $query->ordered_results;
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function _tcbl_comps_user_get_nodes($uid, $type){
+  $query = new EntityFieldQuery();
+  $query
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', array($type))
+    ->propertyCondition('uid', $uid);
+
+  $query->execute();
+  if (isset($query->ordered_results)){
+    $results = $query->ordered_results;
+    $nids = [];
+    foreach ( $results as $node ) {
+      array_push($nids, $node->entity_id );
+    }
+   
+    if (count($nids)){
+      return $nids;
+    }
+  } else {
+    return false;
+  }
+}
+
+

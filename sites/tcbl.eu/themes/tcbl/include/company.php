@@ -515,8 +515,10 @@ function _tcbl_company_coll_links(&$vars){
 function _tcbl_company_add_workers_icons(&$vars){
   $node = $vars['node'];
 
+  $vars['show_workers_icons'] = false;
   if (isset($node->field_n_women['und'][0]['value']) && $node->field_n_women['und'][0]['value']){
     $women_n = $node->field_n_women['und'][0]['value'];
+    $vars['show_workers_icons'] = true;
     $icons = array();
     for ($i = 0; $i < $women_n ; $i++) { 
       $icons[$i]['#markup'] = '<span class="worker worker__women"></span>';
@@ -530,6 +532,7 @@ function _tcbl_company_add_workers_icons(&$vars){
 
   if (isset($node->field_n_men['und'][0]['value']) && $node->field_n_men['und'][0]['value']){
     $men_n = $node->field_n_men['und'][0]['value'];
+    $vars['show_workers_icons'] = true;
     $icons = array();
     for ($i = 0; $i < $men_n ; $i++) { 
       $icons[$i]['#markup'] = '<span class="worker worker__men"></span>';

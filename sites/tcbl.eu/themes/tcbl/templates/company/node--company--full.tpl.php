@@ -81,7 +81,7 @@
                 <div class="col-md-8 margin-b-1">
                   <div class="margin-md-r-2">
                     <h3 class="text-normal text-dark margin-t-0 margin-b-1">Innovation Approach</h3>
-                    <p class="margin-b-1">What does Innovation Approach means</p>
+                    <p class="margin-b-1">The type of lab is defined by how it approaches innovation: design, make, or place.</p>
                     <div class="row">
                       <div class="col-sm-7">
                         <?php print render($content['approach']); ?>
@@ -101,26 +101,22 @@
 
             <div id="company-contents--staff" class="company-contents__panel">
               <div class="row">
-                <div class="col-md-8 margin-b-1">
+                <div class="col-md-6 margin-b-1">
                   <h3 class="text-normal text-dark margin-t-0 margin-b-1">People</h3>
-                  <p class="margin-b-1">Something about the Lab Population</p>
-                  <div class="row">
-                    <?php if ($show_population) : ?>
-                      <div class="col-sm-7 margin-b-1">
-                        <?php print render($content['population']); ?>
-                      </div>
-                    <?php endif ?>
-                    <div class="col-sm-5">
-                      <?php print render($content['staff']); ?>
-                    </div>
-                  </div>
+                  <p class="margin-b-1">Description of who can be found in the lab over one month.</p>
+                  <?php print render($content['population']); ?>
                 </div>
 
                 <?php if (isset($content['field_ref_user'][0])) : ?>
-                  <div class="col-md-4">
-                    <h3 class="text-normal text-dark margin-t-0 margin-b-1">Lab Staff</h3>
-                    <?php print render($content['field_ref_user']); ?>
-                  </div>
+                  <div class="col-md-6">
+                    <div class="margin-b-1">
+                      <h3 class="text-normal text-dark margin-t-0 margin-b-1">Lab Staff</h3>
+                      <?php print render($content['field_ref_user']); ?>
+                    </div>
+                    <?php if ($show_workers_icons) : ?>
+                    <p class="margin-b-1">How many people work in the lab (staff or volunteers)</p>
+                      <?php print render($content['staff']); ?>
+                    <?php endif; ?>
                 <?php endif; ?>
 
               </div>
@@ -131,14 +127,14 @@
                 <div class="col-md-8 margin-b-1">
                   <div class="margin-md-r-1">
                     <h3 class="text-normal text-dark margin-t-0 margin-b-1">Key activities</h3>
-                    <p class="margin-b-1">Something explaining the Lab key activities</p>
+                    <p class="margin-b-1">This lab works in the following activities</p>
                     <?php print render($content['kas']); ?>
                   </div>
                 </div>
                 <?php if ($content['customers']) : ?>
                   <div class="col-md-4">
-                    <h3 class="text-normal text-dark margin-t-0 margin-b-1">Target Customers</h3>
-                    <p class="margin-b-1">What kind of customers</p>
+                    <h3 class="text-normal text-dark margin-t-0 margin-b-1">Target publics</h3>
+                    <p class="margin-b-1">Who the lab wishes to engage</p>
                     <?php print render($content['customers']); ?>
                   </div>
                 <?php endif; ?>
