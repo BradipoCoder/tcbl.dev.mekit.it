@@ -125,8 +125,12 @@ function _tcbl_alter_comps_form(&$form, $form_state){
 
   if (isset($node->nid)){
     // Se il nodo è già stato creato
+    // Se non è un lab
     if ($node->field_ref_memb['und'][0]['tid'] !== '28'){
       field_group_hide_field_groups($form, array('group_lab', 'group_kas'));
+    } else {
+      // This is not working
+      // $form['field_ref_user']['und']['#title'] = 'Lab Manager';
     }
   } else {
     // Se il nodo è in fase di creazione
@@ -146,7 +150,6 @@ function _tcbl_alter_comps_form(&$form, $form_state){
     $form['revision_information']['#access'] = false;
     //field_group_hide_field_groups($form, array('comments'));
   }
-
 }
 
 function _tcbl_condition_is_lab(){

@@ -281,32 +281,48 @@ function _tcbl_comps_update_owners($node, $nodesave = false){
   }
 }
 
-function tcbl_comps_preprocess_sadmin(&$vars){
-  //dpm($vars);
-  global $user;
-  $roles = $user->roles;
-  // dpm($roles);
-
-  // For lab manager
-  // if (isset($roles[8])){
-  //   $vars['buttons']['my-lab'] = array(
-  //     '#theme' => 'link',
-  //     '#path' => '/user',
-  //     '#text' => 'My lab',
-  //     '#options' => array(
-  //       'attributes' => array(
-  //         'class' => array('small')
-  //       ),
-  //     ),
-  //   );
-  // }
+/**
+ * Usefull function to update all company owners
+ * @return [type] [description]
+ */
+function _tcbl_comps_update_all_owners(){
+  $nids = _tcbl_comps_load_all_comps();
+  $nodes = node_load_multiple($nids);
+  foreach ($nodes as $key => $node) {
+    _tcbl_comps_update_owners($node, true);
+    drupal_set_message($node->title . ' updated');  
+  }
 }
 
-/**
- * Company Dashboard
- */
+function _tcbl_comps_load_all_comps(){
+  $query = new EntityFieldQuery();
+  $query
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', array('company'));
+
+  $query->execute();
+  if (isset($query->ordered_results)){
+    $results = $query->ordered_results;
+    $nids = [];
+    foreach ( $results as $node ) {
+      array_push($nids, $node->entity_id );
+    }
+   
+    if (count($nids)){
+      return $nids;
+    }
+  } else {
+    return false;
+  }
+}
+
+
+// ** ----- DASHBOARD -----
+// ------------------------
 
 function tcbl_comps_dashboard(){
+
+  do_the_job();
 
   $content['title']['#markup'] = '<h2>My dashboard</h2>';
 
@@ -333,15 +349,14 @@ function tcbl_comps_dashboard(){
   return $build;
 }
 
-
 function _tcbl_comps_dashboard_access(){
   global $user;
   $roles = $user->roles;
 
   // Administrator
-  if (isset($roles[3])){
-    return true;
-  }
+  // if (isset($roles[3])){
+  //   return true;
+  // }
 
   if (isset($roles[8])){
     $own_nodes = _tcbl_comps_user_own_nodes($user->uid);
