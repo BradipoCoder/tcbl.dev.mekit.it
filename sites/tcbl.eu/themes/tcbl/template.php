@@ -114,6 +114,8 @@ function tcbl_form_node_form_alter(&$form, $form_state){
 
 function _tcbl_alter_comps_form(&$form, $form_state){
   
+  global $user;
+
   // Check if node exists
   $node = false;
   if (isset($form['#node'])){
@@ -123,19 +125,36 @@ function _tcbl_alter_comps_form(&$form, $form_state){
     }
   }
 
-  if (isset($node->nid)){
-    // Se il nodo è già stato creato
-    // Se non è un lab
-    if ($node->field_ref_memb['und'][0]['tid'] !== '28'){
-      field_group_hide_field_groups($form, array('group_lab', 'group_kas'));
-    } else {
-      // This is not working
-      // $form['field_ref_user']['und']['#title'] = 'Lab Manager';
-    }
-  } else {
-    // Se il nodo è in fase di creazione
-    field_group_hide_field_groups($form, array('group_lab', 'group_kas')); 
+  // Dev stuff
+  if ($user->uid !== '1'){
+    field_group_hide_field_groups($form, array('group_startup'));  
   }
+
+  $is_lab = false;
+  $is_startup = false;
+  // Se il nodo è già stato creato
+  if (isset($node->nid)){
+    if ($node->field_ref_memb['und'][0]['tid'] == '28'){
+      $is_lab = true; 
+    }
+    if ($node->field_ref_memb['und'][0]['tid'] == '61'){
+      $is_startup = true; 
+    }
+  }
+
+  // If is not a lab – hide a lot of fields
+  if (!$is_lab){
+    field_group_hide_field_groups($form, array('group_lab', 'group_kas'));
+    $form['field_ref_projects']['#access'] = false;
+    $form['field_cv_project']['#access'] = false;  
+  }
+
+  // If is not a startup - hide startup fields
+  if (!$is_startup){
+    field_group_hide_field_groups($form, array('group_startup'));  
+  }
+
+
 
   global $user;
   if ($user->uid == 1){

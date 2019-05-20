@@ -68,6 +68,13 @@
                 <div class="col-md-6 margin-b-1">
                   <div class="margin-md-r-2">
                     <?php print render($content['body']); ?>
+
+                    <?php if ($cw_logo) : ?>
+                      <div class="comp">
+                        <img src="sites/tcbl.eu/themes/tcbl/img/cw-logo.jpg" class="img-responsive"/>
+                      </div>
+                    <?php endif; ?>
+
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -117,6 +124,7 @@
                     <p class="margin-b-1">How many people work in the lab (staff or volunteers)</p>
                       <?php print render($content['staff']); ?>
                     <?php endif; ?>
+                  </div>
                 <?php endif; ?>
 
               </div>
@@ -140,9 +148,8 @@
                 <?php endif; ?>
               </div>
             </div><!-- ka tab -->
-
-          </div>
-          
+            
+          </div>    
         </div>
       </div>
 
@@ -164,6 +171,14 @@
             <div class="row">
               <div class="col-md-6 margin-b-1">
                 <div class="margin-md-r-2">
+                  <?php if ($is_startup) :?>
+                    <div class="company-startup small">
+                      <?php print render($content['field_su_year']); ?>
+                      <?php print render($content['field_ref_su_ia']); ?>
+                      <?php print render($content['field_ref_su_m']); ?>
+                      <hr>
+                    </div>
+                  <?php endif; ?>
                   <?php print render($content['body']); ?>
                 </div>
               </div>

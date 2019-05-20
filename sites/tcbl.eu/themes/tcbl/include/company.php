@@ -35,6 +35,8 @@ function _tcbl_preprocess_node_company(&$vars){
     // About
     _tcbl_company_add_tabs($vars);
     _tcbl_company_add_slider($vars);
+    _tcbl_company_add_cw_logo($vars);
+    _tcbl_company_startup_fields($vars);
 
     // Details
     _tcbl_company_add_approach_gf($vars);
@@ -424,6 +426,22 @@ function _tcbl_company_get_slider_options(){
     // ),
   );
   return $options;
+}
+
+function _tcbl_company_add_cw_logo(&$vars){
+  $node = $vars['node'];
+  $vars['cw_logo'] = false;
+  if (isset($node->field_cv_project['und'][0]['value']) && $node->field_cv_project['und'][0]['value']){
+    $vars['cw_logo'] = true;
+  }
+}
+
+function _tcbl_company_startup_fields(&$vars){
+  $node = $vars['node'];
+  $vars['is_startup'] = false;
+  if (isset($node->field_ref_memb['und'][0]['tid']) && $node->field_ref_memb['und'][0]['tid'] == '61'){
+    $vars['is_startup'] = true;
+  }
 }
 
 // ** Details **
