@@ -298,6 +298,7 @@ function _tcbl_add_light_footer(&$vars){
 function _tcbl_alter_breadcrumbs(&$vars){
   if (isset($vars['node'])){
     $node = $vars['node'];
+
     if ($node->type == 'forum'){
       $bcs = [];
       $bcs[] = t('Home');
@@ -365,8 +366,6 @@ function _tcbl_alter_breadcrumbs(&$vars){
 
       drupal_set_breadcrumb($bcs);    
     }
-
-
   }
 }
 

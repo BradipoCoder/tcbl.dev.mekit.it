@@ -9,7 +9,6 @@
   hide($content['list']);
   hide($content['children']);
   hide($content['btm_form']);
-  hide($content['webform']);
   hide($content['press']);
 ?>
 

@@ -21,28 +21,32 @@
 <?php // Feel free to break this up and move the pieces within the array. ?>
 
 
-<div class="row margin-v-2">
-  <div class="col-sm-6">
-    <?php print drupal_render($form['submitted']['firstname']); ?>
-    <?php print drupal_render($form['submitted']['lastname']); ?>
-    <?php print drupal_render($form['submitted']['email']); ?>
-    <?php print drupal_render($form['submitted']['companyName']); ?>
-  </div>
-  <div class="col-sm-6">
-    <?php print drupal_render($form['submitted']['address']); ?>
-    <div class="row">
-      <div class="col-sm-6">
-        <?php print drupal_render($form['submitted']['city']); ?>
+<div class="margin-v-2">
+  <div class="row">
+    <div class="col-sm-6">
+      <?php print drupal_render($form['submitted']['firstname']); ?>
+      <?php print drupal_render($form['submitted']['lastname']); ?>
+      <?php print drupal_render($form['submitted']['name']); ?>
+      <?php print drupal_render($form['submitted']['company']); ?>
+      <?php print drupal_render($form['submitted']['email']); ?>
+      <?php print drupal_render($form['submitted']['companyName']); ?>
+    </div>
+    <div class="col-sm-6">
+      <?php print drupal_render($form['submitted']['address']); ?>
+      <div class="row">
+        <div class="col-sm-6">
+          <?php print drupal_render($form['submitted']['city']); ?>
+        </div>
+        <div class="col-sm-6">
+          <?php print drupal_render($form['submitted']['cap']); ?>
+        </div>
       </div>
-      <div class="col-sm-6">
-        <?php print drupal_render($form['submitted']['cap']); ?>
-      </div>
+      <?php print drupal_render($form['submitted']['message']); ?>
     </div>
     <?php print drupal_render($form['submitted']); ?>
-    
-    <div class="text-right margin-t-1">
-      <?php print drupal_render_children($form); ?>
-    </div>
+  </div>
+  <div class="margin-t-05">
+    <?php print drupal_render_children($form); ?>
   </div>
 </div>
 

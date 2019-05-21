@@ -11,6 +11,10 @@
   <?php print render($title_suffix); ?>
 
   <div class="node-content"<?php print $content_attributes; ?>>
-    <?php print render($content); ?>
+    <div class="row">
+      <div class="container">
+        <?php print render($content); ?>
+      </div>
+    </div>
   </div>
 </div>

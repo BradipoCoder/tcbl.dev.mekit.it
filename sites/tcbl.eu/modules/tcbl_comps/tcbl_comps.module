@@ -134,6 +134,10 @@ function tcbl_comps_preprocess_node(&$vars){
   if ($node->nid == 486 && $vars['view_mode'] == 'full'){
     _tcbl_comps_pre_directory_node($vars);
   }
+
+  if ($node->nid == 483 && $vars['view_mode'] == 'full'){
+    _tcbl_comps_pre_join_tcbl_lab($vars);
+  }
 }
 
 /**
@@ -219,6 +223,12 @@ function _tcbl_comps_pre_directory_node(&$vars){
     '#data' => $data,
     '#aid' => $data['id'],
   ); 
+}
+
+function _tcbl_comps_pre_join_tcbl_lab(&$vars){
+  $formNode = node_load(515);
+  $build = node_view($formNode, 'default');
+  $vars['content']['webform'] = $build['webform'];
 }
 
 /**
@@ -322,7 +332,7 @@ function _tcbl_comps_load_all_comps(){
 
 function tcbl_comps_dashboard(){
 
-  do_the_job();
+  //do_the_job();
 
   $content['title']['#markup'] = '<h2>My dashboard</h2>';
 
