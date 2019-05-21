@@ -149,12 +149,15 @@ function _tcbl_alter_comps_form(&$form, $form_state){
     $form['field_cv_project']['#access'] = false;  
   }
 
+  if ($is_lab){
+    // Refactory più intelligente, in base al click sulle tab
+    add_same_h_by_selector('.group-11');
+  }
+
   // If is not a startup - hide startup fields
   if (!$is_startup){
     field_group_hide_field_groups($form, array('group_startup'));  
   }
-
-
 
   global $user;
   if ($user->uid == 1){

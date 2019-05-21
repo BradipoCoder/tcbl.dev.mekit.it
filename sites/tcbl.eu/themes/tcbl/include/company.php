@@ -647,6 +647,8 @@ function _tcbl_company_add_kas(&$vars){
         $items[$key]['class'] = 'open';
       }
 
+      $items[$key]['content'] = _tcbl_company_create_ka_content($vars, $tid);
+
       $n++;
     }
 
@@ -655,7 +657,92 @@ function _tcbl_company_add_kas(&$vars){
       '#items' => $items,
     );
   }
+}
 
+function _tcbl_company_create_ka_content($vars, $tid){
+  
+  $node = $vars['node'];
+
+  $data_fields =  _tcbl_kas_get_fields_name_from_tid($tid);
+  if ($data_fields){
+    $prefix = $data_fields['prefix'];
+    $fields = $data_fields['fields'];
+
+    $n = 0;
+    foreach ($fields as $key => $name) {
+      
+      $itembuild = false;
+
+      // Display taxonomy term field
+      $ref_field_name = 'field_ref_' . $prefix . '_' . $name;
+      
+      // Get the label
+      $field_istance = field_info_instance('node', $ref_field_name, 'company');
+      $label = $field_istance['label'];
+
+      if (isset($node->$ref_field_name['und'][0]['tid'])){
+        $itembuild[$ref_field_name] = field_view_field('node', $node, $ref_field_name, array(
+          'label' => 'hidden',
+          'type' => 'taxonomy_term_reference_csv', 
+        ));  
+        $n++;
+        $itembuild[$ref_field_name]['#weight'] = $n;
+      }
+
+      // Display other field
+      $other_field_name = 'field_' . $prefix . '_other_' . $name;
+      if (isset($node->$other_field_name['und'][0]['value']) && $node->$other_field_name['und'][0]['value']!== ''){
+        $itembuild[$other_field_name] = field_view_field('node', $node, $other_field_name, array(
+          'label' => 'hidden',
+          'type' => 'plaintext', 
+        )); 
+        $n++;
+        $itembuild[$other_field_name]['#weight'] = $n;
+      }
+
+      // Se c'è del contenuto, aggiungo un wrapper
+      if ($itembuild){
+        $build[$key] = array(
+          '#prefix' => '<div class="wrapper-kas-item wrapper-kas-item--' . $tid . '">',
+          '#suffix' => '</div>',
+          'label' => array(
+            '#markup' => '<div class="kas-item-label">' . $label . '</div>',
+          ),
+          'data' => array(
+            '#prefix' => '<div class="kas-item-content">',
+            '#suffix' => '</div>',
+            'build' => $itembuild,
+          ),
+        );
+      }
+    }
+  }
+
+  if (!isset($build)){
+    $build['#markup'] = '<p class="small">Info forthcoming</p>'; 
+  }
+
+  return $build;
+}
+
+function _tcbl_kas_get_fields_name_from_tid($tid){
+  switch ($tid) {
+    case '45': // Business support
+      $data['prefix'] = 'b';
+      $data['fields'] = array(
+        'startups',
+        'business_planning',
+        'funding_support',
+        'marketing_support',
+        'design_and_man_sup',
+      ); 
+      break;
+    
+    default:
+      $data = false;
+      break;
+  }
+  return $data;
 }
 
 // ** UTILITY **

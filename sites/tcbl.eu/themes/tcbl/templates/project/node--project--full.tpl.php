@@ -21,6 +21,14 @@
   <div class="node-content"<?php print $content_attributes; ?>>
     <div class="row">
       <div class="container">
+        <div class="paragraphs-item-chapter">
+          <div class="chapter-title">About</div>
+          <div class="container-text margin-b-15">
+            <?php print render($content['body']); ?>
+          </div>
+        </div>
+
+        <?php print render($content['field_content']); ?>
 
         <?php if ($company) : ?>
           <div class="paragraphs-item-chapter">
@@ -30,15 +38,6 @@
             </div>
           </div>
         <?php endif; ?>
-
-        <div class="paragraphs-item-chapter">
-          <div class="chapter-title">About</div>
-          <div class="container-text margin-b-15">
-            <?php print render($content['body']); ?>
-          </div>
-        </div>
-
-        <?php print render($content['field_content']); ?>
 
       </div>
     </div>

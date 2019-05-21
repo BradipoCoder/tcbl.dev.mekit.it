@@ -415,4 +415,13 @@ function _tcbl_comps_user_get_nodes($uid, $type){
   }
 }
 
+function tcbl_comps_custom_theme() {
+  global $user;
+  if ($user->uid == 1){
+    if (current_path() == 'system/ajax') {
+      return variable_get('admin_theme');
+    }  
+  }
+}
+
 

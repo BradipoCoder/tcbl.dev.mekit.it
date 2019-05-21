@@ -19,7 +19,7 @@
         </span>
       </div>
       <div id="company-kas-content-<?php print $item['tid']; ?>" class="company-kas__content">
-        <pre>content</pre>
+        <?php print render($item['content']); ?>
       </div>
     </li>
   <?php endforeach; ?>
