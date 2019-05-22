@@ -307,6 +307,13 @@ function _tcbl_alter_breadcrumbs(&$vars){
       drupal_set_breadcrumb($bcs);
     }
 
+    if ($node->type == 'project'){
+      $bcs = [];
+      $bcs[] = t('Home');
+      $bcs[] = l('Projects', 'node/516');
+      drupal_set_breadcrumb($bcs);
+    }
+
     if ($node->type == 'blog'){
       $bcs = [];
       $bcs[] = t('Home');

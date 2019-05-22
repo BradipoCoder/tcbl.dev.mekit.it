@@ -299,8 +299,13 @@ function _tcbl_preprocess_node_day(&$vars){
 
 function _tcbl_preprocess_node_project(&$vars){
   $node = $vars['node'];
+
   if ($vars['view_mode'] == 'full'){
-    _tcbl_add_lab_reference($vars);
+
+    $vars['company'] = false;
+    if (isset($node->field_ref_labs['und'][0]['target_id'])){
+      $vars['company'] = true;
+    }
   }
 }
 

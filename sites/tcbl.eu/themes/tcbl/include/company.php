@@ -50,6 +50,10 @@ function _tcbl_preprocess_node_company(&$vars){
     _tcbl_company_add_customers($vars);
     _tcbl_company_add_kas($vars);
 
+    // * Projects *
+    // ------------
+    _tcbl_company_add_projects($vars);
+
   }
 
   if ($vars['view_mode'] == 'teaser' || $vars['view_mode'] == 'card'){
@@ -663,7 +667,11 @@ function _tcbl_company_create_ka_content($vars, $tid){
   
   $node = $vars['node'];
 
-  $data_fields =  _tcbl_kas_get_fields_name_from_tid($tid);
+  global $user;
+  $data_fields = 0;
+  if ($user->uid == 1){
+    $data_fields =  _tcbl_kas_get_fields_name_from_tid($tid);   
+  }
   if ($data_fields){
     $prefix = $data_fields['prefix'];
     $fields = $data_fields['fields'];
@@ -725,26 +733,6 @@ function _tcbl_company_create_ka_content($vars, $tid){
   return $build;
 }
 
-function _tcbl_kas_get_fields_name_from_tid($tid){
-  switch ($tid) {
-    case '45': // Business support
-      $data['prefix'] = 'b';
-      $data['fields'] = array(
-        'startups',
-        'business_planning',
-        'funding_support',
-        'marketing_support',
-        'design_and_man_sup',
-      ); 
-      break;
-    
-    default:
-      $data = false;
-      break;
-  }
-  return $data;
-}
-
 // ** UTILITY **
 // -------------
 
@@ -770,4 +758,33 @@ function _tcbl_company_get_plain_address($address){
 }
 
 
+function _tcbl_company_add_projects(&$vars){
+  $node = $vars['node'];
+  $nid = $node->nid;
 
+  $query = new EntityFieldQuery();
+  $query
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', array('project'))
+    ->propertyCondition('status', NODE_PUBLISHED)
+    ->propertyOrderBy('changed', 'DESC')
+    ->fieldCondition('field_ref_labs', 'target_id', $nid);
+
+  $query->execute();
+
+  $vars['content']['projects'] = false;
+
+  if (isset($query->ordered_results)){
+    $results = $query->ordered_results;
+  
+    $nids = [];
+    foreach ( $results as $node ) {
+      array_push($nids, $node->entity_id );
+    }
+   
+    if (count($nids)){
+      $nodes = node_load_multiple($nids);
+      $vars['content']['projects'] = node_view_multiple($nodes, 'child');
+    }  
+  }
+}

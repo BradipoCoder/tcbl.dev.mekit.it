@@ -153,17 +153,22 @@
         </div>
       </div>
 
-      <div class="row row-company-projects">
-        <div class="container">
-          <div class="company-projects">
-            <h3 class="text-normal text-dark margin-t-0 margin-b-1">Lab projects</h3>
+      <?php if ($content['projects']) : ?>
+        <div class="row row-company-projects">
+          <div class="container">
+            <div class="company-projects">
+              <h3 class="text-normal text-dark margin-t-0 margin-b-05">Lab projects</h3>
+              <div class="margin-b-1">
+                <a href="<?php print url('node/516'); ?>" title="All projects" class="small"><i class="fa fa-angle-right"></i> All projects</a>
+              </div>
 
-            <div class="row row-projects">
-              <?php print render($content['field_ref_projects']); ?>
+              <div class="row row-projects">
+                <?php print render($content['projects']); ?>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      <?php endif; ?> 
     <?php else : ?>
       <div class="row row-company-main">
         <div class="container">

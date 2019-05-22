@@ -15,6 +15,7 @@ require('include/comment.php');
 require('include/access.php');
 require('include/company.php');
 require('include/user.php');
+require('include/dev.php');
 
 /**
  * Implements hook_preprocess_html()

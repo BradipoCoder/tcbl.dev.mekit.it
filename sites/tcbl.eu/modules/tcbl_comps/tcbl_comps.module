@@ -256,7 +256,7 @@ function _tcbl_comps_build_archive($filters){
 // -----------------------------
 
 function tcbl_comps_node_presave($node){
-  if ($node->type == 'company'){
+  if ($node->type == 'company' || $node->type == 'project'){
     _tcbl_comps_update_owners($node);
   }
 }
@@ -279,15 +279,15 @@ function _tcbl_comps_update_owners($node, $nodesave = false){
     }
     
     // Change the author of the projects
-    if (isset($node->field_ref_projects['und'][0])){
-      $projects = $node->field_ref_projects['und'];
-      foreach ($projects as $key => $item) {
-        $nid = $item['target_id'];
-        $project = node_load($nid);
-        $project->uid = $uid;
-        node_save($project);
-      }
-    }
+    // if (isset($node->field_ref_projects['und'][0])){
+    //   $projects = $node->field_ref_projects['und'];
+    //   foreach ($projects as $key => $item) {
+    //     $nid = $item['target_id'];
+    //     $project = node_load($nid);
+    //     $project->uid = $uid;
+    //     node_save($project);
+    //   }
+    // }
   }
 }
 
@@ -331,8 +331,6 @@ function _tcbl_comps_load_all_comps(){
 // ------------------------
 
 function tcbl_comps_dashboard(){
-
-  //do_the_job();
 
   $content['title']['#markup'] = '<h2>My dashboard</h2>';
 

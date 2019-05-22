@@ -22,10 +22,12 @@
       <div class="container">
         <?php if ($has_image) : ?>
           <div class="row">
-            <div class="col-sm-6">
-              <?php print render($content['body']); ?>
+            <div class="col-sm-6 col-md-8">
+              <div class="margin-sm-r-1">
+                <?php print render($content['body']); ?>
+              </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6 col-md-4">
               <?php print render($content['field_image']); ?>
             </div>
           </div>

@@ -34,7 +34,7 @@
           <div class="paragraphs-item-chapter">
             <div class="chapter-title chapter-title--small">A project by</div>
             <div class="chapter-content">
-              <?php print render($content['company']); ?>  
+              <?php print render($content['field_ref_labs']); ?> 
             </div>
           </div>
         <?php endif; ?>

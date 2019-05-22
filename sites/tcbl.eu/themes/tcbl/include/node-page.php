@@ -59,6 +59,10 @@ function _tcbl_preprocess_node_page(&$vars){
   if ($node->nid == 310){
     _tcbl_preprocess_node_page_bpilots($vars);
   }
+
+  if ($node->nid == 516){
+    _tcbl_preprocess_node_page_projects($vars);
+  }
 }
 
 /**
@@ -152,4 +156,13 @@ function _tcbl_preprocess_node_page_bpilots(&$vars){
     $vars['content']['bpilots']['#weight'] = 40;
     add_same_h_by_selector('.bpilots-sameh');
   }
+}
+
+function _tcbl_preprocess_node_page_projects(&$vars){
+  if ($vars['view_mode'] == 'full'){
+    $vars['content']['projects']['hr']['#markup'] = '<hr>';
+    $vars['content']['projects']['view']['#markup'] = views_embed_view('projects', 'block');
+    $vars['content']['projects']['view']['#weight'] = 40;
+    add_same_h_by_selector('.view-id-projects');
+  }  
 }
