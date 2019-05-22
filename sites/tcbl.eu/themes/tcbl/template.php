@@ -109,7 +109,11 @@ function tcbl_form_node_form_alter(&$form, $form_state){
     }
   }
 
-  
+  // Chi non è editor non vede il gruppo Admin settings
+  if (!$is_editor){
+    field_group_hide_field_groups($form, array('group_admin'));  
+  }
+
   _tcbl_alter_comps_form($form, $form_state);
 }
 
@@ -124,11 +128,6 @@ function _tcbl_alter_comps_form(&$form, $form_state){
     if ($node->type !== 'company'){
       return;
     }
-  }
-
-  // Dev stuff
-  if ($user->uid !== '1'){
-    field_group_hide_field_groups($form, array('group_startup'));  
   }
 
   $is_lab = false;

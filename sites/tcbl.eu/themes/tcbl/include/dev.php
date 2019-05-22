@@ -10,9 +10,64 @@ function _tcbl_kas_get_fields_name_from_tid($tid){
         'funding_support',
         'marketing_support',
         'design_and_man_sup',
-      ); 
+      );
       break;
-    
+
+    case '46': // Creative Hub
+      $data['prefix'] = 'c';
+      $data['fields'] = array(
+        'creative_sector',
+        'regional_stakeholders',
+        'setup',
+        'services_offered',
+        'main_results',
+      );
+      break;
+
+    case '47': // Social
+      $data['prefix'] = 's';
+      $data['fields'] = array(
+        'social_groups',
+        'skills_level',
+        'awareness_act',
+        'territorial_scope',
+        'act_production',
+      );
+      break;
+
+    case '49': // Research
+      $data['prefix'] = 'r';
+      $data['fields'] = array(
+        'creative',
+        'material',
+        'technical_scient',
+      );
+      break;
+
+    case '48': // Teaching / Training
+      $data['prefix'] = 't';
+      $data['fields'] = array(
+        'business',
+        'technology',
+        'clothing',
+        'textiles',
+        'training_style',
+      );
+      break;
+
+    case '50': // Production
+      $data['prefix'] = 'p';
+      $data['fields'] = array(
+        'mat_worked_with',
+        'product_creation',
+        'production_type',
+        'prod_facilities',
+        'prod_capability',
+        'production_style',
+        'technologies',
+      );
+      break;
+
     default:
       $data = false;
       break;

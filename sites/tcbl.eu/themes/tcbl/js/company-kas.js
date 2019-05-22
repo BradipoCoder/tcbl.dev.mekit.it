@@ -36,7 +36,9 @@
       if (!item.hasClass('open')){
         items.removeClass('open');
         item.addClass('open');
-      }  
+      } else {
+        item.removeClass('open');
+      } 
     }
 
   };

@@ -20,7 +20,7 @@
 
       // This should not be referenced
       me.defaultFilters = Object.assign({}, me.filters);
-      console.debug(me.defaultFilters, 'default filters | load ');
+      // console.debug(me.defaultFilters, 'default filters | load ');
 
       me.perPage = Drupal.settings.tcbl_comps.perPage;
       me.withArgs = Drupal.settings.tcbl_comps.withArgs;
@@ -108,7 +108,6 @@
       var reset = $('#reset-filters');
       reset.click(function(e){
         e.preventDefault();
-        console.debug(me.defaultFilters, 'default filters');
         me.filters = Object.assign({}, me.defaultFilters);
         me.page = 1;
         me.reloadAll();
@@ -169,7 +168,7 @@
       // Update query with current page
       tmpFilters.page = me.page;
       queryString = Object.keys(tmpFilters).map(key => key + '=' + tmpFilters[key]).join('&');
-      console.debug(queryString);
+      // console.debug(queryString);
       encodedQuery = encodeURI(queryString);
 
       // Get filtered nodes

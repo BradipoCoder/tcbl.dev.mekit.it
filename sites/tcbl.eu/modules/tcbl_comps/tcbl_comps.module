@@ -361,11 +361,6 @@ function _tcbl_comps_dashboard_access(){
   global $user;
   $roles = $user->roles;
 
-  // Administrator
-  // if (isset($roles[3])){
-  //   return true;
-  // }
-
   if (isset($roles[8])){
     $own_nodes = _tcbl_comps_user_own_nodes($user->uid);
     return $own_nodes;

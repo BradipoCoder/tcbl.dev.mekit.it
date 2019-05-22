@@ -53,7 +53,6 @@ function _tcbl_preprocess_node_company(&$vars){
     // * Projects *
     // ------------
     _tcbl_company_add_projects($vars);
-
   }
 
   if ($vars['view_mode'] == 'teaser' || $vars['view_mode'] == 'card'){
@@ -683,6 +682,11 @@ function _tcbl_company_create_ka_content($vars, $tid){
 
       // Display taxonomy term field
       $ref_field_name = 'field_ref_' . $prefix . '_' . $name;
+
+      // Custom fix
+      if ($name == 'technologies'){
+        $ref_field_name = 'field_p_technologies';
+      }
       
       // Get the label
       $field_istance = field_info_instance('node', $ref_field_name, 'company');
