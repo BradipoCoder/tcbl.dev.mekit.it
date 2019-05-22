@@ -135,7 +135,7 @@ function _tcbl_alter_comps_form(&$form, $form_state){
   // Se il nodo è già stato creato
   if (isset($node->nid)){
     if ($node->field_ref_memb['und'][0]['tid'] == '28'){
-      $is_lab = true; 
+      $is_lab = true;
     }
     if ($node->field_ref_memb['und'][0]['tid'] == '61'){
       $is_startup = true; 
@@ -150,27 +150,56 @@ function _tcbl_alter_comps_form(&$form, $form_state){
   }
 
   if ($is_lab){
-    // Refactory più intelligente, in base al click sulle tab
-    add_same_h_by_selector('.group-11');
+    // Add some JS
+    $js = drupal_get_path('theme', 'tcbl') . '/js/company-backend.js';
+    drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 1));
   }
+
+  // Key activities logic
+  if (isset($node->nid) && ($is_lab)){
+    $activeTids = array();
+
+    $map = array(
+      '45' => 'group_11', // Business support
+      '46' => 'group_c_creative_hub',
+      '47' => 'group_s_social',
+      '49' => 'group_r_research',
+      '48' => 'group_t_teaching_training',
+      '50' => 'group_p_production',
+    );
+
+    if (isset($node->field_ref_kas['und'][0]['tid'])){
+      $items = $node->field_ref_kas['und'];
+      foreach ($items as $key => $item) {
+        $activeTids[] = $item['tid'];
+      }
+    }
+    foreach ($map as $tid => $field) {
+      if (!in_array($tid, $activeTids)){
+        field_group_hide_field_groups($form, array($field));  
+      }
+    }
+  }
+
 
   // If is not a startup - hide startup fields
   if (!$is_startup){
     field_group_hide_field_groups($form, array('group_startup'));  
   }
 
+
+
   global $user;
   if ($user->uid == 1){
     // Administrator
-    foreach ($form as $key => $value) {
-      $list[] = $key;
-    }
-    //dpm($list);
+    // foreach ($form as $key => $value) {
+    //   $list[] = $key;
+    // }
+    // dpm($list);
   } else {
     $form['comment_settings']['#access'] = false;
     $form['metatags']['#access'] = false;
     $form['revision_information']['#access'] = false;
-    //field_group_hide_field_groups($form, array('comments'));
   }
 }
 

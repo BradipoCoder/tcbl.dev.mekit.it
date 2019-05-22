@@ -28,19 +28,19 @@ function tcbl_frontpage_preprocess_page(&$vars) {
   // $content['forum']['#markup'] = views_embed_view('hp_forum', 'default');
 
   // Business Pilots
-  $bpilots_node = node_load(310);
-  $bpilots_node_view = node_view($bpilots_node, 'teaser');
-  $content['bpilots'] = $bpilots_node_view['field_short'];
-  $uri = $bpilots_node->field_image['und'][0]['uri'];
+  $projects = node_load(516);
+  $projects_view = node_view($projects, 'teaser');
+  $content['projects'] = $projects_view['field_short'];
+  $uri = $projects->field_image['und'][0]['uri'];
   $url_img = file_create_url($uri);
-  $content['bpilots_img_path']['#markup'] = $url_img;
+  $content['projects_img_path']['#markup'] = $url_img;
   $opt = array(
     'attributes' => array(
       'class' => array('btn', 'btn-info', 'bnt-lg', 'margin-t-1'),
     ),
   );
-  $content['bpilots_more'] = array(
-    '#markup' => l('Explore Business Pilots', 'node/310', $opt),
+  $content['projects_more'] = array(
+    '#markup' => l('See all projects', 'node/516', $opt),
   );
 
   // Banner

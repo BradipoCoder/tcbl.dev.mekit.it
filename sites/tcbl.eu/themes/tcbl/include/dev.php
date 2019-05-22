@@ -17,6 +17,8 @@ function _tcbl_kas_get_fields_name_from_tid($tid){
       $data['prefix'] = 'c';
       $data['fields'] = array(
         'creative_sector',
+        'field_l_c_regional_stakeholders',
+        'field_longtext_c_setup',
         'regional_stakeholders',
         'setup',
         'services_offered',

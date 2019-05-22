@@ -666,11 +666,7 @@ function _tcbl_company_create_ka_content($vars, $tid){
   
   $node = $vars['node'];
 
-  global $user;
-  $data_fields = 0;
-  if ($user->uid == 1){
-    $data_fields =  _tcbl_kas_get_fields_name_from_tid($tid);   
-  }
+  $data_fields =  _tcbl_kas_get_fields_name_from_tid($tid);
   if ($data_fields){
     $prefix = $data_fields['prefix'];
     $fields = $data_fields['fields'];
@@ -710,6 +706,19 @@ function _tcbl_company_create_ka_content($vars, $tid){
         )); 
         $n++;
         $itembuild[$other_field_name]['#weight'] = $n;
+      }
+
+      // Display custom field
+      if ($name == 'field_l_c_regional_stakeholders'){
+        $field_istance = field_info_instance('node', 'field_l_c_regional_stakeholders', 'company');
+        $label = $field_istance['label'];
+
+        $n++;
+        $itembuild['field_l_c_regional_stakeholders'] = field_view_field('node', $node, 'field_l_c_regional_stakeholders', array(
+          'label' => 'hidden',
+          'weight' => $n,
+        ));
+
       }
 
       // Se c'è del contenuto, aggiungo un wrapper

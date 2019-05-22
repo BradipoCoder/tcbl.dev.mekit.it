@@ -62,12 +62,6 @@ hide($content['forum']);
             <?php print render($content['events']); ?>
           </div>
         </div>
-
-        <?php /*
-        <div class="col-sm-6 col-md-4">
-          <h2 class="h1 h1-front-cms">From the forum</h2>
-          <?php print render($content['forum']); ?>
-        </div> */ ?>
       </div>
     </div>
   </div>
@@ -80,26 +74,29 @@ hide($content['forum']);
 
   <div class="wrapper-front-labs">
     <div class="container">
-      <div class="front-labs-header text-center">
+      <div class="front-labs-header text-center margin-b-4">
         <h2 class="h1-big text-uppercase">Labs</h2>
-        <p>
-          Labs are the active, physical context in which TCBL's explorations of new models take place.<br/>
-          Check out the latest projects from our Labs.
-        </p>
+        <div class="text-max-width">
+          <p>
+          Labs are the active, physical context in which TCBL’s explorations of <strong>new sustainable models</strong> for the T&C industry take place. Labs provide <strong>innovation and research spaces</strong> to help companies, non-profits, designers, students and citizens develop projects through training, services and tools, as well as the publication of research materials.
+          </p>
+          <a href="<?php print url('node/441'); ?>" class="btn btn-info bnt-lg margin-v-1">Read more</a>
+        </div>
       </div>
+      <?php /*
       <div class="row margin-v-1">
         <?php print render($tcbl_feeds["labs"]); ?>
-      </div>
+      </div> */ ?>
     </div>
   </div>
 
   <div class="wrapper-front-business-pilots">
-    <div class="parallax-w" data-bleed="1" data-parallax="scroll" data-image-src="<?php print render($content['bpilots_img_path']); ?>" data-position-y="center">
+    <div class="parallax-w" data-bleed="1" data-parallax="scroll" data-image-src="<?php print render($content['projects_img_path']); ?>" data-position-y="center">
       <div class="container">
         <div class="text-max-width text-center margin-v-4">
-          <h2 class="h1-big text-italic">Business Pilots</h2>
-          <?php print render($content['bpilots']); ?>
-          <?php print render($content['bpilots_more']); ?>
+          <h2 class="h1-big text-italic">Projects</h2>
+          <?php print render($content['projects']); ?>
+          <?php print render($content['projects_more']); ?>
         </div>
       </div>
     </div>

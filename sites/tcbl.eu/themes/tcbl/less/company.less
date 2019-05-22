@@ -720,7 +720,8 @@
 
 .field-group-htab{
   > .panel-body{
-    padding: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
@@ -728,31 +729,84 @@
  * Key activities back end
  */
 
-.group-10{
-  fieldset fieldset{
-    
-    @media (min-width: @screen-lg-min){
-      float: left;
-      width: 19%;
-      margin-right: 1%;  
-    }
+.field-name-field-ref-kas{
+  > .form-item > label{
+    font-size: 30px;
+    .margin-b(0.5);
+  }
 
-    .help-block{
-      font-size: @font-size-small;
-      color: @gray-darker;
-    }
+  .control-label{
+    font-size: @font-size-base;
+    top: -1px !important;
+  }
 
-    .form-type-textfield,
-    .field-widget-text-textfield,
-    .form-type-checkboxes,
-    .field-type-taxonomy-term-reference{
-      margin-bottom: 0;
-    }
+  .help-block{
+    //font-size: @font-size-small;
+    color: @gray-dark;
+    .margin-b(1);
 
-    .form-type-checkboxes{
-      > .control-label{
-        display: none;
+    #kas-help{
+      .label{
+        font-size: @font-size-small;  
       }
+      .padding-v(0.5);
     }
+  }
+}
+
+.htab-grid-3,
+.htab-grid-4{
+  .panel-body{
+    .clearfix();
+  }
+
+  .help-block{
+    font-size: @font-size-small;
+    color: @gray-darker;
+  }
+
+  .form-type-textfield,
+  .field-widget-text-textfield,
+  .form-type-checkboxes,
+  .field-type-taxonomy-term-reference{
+    margin-bottom: 0;
+  }
+
+  .form-type-checkboxes{
+    > .control-label{
+      display: none;
+    }
+  }
+}
+
+.htab-grid-4{
+  fieldset{
+    @media (min-width: @screen-md-min){
+      float: left;
+      margin-right: 1%;
+      width: 49%; 
+    }
+    @media (min-width: @screen-lg-min){
+      width: 24%;
+    }  
+  }
+}
+
+.htab-grid-3{
+  fieldset{
+    @media (min-width: @screen-md-min){
+      float: left;
+      margin-right: 1%;
+      width: 49%; 
+    }
+    @media (min-width: @screen-lg-min){
+      width: 32%;
+    }  
+  }
+}
+
+.field-name-field-l-c-regional-stakeholders{
+  .help-block{
+    display: none;
   }
 }
