@@ -134,6 +134,7 @@
  * Labs
  */
 
+.directory-head-content,
 .labs-head-content{
   .padding-v(3);
   max-width: 750px;
@@ -143,9 +144,63 @@
   }
 }
 
+.row-directory-head,
 .row-labs-head{
   .over-parallax-dark{
-    background: fade(#000, 50%);
+    background: fade(#000, 60%);
+  }
+}
+
+/**
+ * Directory
+ */
+
+.row-directory-archive{
+  
+}
+
+.row-directory-head{
+  background: @primary-lightest;
+  .field-name-body{
+    h4{
+      margin-top: 0;
+    }
+  }
+}
+
+.directory-numbers{
+  .clearfix();
+  .margin-t(2);
+  .margin-b(1.5);
+
+  .directory-number{
+    @media (min-width: @screen-sm-min){
+      float: left;
+      width: 25%;
+    }
+  }
+}
+
+.directory-number{
+  min-height: 40px;
+  position: relative;
+  .margin-b(0.5);
+
+  &__number{
+    position: absolute;
+    display: block;
+    top: -6px;
+    left: 0;
+    font-size: 40px;
+    line-height: 40px;
+    width: 60px;
+    height: 40px;
+  }
+
+  &__label{
+    line-height: 40px;
+    padding-left: 70px;
+    font-weight: @font-weight-bold;
   }
 }
 

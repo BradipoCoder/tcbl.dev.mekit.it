@@ -91,8 +91,19 @@ function tcbl_comps_theme(){
       ),
       'pattern' => 'tcbl-comps-dashboard__',
     ),
+    'directory_number' => array(
+      'template' => 'directory-number',
+      'variables' => array(
+        'number' => NULL,
+        'label' => NULL,
+      ),
+      'pattern' => 'directory-number__',
+    ),
+
   );
 }
+
+
 
 /**
  * Add usefull javascript libraries
@@ -194,6 +205,17 @@ function _tcbl_comps_pre_labs_node(&$vars){
 function _tcbl_comps_pre_directory_node(&$vars){
   $node = $vars['node'];
 
+  // Add parallax cover
+  $vars['img_url'] = false;
+  if (isset($node->field_image['und'][0]['uri'])){
+    $uri = $node->field_image['und'][0]['uri'];
+    $url_img = file_create_url($uri);  
+    $vars['img_url'] = $url_img;
+
+    $js_parallax = libraries_get_path('jquery.parallax') . '/jquery.parallax.min.js';
+    drupal_add_js( $js_parallax , array('group' => JS_LIBRARY, 'weight' => 1));
+  }
+
   $data['perPage'] = 8;
 
   // If an argument is present, cookie data need to by refreshed
@@ -214,7 +236,12 @@ function _tcbl_comps_pre_directory_node(&$vars){
 
   // Archive id (for cookies)
   $data['id'] = 'directory';
-  $data['scrollToElement'] = '.wrapper-header';
+  $data['scrollToElement'] = '#row-directory-archive';
+
+  $show_sign_up = !user_is_logged_in();
+  $vars['show_sign_up'] = $show_sign_up;
+
+  $vars['content']['numbers'] = _tcbl_comps_directory_numbers();
 
   // Add comps archive
   $vars['content']['archive'] = array(
@@ -223,6 +250,72 @@ function _tcbl_comps_pre_directory_node(&$vars){
     '#data' => $data,
     '#aid' => $data['id'],
   ); 
+}
+
+function _tcbl_comps_directory_numbers(){
+  $build = false;
+
+  $labs = _tcbl_comps_numbers('labs');
+  if ($labs){
+    $build['numbers']['lab'] = array(
+      '#theme' => 'directory_number',
+      '#number' => $labs,
+      '#label' => 'Labs',
+    );
+  }
+
+  $startups = _tcbl_comps_numbers('startups');
+  if ($startups){
+    $build['numbers']['startup'] = array(
+      '#theme' => 'directory_number',
+      '#number' => $startups,
+      '#label' => 'Start-ups',
+    );
+  }
+
+  $ass = _tcbl_comps_numbers('associates');
+  if ($ass){
+    $build['numbers']['ass'] = array(
+      '#theme' => 'directory_number',
+      '#number' => $ass,
+      '#label' => 'Associates',
+    );
+  }
+
+  return $build;
+}
+
+function _tcbl_comps_numbers($type){
+  $query = new EntityFieldQuery();
+  $query
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', array('company'));
+
+  switch ($type) {
+    case 'lab':
+      $query->fieldCondition('field_ref_memb', 'tid', array(28));
+      break;
+
+    case 'associates':
+      $query->fieldCondition('field_ref_memb', 'tid', array(60));
+      break;
+
+    case 'startups':
+      $query->fieldCondition('field_cv_project', 'value', true);
+      break;
+    
+    default:
+      # code...
+      break;
+  }
+
+  $query->execute();
+  if (isset($query->ordered_results)){
+    $results = $query->ordered_results;
+    $tot = count($results);
+    return $tot;
+  }
+  return false;  
 }
 
 function _tcbl_comps_pre_join_tcbl_lab(&$vars){

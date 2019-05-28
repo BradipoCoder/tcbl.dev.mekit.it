@@ -29,11 +29,13 @@ function _tcbl_kas_get_fields_name_from_tid($tid){
     case '47': // Social
       $data['prefix'] = 's';
       $data['fields'] = array(
-        'social_groups',
-        'skills_level',
-        'awareness_act',
-        'territorial_scope',
-        'act_production',
+        'materials',
+        'nanotechnology',
+        'smart_fun_text',
+        'circular_eco',
+        'processing',
+        'ict',
+        'ty_of_res_per',
       );
       break;
 

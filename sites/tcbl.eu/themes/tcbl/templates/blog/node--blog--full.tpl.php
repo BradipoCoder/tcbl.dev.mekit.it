@@ -18,6 +18,10 @@
   <div class="node-content"<?php print $content_attributes; ?>>
     <div class="row">
       <div class="container">
+        <div class="paragraphs-item-copy">
+          <?php print render($content['body']); ?>
+        </div>
+
         <?php print render($content); ?>
 
         <?php print render($content['comments']); ?>
