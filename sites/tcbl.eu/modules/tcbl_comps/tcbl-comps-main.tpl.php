@@ -2,11 +2,11 @@
   <div id="comps-filters" class="compsmain__filters">
 
     <div class="comps-filters__tools">
-      <a id="toggle-map" class="btn toggle-map on">
-        <i class="fa fa-toggle-on"></i> Show map
-      </a>
       <a id="reset-filters" class="btn reset-filters">
         <i class="fa fa-refresh"></i> Reset filters
+      </a>
+      <a id="toggle-map" class="btn toggle-map on">
+        <i class="fa fa-toggle-on"></i> Show map
       </a>
     </div>
 

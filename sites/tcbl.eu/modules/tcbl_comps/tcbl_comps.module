@@ -255,7 +255,7 @@ function _tcbl_comps_pre_directory_node(&$vars){
 function _tcbl_comps_directory_numbers(){
   $build = false;
 
-  $labs = _tcbl_comps_numbers('labs');
+  $labs = _tcbl_comps_numbers('lab');
   if ($labs){
     $build['numbers']['lab'] = array(
       '#theme' => 'directory_number',
@@ -264,14 +264,14 @@ function _tcbl_comps_directory_numbers(){
     );
   }
 
-  $startups = _tcbl_comps_numbers('startups');
-  if ($startups){
-    $build['numbers']['startup'] = array(
-      '#theme' => 'directory_number',
-      '#number' => $startups,
-      '#label' => 'Start-ups',
-    );
-  }
+  // $startups = _tcbl_comps_numbers('startups');
+  // if ($startups){
+  //   $build['numbers']['startup'] = array(
+  //     '#theme' => 'directory_number',
+  //     '#number' => $startups,
+  //     '#label' => 'Start-ups',
+  //   );
+  // }
 
   $ass = _tcbl_comps_numbers('associates');
   if ($ass){
@@ -312,6 +312,9 @@ function _tcbl_comps_numbers($type){
   $query->execute();
   if (isset($query->ordered_results)){
     $results = $query->ordered_results;
+    if ($type == 'startups'){
+      dpm($results);
+    }
     $tot = count($results);
     return $tot;
   }

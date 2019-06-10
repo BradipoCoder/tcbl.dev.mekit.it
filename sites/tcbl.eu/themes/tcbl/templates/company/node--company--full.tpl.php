@@ -71,7 +71,7 @@
 
                     <?php if ($cw_logo) : ?>
                       <div class="comp">
-                        <img src="sites/tcbl.eu/themes/tcbl/img/cw-logo.jpg" class="img-responsive"/>
+                        <img src="/sites/tcbl.eu/themes/tcbl/img/cw-logo.jpg" class="img-responsive"/>
                       </div>
                     <?php endif; ?>
 
