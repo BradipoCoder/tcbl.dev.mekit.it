@@ -1,0 +1,4 @@
+name = TCBL Token
+description = Custom token for TCBL
+package = TCBL
+core = 7.x

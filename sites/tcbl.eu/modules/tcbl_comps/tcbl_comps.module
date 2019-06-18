@@ -25,6 +25,12 @@ function tcbl_comps_menu() {
     'page callback' => 'tcbl_comps_dashboard',
     'access callback' => '_tcbl_comps_dashboard_access',
   );
+
+  $items['comps-dev'] = array(
+    'title' => 'Dev Stuff for Companies',
+    'page callback' => 'tcbl_comps_dev',
+    'access callback' => user_access('access devel information'),
+  );
   return $items;
 }
 
@@ -102,8 +108,6 @@ function tcbl_comps_theme(){
 
   );
 }
-
-
 
 /**
  * Add usefull javascript libraries
@@ -369,7 +373,7 @@ function _tcbl_comps_update_owners($node, $nodesave = false){
     // Change the author of the company node
     $node->uid = $uid;
 
-    // By default the node will be saved
+    // By default the node will be saved inside the hook
     if ($nodesave){
       node_save($node);
     }
@@ -400,11 +404,15 @@ function _tcbl_comps_update_all_owners(){
   }
 }
 
-function _tcbl_comps_load_all_comps(){
+function _tcbl_comps_load_all_comps($tid = false){
   $query = new EntityFieldQuery();
   $query
     ->entityCondition('entity_type', 'node')
     ->entityCondition('bundle', array('company'));
+
+  if ($tid){
+    $query->fieldCondition('field_ref_memb', 'tid', array($tid));
+  }
 
   $query->execute();
   if (isset($query->ordered_results)){
@@ -420,6 +428,151 @@ function _tcbl_comps_load_all_comps(){
   } else {
     return false;
   }
+}
+
+// ** DEV STUFF **
+// ---------------
+
+function tcbl_comps_dev(){
+  
+  // Only administrators
+  global $user;
+  if ($user->uid !== '1'){
+    return array('#markup' => '<code>no access</code>');
+  }
+
+  // Only associates
+  $compNids = _tcbl_comps_load_all_comps(60);
+  $comps = node_load_multiple($compNids);
+
+  $build['table'] = array(
+    '#theme' => 'table',
+    '#header' => array('N', 'Company name', 'Company manager', 'Public e-mail'),
+  );
+
+  $n = 1;
+  foreach ($comps as $key => $comp) {
+
+    $rows[$key]['n']['data']['#markup'] = $n;
+
+    $rows[$key]['title']['data']['#markup'] = l($comp->title, 'node/' . $comp->nid);
+    
+    $rows[$key]['user']['data']['#markup'] = '--';
+    if (isset($comp->field_ref_user['und'][0]['target_id'])){
+      $uid = $comp->field_ref_user['und'][0]['target_id'];
+      $tmp_user = user_load($uid);
+
+      $rows[$key]['user']['data']['#markup'] = l($tmp_user->mail, 'user/' . $tmp_user->uid);
+    }
+
+    $rows[$key]['mail']['data']['#markup'] = '--';
+    if (isset($comp->field_location['und'][0]['email']) && $comp->field_location['und'][0]['email'] !== ''){
+      $mail = $comp->field_location['und'][0]['email'];
+      $rows[$key]['mail']['data']['#markup'] = $mail;
+
+
+      $parts = explode("@", $mail);
+      $username = $parts[0];
+
+      $ok_to_be_public = array(
+        'info', 'lab', 'hello', 'contatti', 'contact',
+      );
+
+      if (!in_array($username, $ok_to_be_public)){
+        $comp->field_location['und'][0]['email'] = '';
+        // node_save($comp);
+        
+      }
+    }
+
+    $n++;
+  }
+
+
+  $build['table']['#rows'] = $rows;
+  
+  // $build['#markup'] = '<span>dev</span>';
+
+  return $build;
+}
+
+/**
+ * Create user from public e-mails and set them as owners
+ * @param  [type] $comps [description]
+ * @return [type]        [description]
+ */
+function tcbl_comps_create_users_and_set_as_owners($comps){
+  // 4 Non hanno l'email
+  // quindi non avranno il riferimento
+  $missing = 0;
+  foreach ($comps as $nid => $comp) {
+    if (isset($comp->field_location['und'][0]['email']) && $comp->field_location['und'][0]['email'] !== ''){
+      $mail = $comp->field_location['und'][0]['email'];
+
+      // Create or load an user
+      $uid = tcbl_comps_create_user_by_mail($mail);
+
+      if ($uid){
+        $comp->field_ref_user['und'][0]['target_id'] = $uid;
+        $comp->uid = $uid;
+        node_save($comp);
+        drupal_set_message('Company updated: ' . l($comp->title, 'node/' . $comp->nid));  
+      }
+    } else {
+      $missing++;
+    }
+  }
+
+  // 4 Missing on 18 06 2019
+  dpm('Missing e-mails: ' . $missing);
+}
+
+/**
+ * Create a user by e-mail and return the uid
+ * if already exists, return the uid
+ * @param  string $mail [description]
+ * @return uid or false
+ */
+function tcbl_comps_create_user_by_mail($mail){
+  // check if user exists
+  $exists = user_load_by_mail($mail);
+  if ($exists){
+    drupal_set_message('Utente già esistente: ' . l($exists->name, 'user/' . $exists->uid));
+    return $exists->uid;
+  } else {
+
+    // Create a temp username
+    $parts = explode("@", $mail);
+    $username = $parts[0];
+
+    // Se l'utente esiste già
+    $tmp_user = user_load_by_name($username);
+    if ($tmp_user){
+      $username = $username . '_' . rand(100, 999);
+    }
+
+    // Create user
+    $new_user = array(
+      'name' => $username,
+      'pass' => 'WzU~$9n{px',
+      'mail' => $mail,
+      'status' => 1,
+      'init' => $mail,
+      'roles' => array(
+        DRUPAL_AUTHENTICATED_RID => 'authenticated user',
+        8 => 'company-manager',
+      ),
+      'field_firstname' => array(LANGUAGE_NONE => array(array('value' => $username))),
+    );
+
+    // The first parameter is sent blank so a new user is created.
+    $account = user_save('', $new_user);
+    if ($account->uid) {
+      drupal_set_message('Created new user: ' . l($username, 'user/' . $account->uid));
+      return $account->uid;
+    }
+  }
+  return false;
 }
 
 

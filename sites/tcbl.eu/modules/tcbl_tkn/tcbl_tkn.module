@@ -1,0 +1,53 @@
+<?php
+
+/**
+ * Implements hook_token_info().
+ */
+  function tcbl_tkn_token_info() {
+
+    // Define token value
+    $data['comp-prefix'] =  array(
+      'name' => t("Company Profile Prefix"),
+      'description' => t("Get the company profile prefix: directory, labs, ecc."),
+    );
+
+    // Return associative array of tokens & token types
+    return array(
+      'tokens' => array(
+        'node' => $data,
+      ),
+    );
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function tcbl_tkn_tokens($type, $tokens, array $data = array(), array $options = array()) {
+  $replacements = array();
+
+  // Check if token type is node
+  if($type == 'node'){
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        // Check token is comp_prefix
+        case 'comp-prefix':
+
+          $replacements[$original] = 'directory'; 
+
+          if (isset($data['node'])){
+            $node = $data['node'];
+            if (isset($node->field_ref_memb['und'][0]['tid'])){
+              $tid = $node->field_ref_memb['und'][0]['tid'];
+              
+              // IF is not a lab
+              if ($tid == '28'){
+                $replacements[$original] = 'labs';       
+              }
+            }
+          }
+          break;
+      }
+    }
+  }
+  return $replacements;
+}
