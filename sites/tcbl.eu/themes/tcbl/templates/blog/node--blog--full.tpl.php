@@ -8,6 +8,7 @@
   hide($content['links']);
   hide($content['comments']);
   hide($content['field_submitted']);
+  hide($content['field_by']);
 ?>
 
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?>"<?php print $attributes; ?>>
@@ -23,6 +24,10 @@
         </div>
 
         <?php print render($content); ?>
+
+        <div class="paragraphs-item-copy">
+          <?php print render($content['field_by']); ?>  
+        </div>
 
         <?php print render($content['comments']); ?>
       </div>

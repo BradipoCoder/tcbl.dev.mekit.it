@@ -35,7 +35,7 @@ function tcbl_preprocess_page(&$vars){
   // Logo
   $path = drupal_get_path('theme', 'tcbl') . '/img/';
   $vars['logo'] = array(
-    '#markup' => '<img src="/' . $path . 'tcbl-logo.svg" class="img-logo"/>',
+    '#markup' => '<img src="/' . $path . 'tcbl-logo-new.png" class="img-logo"/>',
   );
 
   _tcbl_alter_container_class($vars);

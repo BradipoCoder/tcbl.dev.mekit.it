@@ -198,6 +198,7 @@ function _tcbl_preprocess_node_forum(&$vars){
 function _tcbl_preprocess_node_blog(&$vars){
   $node = $vars['node'];
   if ($vars['view_mode'] == 'full'){
+
     if (isset($node->field_by['und'][0]['user'])){
       $writtenBy = $node->field_by['und'][0]['user'];
 

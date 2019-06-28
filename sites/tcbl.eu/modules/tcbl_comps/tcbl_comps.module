@@ -268,14 +268,14 @@ function _tcbl_comps_directory_numbers(){
     );
   }
 
-  // $startups = _tcbl_comps_numbers('startups');
-  // if ($startups){
-  //   $build['numbers']['startup'] = array(
-  //     '#theme' => 'directory_number',
-  //     '#number' => $startups,
-  //     '#label' => 'Start-ups',
-  //   );
-  // }
+  $startups = _tcbl_comps_numbers('startups');
+  if ($startups){
+    $build['numbers']['startup'] = array(
+      '#theme' => 'directory_number',
+      '#number' => $startups,
+      '#label' => 'Start-ups',
+    );
+  }
 
   $ass = _tcbl_comps_numbers('associates');
   if ($ass){
@@ -305,7 +305,8 @@ function _tcbl_comps_numbers($type){
       break;
 
     case 'startups':
-      $query->fieldCondition('field_cv_project', 'value', true);
+      $query->fieldCondition('field_ref_memb', 'tid', array(61));
+      //$query->fieldCondition('field_cv_project', 'value', true);
       break;
     
     default:

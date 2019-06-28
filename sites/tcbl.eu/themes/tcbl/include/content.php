@@ -356,8 +356,11 @@ function _tcbl_alter_breadcrumbs(&$vars){
         }
       }
 
+
+
       // Country
-      if (isset($node->field_location['und'][0]['country'])){
+      if (isset($node->field_location['und'][0]['country']) && $node->field_location['und'][0]['country'] !== ''){
+        //dpm($node->field_location['und'][0]);
         $country_name = $node->field_location['und'][0]['country_name'];
         $country = $node->field_location['und'][0]['country'];
         $opt = array(
@@ -370,6 +373,8 @@ function _tcbl_alter_breadcrumbs(&$vars){
       }
 
       $bcs[] = $node->title;
+
+      //dpm($bcs);
 
       drupal_set_breadcrumb($bcs);    
     }

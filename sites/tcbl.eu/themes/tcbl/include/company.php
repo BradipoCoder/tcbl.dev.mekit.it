@@ -110,6 +110,12 @@ function _tcbl_company_format_contacts(&$vars, $view_mode = 'default'){
     unset($list['website']);
   }
 
+  // Only logged in user can see contact info
+  if (!user_is_logged_in()){
+    unset($list['email']);
+    unset($list['phone']);  
+  }
+
   $vars['plain_address'] = false;
 
   // Field location
