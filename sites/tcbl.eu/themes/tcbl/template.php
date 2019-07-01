@@ -289,6 +289,8 @@ function tcbl_theme(){
       'variables' => array(
         'items' => NULL,
       ),
+      'pattern' => 'companykas__',
+      'path' => $path,
     ),
     'extcollaboration' => array(
       'template' => 'extcollaboration',
@@ -296,6 +298,8 @@ function tcbl_theme(){
         'url' => NULL,
         'title' => NULL,
       ),
+      'pattern' => 'extcollaboration__',
+      'path' => $path,
     ),
     'iconlink' => array(
       'template' => 'iconlink',
@@ -303,6 +307,8 @@ function tcbl_theme(){
         'url' => NULL,
         'title' => NULL,
       ),
+      'pattern' => 'iconlink__',
+      'path' => $path,
     ),
     'icondownload' => array(
       'template' => 'icondownload',
@@ -310,6 +316,16 @@ function tcbl_theme(){
         'url' => NULL,
         'title' => NULL,
       ),
+      'pattern' => 'icondownload__',
+      'path' => $path,
+    ),
+    'pricing-table' => array(
+      'template' => 'pricing-table',
+      'variables' => array(
+        'content' => NULL,
+      ),
+      'pattern' => 'pricing-table__',
+      'path' => $path,
     ),
   );
 }

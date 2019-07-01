@@ -21,6 +21,7 @@ sites/tmp
 
 
 sftp-config.json
+__sftp-config.json
 
 # OS generated files #
 ######################

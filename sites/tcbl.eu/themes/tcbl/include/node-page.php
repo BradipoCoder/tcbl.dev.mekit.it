@@ -63,6 +63,10 @@ function _tcbl_preprocess_node_page(&$vars){
   if ($node->nid == 516){
     _tcbl_preprocess_node_page_projects($vars);
   }
+
+  if ($node->nid == 783){
+    _tcbl_preprocess_node_page_pricing($vars);
+  }
 }
 
 /**
@@ -165,4 +169,12 @@ function _tcbl_preprocess_node_page_projects(&$vars){
     $vars['content']['projects']['view']['#weight'] = 40;
     add_same_h_by_selector('.view-id-projects');
   }  
+}
+
+function _tcbl_preprocess_node_page_pricing(&$vars){
+  if ($vars['view_mode'] == 'full'){
+    $vars['content']['pricing'] = array(
+      '#theme' => 'pricing-table',
+    );  
+  }
 }
