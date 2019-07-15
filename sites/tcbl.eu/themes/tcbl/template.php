@@ -38,6 +38,9 @@ function tcbl_preprocess_page(&$vars){
     '#markup' => '<img src="/' . $path . 'tcbl-logo-new.png" class="img-logo"/>',
   );
 
+  // Utility to delete the watchdog
+  // db_delete('watchdog')->execute();
+
   _tcbl_alter_container_class($vars);
 
   _tcbl_add_social_menu($vars);
@@ -111,7 +114,7 @@ function tcbl_form_node_form_alter(&$form, $form_state){
 
   // Chi non è editor non vede il gruppo Admin settings
   if (!$is_editor){
-    field_group_hide_field_groups($form, array('group_admin'));  
+    field_group_hide_field_groups($form, array('group_admin', 'group_eval'));  
   }
 
   _tcbl_alter_comps_form($form, $form_state);
@@ -146,7 +149,7 @@ function _tcbl_alter_comps_form(&$form, $form_state){
   if (!$is_lab){
     field_group_hide_field_groups($form, array('group_lab', 'group_kas'));
     $form['field_ref_projects']['#access'] = false;
-    $form['field_cv_project']['#access'] = false;  
+    $form['field_cv_project']['#access'] = false; 
   }
 
   if ($is_lab){

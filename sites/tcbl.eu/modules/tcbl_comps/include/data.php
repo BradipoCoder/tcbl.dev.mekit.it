@@ -149,3 +149,30 @@ function _tcbl_comps_get_filters($nids){
 
   return $filters;
 }
+
+// ** UTILITY **
+// -------------
+
+function _tcbl_comps_labs_status($node){
+  // Only for lab
+  if (!_tcbl_comps_is_lab($node)){
+    return false;
+  }
+
+  // Return the status
+  if (isset($node->field_ref_status['und'][0]['tid'])){
+    $tid = $node->field_ref_status['und'][0]['tid'];
+    $term = taxonomy_term_load($tid);
+    $data[$tid] = $term->name;
+    return $data;
+  }
+
+  return false;
+}
+
+function _tcbl_comps_is_lab($node){
+  if (isset($node->field_ref_memb['und'][0]['tid']) && $node->field_ref_memb['und'][0]['tid'] == '28'){
+    return true;
+  }
+  return false;
+}

@@ -21,8 +21,8 @@
   <div class="node-content"<?php print $content_attributes; ?>>
     <div id="company-head" class="row row-company-head bg-blue">
       <div class="container margin-v-15">
+        <?php print render($content['msg']); ?>
         <div class="row">
-
           <?php if ($has_networks) : ?>
           <div class="col-md-5 col-md-push-4">
           <?php else : ?>
@@ -43,16 +43,16 @@
             </div>
           <?php endif; ?>
 
-        <div class="col-md-4 col-md-pull-8">
-          <div class="margin-md-r-1">
-            <div class="company-map">
-              <?php print render($content['field_img']); ?>
-              <?php print render($content['map']); ?>
+          <div class="col-md-4 col-md-pull-8">
+            <div class="margin-md-r-1">
+              <div class="company-map">
+                <?php print render($content['field_img']); ?>
+                <?php print render($content['map']); ?>
+              </div>
             </div>
           </div>
-        </div>
 
-      </div>
+        </div>
       </div>
     </div>
 

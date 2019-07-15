@@ -74,6 +74,7 @@ function _tcbl_comps_query_nids($filters){
   foreach ($result as $item) {
     $nids[] = $item->nid;
   }
+
   return $nids;
 }
 

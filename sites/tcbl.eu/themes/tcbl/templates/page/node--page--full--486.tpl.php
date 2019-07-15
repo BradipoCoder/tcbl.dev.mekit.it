@@ -29,7 +29,7 @@
                   <?php print render($content['body'][0]); ?>
                 </div>
                 <?php if ($show_sign_up) : ?>
-                  <a href="https://tcblsso.ilabt.iminds.be/usermanager/user/register"
+                  <a href="https://weeave.tcbl.eu/usermanager/user/register"
                      class="btn btn-primary btn-lg margin-t-1" title="Sign up">
                     Join TCBL
                   </a>

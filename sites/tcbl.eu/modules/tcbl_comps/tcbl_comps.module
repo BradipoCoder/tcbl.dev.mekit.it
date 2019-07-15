@@ -2,6 +2,7 @@
 
 require('include/data.php');
 require('include/query.php');
+require('include/evaluation.php');
 
 function tcbl_comps_menu() {
   $items['comps-get-results'] = array(
@@ -31,6 +32,25 @@ function tcbl_comps_menu() {
     'page callback' => 'tcbl_comps_dev',
     'access callback' => user_access('access devel information'),
   );
+
+  $items['labs-eval/%'] = array(
+    'title' => 'Lab evaluation',
+    'page callback' => 'tcbl_lab_evalution_page',
+    'access callback' => 'tcbl_lab_evalution_page_access',
+    'page arguments' => array(
+      1,
+    ),
+  ); 
+
+  $items['labs-eval-end/%/%/%'] = array(
+    'title' => 'Lab evaluation',
+    'page callback' => 'tcbl_lab_evalution_page_end',
+    'access callback' => 'tcbl_lab_evalution_page_access',
+    'page arguments' => array(
+      1, 2, 3
+    ),
+  );
+
   return $items;
 }
 
@@ -105,7 +125,20 @@ function tcbl_comps_theme(){
       ),
       'pattern' => 'directory-number__',
     ),
-
+    'tcbl_lab_evaluation' => array(
+      'template' => 'tcbl-lab-evaluation',
+      'variables' => array(
+        'content' => NULL,
+      ),
+      'pattern' => 'tcbl-lab-evaluation__',  
+    ),
+    'tcbl_lab_evaluation_end' => array(
+      'template' => 'tcbl-lab-evaluation-end',
+      'variables' => array(
+        'content' => NULL,
+      ),
+      'pattern' => 'tcbl-lab-evaluation-end__',  
+    ),
   );
 }
 
@@ -442,6 +475,30 @@ function tcbl_comps_dev(){
     return array('#markup' => '<code>no access</code>');
   }
 
+  _tcbl_comps_dev_update_labs_fields();
+
+  $build['#markup'] = '<span>dev</span>';
+
+  return $build;
+}
+
+function _tcbl_comps_dev_update_labs_fields(){
+  $compNids = _tcbl_comps_load_all_comps(28);
+  $comps = node_load_multiple($compNids);
+  
+  $edit = 0;
+  foreach ($comps as $key => $comp) {
+    if (isset($comp->field_ref_status)){
+      // all approved
+      $comp->field_ref_status['und'][0]['tid'] = '236';
+      //$value = $comp->field_ref_status['und'][0]; //['value'] = true;
+      $edit++;
+      //node_save($comp);
+    }
+  }
+}
+
+function _tcbl_comps_dev_list_labs_user(){
   // Only associates
   $compNids = _tcbl_comps_load_all_comps(60);
   $comps = node_load_multiple($compNids);
@@ -489,12 +546,8 @@ function tcbl_comps_dev(){
     $n++;
   }
 
-
   $build['table']['#rows'] = $rows;
-  
-  // $build['#markup'] = '<span>dev</span>';
-
-  return $build;
+  return $build;  
 }
 
 /**
@@ -666,5 +719,4 @@ function tcbl_comps_custom_theme() {
     }  
   }
 }
-
 

@@ -22,6 +22,7 @@ function _tcbl_preprocess_node_company(&$vars){
     drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 1));
 
     _tcbl_company_set_type($vars);
+    _tcbl_labs_approval($vars);
 
     // * Company header *
     // ------------------
@@ -80,6 +81,29 @@ function _tcbl_company_set_type(&$vars){
       $vars['is_lab'] = true;
     }
   }
+}
+
+function _tcbl_labs_approval(&$vars){
+  $node = $vars['node'];
+  if ($vars['is_lab']){
+    $status = _tcbl_comps_labs_status($node);
+    
+    // Draft
+    if (isset($status['234'])){
+      $string = 'This Lab is not yet public. To be published it must be approved by two TCBL labs. ';
+      $string .= l('Start now the evaluation process', 'labs-eval/' . $node->nid ) . '.';
+      $vars['content']['msg'] = _tcbl_labs_message($string, 'info');
+    }
+  }
+}
+
+function _tcbl_labs_message($string, $type){
+  $build = array(
+    '#prefix' => '<div class="messages"><div class="alert alert-' . $type . '">',
+    '#suffix' => '</div></div>',
+    '#markup' => $string,
+  );
+  return $build;
 }
 
 function _tcbl_company_format_contacts(&$vars, $view_mode = 'default'){
@@ -775,7 +799,6 @@ function _tcbl_company_get_plain_address($address){
   }
   return $plainAddress;
 }
-
 
 function _tcbl_company_add_projects(&$vars){
   $node = $vars['node'];

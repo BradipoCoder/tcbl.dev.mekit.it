@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Webform form
+ * Webform form - Lab evaluation process End
  */
 
 ?>
@@ -21,19 +21,8 @@
 <?php // Feel free to break this up and move the pieces within the array. ?>
 
 
-<div class="margin-v-2">
-  <div class="row">
-    <div class="col-sm-6">
-      <?php print drupal_render($form['submitted']['name']); ?>
-      <?php print drupal_render($form['submitted']['company']); ?>
-      <?php print drupal_render($form['submitted']['email']); ?>
-      <?php print drupal_render($form['submitted']['how']); ?>
-    </div>
-    <div class="col-sm-6">
-      <?php print drupal_render($form['submitted']['message']); ?>
-    </div>
-    <?php print drupal_render($form['submitted']); ?>
-  </div>
+<div class="margin-b-1">
+  <?php print drupal_render($form['submitted']); ?>
   <div class="margin-t-05">
     <?php print drupal_render_children($form); ?>
   </div>

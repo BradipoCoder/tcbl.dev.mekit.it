@@ -32,7 +32,12 @@
             </div>
           </div>
         <?php endif; ?>
-        <?php print render($content); ?>
+
+        <div class="row">
+          <div class="col-lg-8">
+            <?php print render($content); ?>
+          </div>
+        </div>
       </div>
     </div>
   </div>

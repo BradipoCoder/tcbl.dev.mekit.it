@@ -223,7 +223,7 @@ function _tcbl_add_user_login(&$vars){
     $path = $avat['path'];
 
     $data['user'] = array(
-      '#prefix' => '<div class="user-menu"><a href="https://tcblsso.ilabt.iminds.be/usermanager" title="' . $name . '" target="_blank">',
+      '#prefix' => '<div class="user-menu"><a href="https://weeave.tcbl.eu/usermanager" title="' . $name . '" target="_blank">',
       '#suffix' => '</a></div>',
       '#markup' => '<img src="' . $path . '"/> <span class="name">' . $name . '</span>',
     );
