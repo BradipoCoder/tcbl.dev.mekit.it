@@ -22,6 +22,8 @@
     <div id="company-head" class="row row-company-head bg-blue">
       <div class="container margin-v-15">
         <?php print render($content['msg']); ?>
+        <?php print render($content['eval_status']); ?>
+        
         <div class="row">
           <?php if ($has_networks) : ?>
           <div class="col-md-5 col-md-push-4">
@@ -33,6 +35,7 @@
               <h1 class="margin-t-0 margin-b-05 text-dark"><?php print render($content['title_field'][0]); ?></h1>
               <?php print render($content['contacts']); ?>
               <?php print render($content['social']); ?>
+              
             </div>
           </div>
 

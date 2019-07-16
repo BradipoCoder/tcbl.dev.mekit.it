@@ -2,6 +2,7 @@
 
 require('include/data.php');
 require('include/query.php');
+require('include/dashboard.php');
 require('include/evaluation.php');
 
 function tcbl_comps_menu() {
@@ -48,6 +49,24 @@ function tcbl_comps_menu() {
     'access callback' => 'tcbl_lab_evalution_page_access',
     'page arguments' => array(
       1, 2, 3
+    ),
+  );
+
+  $items['lab/%/approve/%'] = array(
+    'title' => 'Lab evaluation',
+    'page callback' => 'tcbl_lab_evalution_approve_page',
+    'access callback' => 'tcbl_lab_evalution_page_access',
+    'page arguments' => array(
+      1, 3
+    ),
+  );
+
+  $items['lab/%/approve/%/confirm'] = array(
+    'title' => 'Lab evaluation',
+    'page callback' => 'tcbl_lab_evalution_approve_confirm_page',
+    'access callback' => 'tcbl_lab_evalution_page_access',
+    'page arguments' => array(
+      1, 3
     ),
   );
 
@@ -138,6 +157,22 @@ function tcbl_comps_theme(){
         'content' => NULL,
       ),
       'pattern' => 'tcbl-lab-evaluation-end__',  
+    ),
+    'tcbl_lab_approve' => array(
+      'template' => 'tcbl-lab-approve',
+      'variables' => array(
+        'content' => NULL,
+        'status' => NULL,
+      ),
+      'pattern' => 'tcbl-lab-approve__',  
+    ),
+    'tcbl_lab_status' => array(
+      'template' => 'tcbl-lab-status',
+      'variables' => array(
+        'content' => NULL,
+        'status' => NULL,
+      ),
+      'pattern' => 'tcbl-lab-status__',    
     ),
   );
 }
@@ -629,88 +664,9 @@ function tcbl_comps_create_user_by_mail($mail){
   return false;
 }
 
-
-// ** ----- DASHBOARD -----
-// ------------------------
-
-function tcbl_comps_dashboard(){
-
-  $content['title']['#markup'] = '<h2>My dashboard</h2>';
-
-  global $user;
-  $uid = $user->uid;
-
-  $comp_nids = _tcbl_comps_user_get_nodes($uid, 'company');
-  if ($comp_nids) {
-    $comps = node_load_multiple($comp_nids);
-    $content['comps'] = node_view_multiple($comps, 'teaser');
-  }
-
-  $project_nids = _tcbl_comps_user_get_nodes($uid, 'project');
-  if ($project_nids) {
-    $projects = node_load_multiple($project_nids);
-    $content['projects'] = node_view_multiple($projects, 'child');
-  }
-
-  $build = array(
-    '#theme' => 'tcbl_comps_dashboard',
-    '#content' => $content,
-  );
-
-  return $build;
-}
-
-function _tcbl_comps_dashboard_access(){
-  global $user;
-  $roles = $user->roles;
-
-  if (isset($roles[8])){
-    $own_nodes = _tcbl_comps_user_own_nodes($user->uid);
-    return $own_nodes;
-  }
-
-  return false;
-}
-
-function _tcbl_comps_user_own_nodes($uid){
-  $query = new EntityFieldQuery();
-  $query
-    ->entityCondition('entity_type', 'node')
-    ->entityCondition('bundle', array('company', 'project'))
-    ->propertyCondition('uid', $uid);
-
-  $query->execute();
-  if (isset($query->ordered_results)){
-    $results = $query->ordered_results;
-    return true;
-  } else {
-    return false;
-  }
-}
-
-function _tcbl_comps_user_get_nodes($uid, $type){
-  $query = new EntityFieldQuery();
-  $query
-    ->entityCondition('entity_type', 'node')
-    ->entityCondition('bundle', array($type))
-    ->propertyCondition('uid', $uid);
-
-  $query->execute();
-  if (isset($query->ordered_results)){
-    $results = $query->ordered_results;
-    $nids = [];
-    foreach ( $results as $node ) {
-      array_push($nids, $node->entity_id );
-    }
-   
-    if (count($nids)){
-      return $nids;
-    }
-  } else {
-    return false;
-  }
-}
-
+/**
+ * Super fix for memory problem in ajax call (backend)
+ */
 function tcbl_comps_custom_theme() {
   global $user;
   if ($user->uid == 1){
@@ -719,4 +675,3 @@ function tcbl_comps_custom_theme() {
     }  
   }
 }
-

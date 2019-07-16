@@ -118,12 +118,18 @@ function tcbl_lab_evalution_page_end($labNid, $lab1Nid, $lab2Nid){
 }
 
 function tcbl_comps_form_webform_client_form_787_alter(&$form, &$form_state, $form_id){
-  $lab = arg(1);
+  $labNid = arg(1);
+  $lab = node_load($labNid);
   
   $lab1Nid = arg(2);
   $lab1 = node_load($lab1Nid);
   $lab2Nid = arg(3);
   $lab2 = node_load($lab2Nid);
+
+  // Fill lab values
+  $form['submitted']['lab_eval_nid']['#default_value'] = $lab->nid;
+  $form['submitted']['lab_eval_name']['#default_value'] = $lab->title;
+  $form['submitted']['lab_eval_mail']['#default_value'] = tcbl_lab_get_lab_manager_mail($lab);
 
   // Fill lab 1 value
   $form['submitted']['lab_1_nid']['#default_value'] = $lab1->nid;
@@ -146,6 +152,55 @@ function tcbl_lab_get_lab_manager_mail($lab){
   return false;
 }
 
+// ** THIRD STEP **
+// ----------------
+// path /lab/%nid/approve/%uid
+
+function tcbl_lab_evalution_approve_page($nid, $uid){
+  $lab = node_load($nid);
+  $content['name']['#markup'] = $lab->title;
+  $opt = array(
+    'attributes' => array(
+      'class' => array(
+        'btn', 'btn-primary',
+      ),
+    ),
+  );
+  $opt2 = array(
+    'attributes' => array(
+      'class' => array(
+        'btn', 'btn-default',
+      ),
+    ),
+  );
+  $content['btns'][0]['#markup'] = l('Validate', 'lab/' . $nid . '/approve/' . $uid . '/confirm', $opt);
+  $content['btns'][1]['#markup'] = ' ' . l('Cancel', 'node/' . $nid, $opt2);
+
+  $data = array(
+    '#theme' => 'tcbl_lab_approve',
+    '#content' => $content,
+    '#status' => 'check',
+  );
+  return $data;
+}
+
+function tcbl_lab_evalution_approve_confirm_page($nid, $uid){
+  $lab = node_load($nid);
+  $content['name']['#markup'] = $lab->title;
+
+  $result = _tcbl_lab_approve_lab_by_uid($nid, $uid);
+  if ($result){
+    drupal_set_message('Thanks, the Lab ' . $lab->title . ' has received your approval.');
+    drupal_goto('node/' . $nid);
+  }
+
+  $data['#markup'] = '<code>nothing to do</code>';
+  return $data;
+}
+
+// ** ACCESS UTILITY **
+// --------------------
+
 /**
  * TCBL Evaualuation page access
  * @return [type] [description]
@@ -159,9 +214,18 @@ function tcbl_lab_evalution_page_access(){
 
   // Company manager
   if (isset($roles[8])){
+
+    // His Lab
     if ($lab->uid == $user->uid){
       return true;
     }  
+
+    // Can approve  Lab
+    $result = _is_this_lab_waiting_for_approval_by_user($lab, $user->uid);
+    if ($result){
+      return true;
+    }
+
   }
 
   // Administrators or editor

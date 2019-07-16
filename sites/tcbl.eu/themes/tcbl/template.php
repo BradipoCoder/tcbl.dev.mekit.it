@@ -190,7 +190,8 @@ function _tcbl_alter_comps_form(&$form, $form_state){
     field_group_hide_field_groups($form, array('group_startup'));  
   }
 
-
+  // No one can change this field
+  $form['field_ref_eval_labs']['#disabled'] = true;
 
   global $user;
   if ($user->uid == 1){

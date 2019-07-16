@@ -78,48 +78,79 @@ function _tcbl_comps_query_nids($filters){
   return $nids;
 }
 
-/*
-function _tcbl_comps_query_nids_old($filters, $pager){
-  
+/**
+ * Check if the user own some nodes (company | project)
+ * @param  $uid of the user
+ * @return boolean
+ */
+function _tcbl_comps_user_own_nodes($uid){
+  $query = new EntityFieldQuery();
+  $query
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', array('company', 'project'))
+    ->propertyCondition('uid', $uid);
+
+  $query->execute();
+  if (isset($query->ordered_results)){
+    $results = $query->ordered_results;
+    return true;
+  } else {
+    return false;
+  }
+}
+
+/**
+ * Get nodes owned by the user
+ * @param  string $uid  of the user
+ * @param  string $type of the node
+ * @return array of nids or fale
+ */
+function _tcbl_comps_user_get_nodes($uid, $type){
+  $query = new EntityFieldQuery();
+  $query
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', array($type))
+    ->propertyCondition('uid', $uid);
+
+  $query->execute();
+  if (isset($query->ordered_results)){
+    $results = $query->ordered_results;
+    $nids = [];
+    foreach ( $results as $node ) {
+      array_push($nids, $node->entity_id );
+    }
+   
+    if (count($nids)){
+      return $nids;
+    }
+  }
+  return false;
+}
+
+/**
+ * Return pending labs
+ * @param  array $ownNids List of nids owned by a user
+ * @return array of nids or false
+ */
+function _tcbl_comps_get_pending_labs($ownNids){
   $query = new EntityFieldQuery();
   $query
     ->entityCondition('entity_type', 'node')
     ->entityCondition('bundle', array('company'))
-    ->propertyCondition('status', NODE_PUBLISHED)
-    ->propertyOrderBy('changed', 'DESC');
+    ->fieldCondition('field_ref_eval_labs', 'target_id', $ownNids, 'IN')
+    ->fieldCondition('field_ref_status', 'tid', '235');
 
-  if (isset($filters['country'])){
-    $subquery = db_select('location');
-    $subquery->addField('location', 'lid');
-    $subquery->condition('location.country', $filters['country']);
-    $query->fieldCondition('field_location', 'lid', $subquery, 'IN');
-  }
-
-  if (isset($filters['kas'])){
-    $query->fieldCondition('field_ref_kas', 'tid', $filters['kas']);  
-  }
-
-  if (isset($filters['key'])){
-    $query->propertyCondition('title', $filters['key'], 'CONTAINS');
-  }
-
-  // if (isset($filters['country'])){
-  //   $query->fieldCondition('field_location', 'postal_code', 'ES');
-  // }
-
-  if ($pager){
-    //$query->addTag('random');
-    $query->pager(12);
-  }
-
-  $nids = array();
   $query->execute();
-  $results = $query->ordered_results;
-  foreach ( $results as $node ) {
-    array_push ($nids, $node->entity_id );
-  }
 
-  return $nids;
+  if (isset($query->ordered_results)){
+    $results = $query->ordered_results;
+    $nids = [];
+    foreach ( $results as $node ) {
+      array_push($nids, $node->entity_id );
+    }
+    return $nids;
+  }
+  return false; 
 }
-*/
+
 
