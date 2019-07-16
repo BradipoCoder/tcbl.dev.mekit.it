@@ -354,6 +354,8 @@ function _tcbl_comps_get_labs_approval_status_report($lab){
         $result[$nid]['approved'] = true;
       }
     }
+  } else {
+    return false;
   }
 
   $result['tcbl']['approved'] = false;

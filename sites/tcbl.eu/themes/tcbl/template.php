@@ -191,7 +191,7 @@ function _tcbl_alter_comps_form(&$form, $form_state){
   }
 
   // No one can change this field
-  $form['field_ref_eval_labs']['#disabled'] = true;
+  // $form['field_ref_eval_labs']['#disabled'] = true;
 
   global $user;
   if ($user->uid == 1){

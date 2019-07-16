@@ -130,6 +130,7 @@ function tcbl_comps_form_webform_client_form_787_alter(&$form, &$form_state, $fo
   $form['submitted']['lab_eval_nid']['#default_value'] = $lab->nid;
   $form['submitted']['lab_eval_name']['#default_value'] = $lab->title;
   $form['submitted']['lab_eval_mail']['#default_value'] = tcbl_lab_get_lab_manager_mail($lab);
+  $form['submitted']['lab_eval_url']['#default_value'] = url('node/' . $lab->nid, array('absolute' => true));
 
   // Fill lab 1 value
   $form['submitted']['lab_1_nid']['#default_value'] = $lab1->nid;
@@ -140,7 +141,6 @@ function tcbl_comps_form_webform_client_form_787_alter(&$form, &$form_state, $fo
   $form['submitted']['lab_2_nid']['#default_value'] = $lab2->nid;
   $form['submitted']['lab_2_name']['#default_value'] = $lab2->title;
   $form['submitted']['lab_2_mail']['#default_value'] = tcbl_lab_get_lab_manager_mail($lab2);
-
 }
 
 function tcbl_lab_get_lab_manager_mail($lab){
@@ -190,7 +190,7 @@ function tcbl_lab_evalution_approve_confirm_page($nid, $uid){
 
   $result = _tcbl_lab_approve_lab_by_uid($nid, $uid);
   if ($result){
-    drupal_set_message('Thanks, the Lab ' . $lab->title . ' has received your approval.');
+    // drupal_set_message('Thanks, the Lab ' . $lab->title . ' has received your approval.');
     drupal_goto('node/' . $nid);
   }
 

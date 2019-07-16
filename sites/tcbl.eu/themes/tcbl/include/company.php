@@ -119,7 +119,7 @@ function _tcbl_labs_approval(&$vars){
           ),
         );
         $string = 'This Lab is waiting for you approval. ' . l('Approve now', 'lab/' . $node->nid . '/approve/' . $user->uid, $opt);
-        $vars['content']['msg'] = _tcbl_labs_message($string, 'warning');     
+        //$vars['content']['msg'] = _tcbl_labs_message($string, 'warning');     
       }
     }
 
