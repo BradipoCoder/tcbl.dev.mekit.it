@@ -265,22 +265,22 @@ function _tcbl_lab_approve_lab_by_uid($nid, $uid){
   // Jesse
   if ($uid == '66'){
     $lab->field_eval_tcbl['und'][0]['value'] = true;
-    // node_save($lab); 
-    // drupal_set_message('Node update');
+    node_save($lab);
     $jobDone = true;
   }
 
   // Check if we need to publish the lab
-  $result = _tcbl_comps_approve_lab($lab);
-  if ($result){
-    $jobDone = true;
-  }
+  // this is done by rules
+  // $result = _tcbl_comps_approve_lab($lab);
+  // if ($result){
+  //   $jobDone = true;
+  // }
   
   return $jobDone;
 }
 
 /**
- * Programmatically pubblish the lab
+ * Programmatically pubblish the lab (deprecated, we are using rules)
  * @param  [type] $lab [description]
  * @return true or false
  */

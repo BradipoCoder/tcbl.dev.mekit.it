@@ -106,20 +106,20 @@ function _tcbl_labs_approval(&$vars){
         $string .= 'Your application will be reviewed by the labs you chose, as well as by the relevant Foundation committee. ';
         $string .= 'They will look at it as soon as possible, and you will receive an email when it is approved (or with any further questions for you).';
         $vars['content']['msg'][0] = _tcbl_labs_message($string, 'warning');  
-      }
-
-      // Message for validators and jesse
-      $approvalByMe = _is_this_lab_waiting_for_approval_by_user($node, $user->uid);
-      if ($approvalByMe){
-        $opt = array(
-          'attributes' => array(
-            'class' => array(
-              'btn', 'btn-success',
+      } else {
+        // Message for validators and jesse
+        $approvalByMe = _is_this_lab_waiting_for_approval_by_user($node, $user->uid);
+        if ($approvalByMe){
+          $opt = array(
+            'attributes' => array(
+              'class' => array(
+                'btn', 'btn-success',
+              ),
             ),
-          ),
-        );
-        $string = 'This Lab is waiting for you approval. ' . l('Approve now', 'lab/' . $node->nid . '/approve/' . $user->uid, $opt);
-        //$vars['content']['msg'] = _tcbl_labs_message($string, 'warning');     
+          );
+          $string = 'This Lab is waiting for you approval. ' . l('Approve now', 'lab/' . $node->nid . '/approve/' . $user->uid, $opt);
+          $vars['content']['msg'] = _tcbl_labs_message($string, 'warning');     
+        }
       }
     }
 

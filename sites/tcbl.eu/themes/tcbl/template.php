@@ -348,7 +348,6 @@ function tcbl_form_webform_client_form_20_alter(&$form, &$form_state, $form_id){
 
 function tcbl_preprocess_sadmin(&$vars){
   $is_editor = _tcbl_is_editor();
-  //dpm($vars['buttons']);
 
   if (!$is_editor){
     if (isset($vars['buttons'])){
