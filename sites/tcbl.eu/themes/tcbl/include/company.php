@@ -92,8 +92,9 @@ function _tcbl_labs_approval(&$vars){
     
     // Draft
     if (isset($status['234'])){
+      // This Lab is not yet public. To be published it must be approved by two TCBL labs. Start the evaluation process. *
       $string = 'This Lab is not yet public. To be published it must be approved by two TCBL labs. ';
-      $string .= l('Start now the evaluation process', 'labs-eval/' . $node->nid ) . '.';
+      $string .= l('Start the evaluation process', 'labs-eval/' . $node->nid ) . '.';
       $vars['content']['msg'] = _tcbl_labs_message($string, 'warning');
     }
 
@@ -106,20 +107,20 @@ function _tcbl_labs_approval(&$vars){
         $string .= 'Your application will be reviewed by the labs you chose, as well as by the relevant Foundation committee. ';
         $string .= 'They will look at it as soon as possible, and you will receive an email when it is approved (or with any further questions for you).';
         $vars['content']['msg'][0] = _tcbl_labs_message($string, 'warning');  
-      } else {
-        // Message for validators and jesse
-        $approvalByMe = _is_this_lab_waiting_for_approval_by_user($node, $user->uid);
-        if ($approvalByMe){
-          $opt = array(
-            'attributes' => array(
-              'class' => array(
-                'btn', 'btn-success',
-              ),
+      }
+
+      // Message for validators and jesse
+      $approvalByMe = _is_this_lab_waiting_for_approval_by_user($node, $user->uid);
+      if ($approvalByMe){
+        $opt = array(
+          'attributes' => array(
+            'class' => array(
+              'btn', 'btn-success',
             ),
-          );
-          $string = 'This Lab is waiting for you approval. ' . l('Approve now', 'lab/' . $node->nid . '/approve/' . $user->uid, $opt);
-          $vars['content']['msg'] = _tcbl_labs_message($string, 'warning');     
-        }
+          ),
+        );
+        $string = 'This Lab is waiting for you approval. ' . l('Approve now', 'lab/' . $node->nid . '/approve/' . $user->uid, $opt);
+        $vars['content']['msg'][1] = _tcbl_labs_message($string, 'warning');     
       }
     }
 

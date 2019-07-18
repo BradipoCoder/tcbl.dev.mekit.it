@@ -23,7 +23,7 @@
 
 <div class="margin-b-1">
   <?php print drupal_render($form['submitted']); ?>
-  <div class="margin-t-05">
+  <div class="margin-t-1">
     <?php print drupal_render_children($form); ?>
   </div>
 </div>

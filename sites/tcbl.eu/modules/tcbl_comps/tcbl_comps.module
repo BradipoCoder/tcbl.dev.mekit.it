@@ -510,9 +510,10 @@ function tcbl_comps_dev(){
     return array('#markup' => '<code>no access</code>');
   }
 
-  _tcbl_comps_dev_update_labs_fields();
+  $build['table'] = _tcbl_comps_dev_list_labs_user();
 
-  $build['#markup'] = '<span>dev</span>';
+  // _tcbl_comps_dev_update_labs_fields();
+  //$build['#markup'] = '<span>dev</span>';
 
   return $build;
 }
@@ -535,7 +536,7 @@ function _tcbl_comps_dev_update_labs_fields(){
 
 function _tcbl_comps_dev_list_labs_user(){
   // Only associates
-  $compNids = _tcbl_comps_load_all_comps(60);
+  $compNids = _tcbl_comps_load_all_comps(28); // 28 Lab
   $comps = node_load_multiple($compNids);
 
   $build['table'] = array(
