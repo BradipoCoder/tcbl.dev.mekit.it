@@ -14,6 +14,7 @@
       var tabs = $('.group-10 .horizontal-tab-button a, .vertical-tab-button a');
       tabs.click(function(){
         var panel = $('.htab-grid-3, .htab-grid-4').not('.horizontal-tab-hidden');
+        console.debug(panel);
         $('fieldset', panel).sameh();
       });
     },

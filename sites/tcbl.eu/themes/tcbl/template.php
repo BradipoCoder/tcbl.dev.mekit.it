@@ -158,6 +158,9 @@ function _tcbl_alter_comps_form(&$form, $form_state){
     drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 1));
   }
 
+  //$keys = array_keys($form['#groups']);
+  //dpm($keys);
+
   // Key activities logic
   if (isset($node->nid) && ($is_lab)){
     $activeTids = array();
@@ -177,6 +180,7 @@ function _tcbl_alter_comps_form(&$form, $form_state){
         $activeTids[] = $item['tid'];
       }
     }
+
     foreach ($map as $tid => $field) {
       if (!in_array($tid, $activeTids)){
         field_group_hide_field_groups($form, array($field));  

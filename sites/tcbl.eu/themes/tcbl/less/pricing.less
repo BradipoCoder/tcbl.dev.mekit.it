@@ -10,6 +10,7 @@
 
 .pricing-card{
   .margin-b(1);
+
   @media (min-width: @screen-md-min){
     float: left;
     width: 25%;
@@ -19,64 +20,14 @@
   .small{
     font-size: @font-size-small - 1px;  
   }
-}
 
-.pricing-card--1{
-  h2{
-    color: #5DD0B1;
-  }
-
-  .btn-primary{
-    background: #5DD0B1 !important;
-    border: 1px solid #5DD0B1 !important;
-  }
-
-  .card__content{
-    border-top: 10px solid #5DD0B1;
-    .border-top-radius(5px);
+  .card{
+    border: none;
+    background: @primary-lightest;
+    .border-top-radius(15px);
+    .border-bottom-radius(15px);
   }
 }
-
-.pricing-card--2{
-  .card__content{
-    border-top: 10px solid @brand-primary;
-    .border-top-radius(5px);
-  }  
-}
-
-.pricing-card--3{
-  h2{
-    color: #ff6384;
-  }
-
-  .btn-primary{
-    background: #ff6384 !important;
-    border: 1px solid #ff6384 !important;
-  }
-
-  .card__content{
-    border-top: 10px solid #ff6384;
-    .border-top-radius(5px);
-  }
-}
-
-.pricing-card--4{
-  h2{
-    color: #b54bc0;
-  }
-
-  .btn-primary{
-    background: #b54bc0 !important;
-    border: 1px solid #b54bc0 !important;
-  }
-
-  .card__content{
-    border-top: 10px solid #b54bc0;
-    .border-top-radius(5px);
-  }
-}
-
-
 
 .pricing-label{
   display: block;
@@ -84,30 +35,78 @@
   color: @gray;
 }
 
+.negative .pricing-label{
+  color: #fff;
+}
+
 .pricing-card--head{
+  text-align: center;
   @media (min-width: @screen-md-min){
     min-height: 95px;
+
+    .small{
+      max-width: 170px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}
+
+.pricing-card--price{
+  background: @brand-primary;
+  text-align: center; 
+  .margin-l(-1);
+  .margin-r(-1);
+  .padding-v(0.5);
+
+  .h1{
+    margin: 0;
+  }
+
+  .h3{
+    display: block;
+    margin: 0;
+  }
+}
+
+.pricing-card--bonus{
+  background: lighten(@brand-primary, 15%);
+  .margin-l(-1);
+  .margin-r(-1);
+  .padding-v(0.5);
+  .padding-h(1);
+
+  .h4{
+    display: block;
+    margin: 0;
+    font-style: italic;
   }
 }
 
 .pricing-card--item{
+  position: relative;
+  .padding-r(1);
+  .padding-v(0.25);
+  border-bottom: 1px solid #fff;
 
-  .margin-b(0.5);
-  text-align: center;
-  @media (min-width: @screen-md-min){
-    min-height: 50px;  
-
-    &.mid{
-      min-height: 70px;
-    }
-
-    &.big{
-      min-height: 95px;
-    }
+  i{
+    position: absolute;
+    top: 50%;
+    right: 0;
+    margin-top: -9px;
+    color: @brand-primary;
   }
+}
 
+.pricing-card--cta{
+  .padding-t(0.5);
+  text-align: center;
   .btn{
     display: block;
-    .margin-b(0.25);
+  }
+  
+  .pricing-label{
+    .margin-t(0.25);
+    font-style: italic;
   }
 }
