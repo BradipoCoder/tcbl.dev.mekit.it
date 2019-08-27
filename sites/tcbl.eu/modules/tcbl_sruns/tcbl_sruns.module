@@ -1,0 +1,74 @@
+<?php
+
+require('include/data.php');
+require('include/query.php');
+
+function tcbl_sruns_menu() {
+  $items['shortruns/process'] = array(
+    'title' => 'Short Runs',
+    'page callback' => 'tcbl_sruns_filter_page',
+    'access callback' => true,
+  );
+
+  return $items;
+}
+
+function tcbl_sruns_filter_page(){
+
+  $data['progress'] = _tcbl_sruns_get_progress_data();
+
+  $data = array(
+    '#theme' => 'tcbl_sruns_filter',
+    '#content' => array(),
+    '#data' => $data,
+  );
+  return $data;
+}
+
+/**
+ * Implementes hook_theme();
+ */
+function tcbl_sruns_theme(){
+  return array(
+    'tcbl_sruns_filter' => array(
+      // use a template and give the template's name.
+      'template' => 'tcbl-sruns-filter',
+      'variables' => array(
+        'content' => NULL,
+        'data' => NULL,
+      ),
+      'pattern' => 'tcbl-sruns-filter__',
+    ),
+  );
+}
+
+/**
+ * Add usefull javascript libraries
+ * @param  [type] &$vars [description]
+ * @return [type]        [description]
+ */
+function template_preprocess_tcbl_sruns_filter(&$vars){
+  $js = libraries_get_path('cookie') . '/js.cookie.min.js';
+  drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 1));
+
+  $js = drupal_get_path('module', 'tcbl_sruns') . '/js/tcbl-sruns.js';
+  drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 1));
+
+  //if (user_access('access contextual links')){
+  //  drupal_add_library('contextual', 'contextual-links');  
+  //}
+
+  //drupal_add_js(array(
+  //  'tcbl_sruns' => $vars['data'],
+  //), array('type' => 'setting'));
+}
+
+// ** ----- PREPROCES NODES----- **
+// --------------------------------
+
+/**
+ * Implements hook_preprocess_node();
+ */
+function tcbl_sruns_preprocess_node(&$vars){
+  $node = $vars['node'];
+}

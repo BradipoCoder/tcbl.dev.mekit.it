@@ -1,0 +1,126 @@
+/* less/sruns.less */
+
+.sruns{
+  min-height: 600px;
+  background: @gray-lighter;
+  position: relative;
+}
+
+.sruns-filter{
+  background: #fff;
+  @media (min-width: @screen-sm-min){
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 380px;
+    height: 100%;
+  }
+}
+
+.sruns-content{
+  @media (min-width: @screen-sm-min){
+    margin-left: 380px;
+    .padding-h(2);
+    .padding-v(1);
+  }  
+}
+
+// ** Topics **
+// ------------
+
+.ul-topics{
+  list-style: none;
+  padding: 0;
+
+  li{
+    position: relative;
+    .caps;
+    .padding-h(1);
+    .padding-v(0.75);
+    cursor: pointer;
+
+    i{
+      position: absolute;
+      top: 21px;
+      right: 25px;
+      color: @gray-lighter;
+      font-size: 20px;
+    }
+
+    .i-skip{
+      display: none;
+    }
+
+    &.open:before{
+      content: ' ';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 10px;
+      height: 100%;
+      background: @blue;
+    }
+
+    &.done{
+      color: @gray-light;
+      .i-check{
+        color: @brand-success;
+      }
+      .i-skip{
+        color: @gray-light;
+      }
+    }
+
+    &.skip{
+      .i-skip{
+        display: block;
+      }
+      .i-check{
+        display: none;
+      }
+    }
+
+  }
+}
+
+// ** Questions **
+// ---------------
+
+.node-question.node-unpublished{
+  background: none;
+}
+
+// ** Custon BTNS **
+// -----------------
+
+.wrapper-bts{
+  .padding-v(1);
+}
+
+.bts{
+  .padding-h(1);
+  .padding-v(0.25);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: @font-size-h5;
+  font-weight: @font-weight-bold;
+  border: 1px solid @pink;
+  margin-right: 10px;
+  cursor: pointer;
+
+  &--flat{
+    background: @pink;
+    .color-and-hover(#fff);
+  }
+
+  &--out{
+    border: 1px solid @pink;
+    .color-and-hover(@pink);
+  }
+
+  &--default{
+    border: 1px solid @gray-light;
+    .color-and-hover(@gray-light);  
+  }
+}

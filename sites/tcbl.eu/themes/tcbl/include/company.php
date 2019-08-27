@@ -780,15 +780,16 @@ function _tcbl_company_create_ka_content($vars, $tid){
 
       // Display custom field
       if ($name == 'field_l_c_regional_stakeholders'){
-        $field_istance = field_info_instance('node', 'field_l_c_regional_stakeholders', 'company');
-        $label = $field_istance['label'];
+        if (isset($node->field_l_c_regional_stakeholders['und'][0])){
+          $field_istance = field_info_instance('node', 'field_l_c_regional_stakeholders', 'company');
+          $label = $field_istance['label'];
 
-        $n++;
-        $itembuild['field_l_c_regional_stakeholders'] = field_view_field('node', $node, 'field_l_c_regional_stakeholders', array(
-          'label' => 'hidden',
-          'weight' => $n,
-        ));
-
+          $n++;
+          $itembuild['field_l_c_regional_stakeholders'] = field_view_field('node', $node, 'field_l_c_regional_stakeholders', array(
+            'label' => 'hidden',
+            'weight' => $n,
+          ));  
+        }
       }
 
       // Se c'è del contenuto, aggiungo un wrapper
