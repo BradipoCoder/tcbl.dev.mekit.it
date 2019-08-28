@@ -4,6 +4,27 @@
  * Query
  */
 
+function _tcbl_sruns_get_nodes_by_tid($tid){
+  $query = new EntityFieldQuery();
+  $query
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', array('resource'))
+    ->fieldCondition('field_ref_topics', 'tid', $tid);
+
+  $result = $query->execute();
+  if (isset($query->ordered_results)){
+    $results = $query->ordered_results;
+    $nids = [];
+    foreach ( $results as $node ) {
+      array_push($nids, $node->entity_id );
+    }
+    if (count($nids)){
+      return $nids;
+    }
+  }
+  return false;
+}
+
 /**
 function _tcbl_sruns_query_nids($filters){
   $query = db_select('node', 'n');

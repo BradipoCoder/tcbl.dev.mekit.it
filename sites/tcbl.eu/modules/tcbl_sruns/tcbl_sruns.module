@@ -71,4 +71,45 @@ function template_preprocess_tcbl_sruns_filter(&$vars){
  */
 function tcbl_sruns_preprocess_node(&$vars){
   $node = $vars['node'];
+  switch ($node->type) {
+    case 'resource':
+      _tcbl_sruns_preprocess_resource($vars);
+      break;
+    
+    default:
+      # code...
+      break;
+  }
+}
+
+function _tcbl_sruns_preprocess_resource(&$vars){
+  $node = $vars['node'];
+  if (isset($node->field_ref_res_type['und'][0]['tid'])){
+    $tid = $node->field_ref_res_type['und'][0]['tid'];
+
+    //$vars['content']['type_tid']['#markup'] = $tid;
+    $vars['content']['type_label']['#markup'] = 'Ask for help';
+
+    switch ($tid) {
+      case 245:
+        $vars['content']['type_label']['#markup'] = 'Download resources';
+        break;
+
+      case 243:
+        $vars['content']['type_label']['#markup'] = 'Read the article';
+        break;
+      
+      case 246:
+        $vars['content']['type_label']['#markup'] = 'Get IT solutions';
+        break;
+
+      case 247:
+        $vars['content']['type_label']['#markup'] = 'Watch the video';
+        break;
+
+      default:
+        # code...
+        break;
+    }
+  }
 }

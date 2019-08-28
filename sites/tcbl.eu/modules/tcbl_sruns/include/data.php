@@ -57,13 +57,22 @@ function _tcbl_sruns_get_progress_data(){
     }
     
     // Resources
+    $nodes = _tcbl_sruns_get_results_by_tid($tid);
     $build['results'][$tid] = array(
       'tid' => $tid,
-      'content' => array(
-        '#markup' => '<code>risultati del topic ' . $tid . '</code>',
-      ),
+      'content' => $nodes,
     );
 
   }
   return $build;
+}
+
+function _tcbl_sruns_get_results_by_tid($tid){
+  $nids = _tcbl_sruns_get_nodes_by_tid($tid);
+  if ($nids){
+    $nodes = node_load_multiple($nids);
+    $build = node_view_multiple($nodes, 'teaser');
+    return $build;  
+  }
+  return false;
 }

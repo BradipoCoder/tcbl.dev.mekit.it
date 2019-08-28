@@ -25,6 +25,7 @@ span.card{
 }
 
 .card{
+  position: relative;
   background: #fff;
   border: 1px solid @gray-lightest;
   .border-top-radius(5px);
@@ -78,5 +79,16 @@ span.card{
       position: relative;
       top: -8px;
     }
+  }
+
+  &__label{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: @pink;
+    color: #fff;
+    .padding-h(1);
+    .padding-v(0.25);
+    .caps;
   }
 }

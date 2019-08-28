@@ -30,7 +30,7 @@
         <hr>
         <?php foreach ($data['progress']['results'] as $tid => $result) : ?>
           <div id="result-<?php print $tid; ?>" class="results hide" data-tid="<?php print $tid; ?>">
-            <h3 class="margin-v-2 text-dark">Here are resources that may help you</h3>
+            <h3 class="margin-b-1 text-dark">Here are resources that may help you</h3>
             <div class="row wrapper-sameh">
               <?php print render($result['content']); ?>
             </div>

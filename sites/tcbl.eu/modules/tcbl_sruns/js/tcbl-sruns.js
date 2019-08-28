@@ -64,6 +64,7 @@
         li.removeClass('done').removeClass('skip');
         var result = $('#result-' + tid);
         result.removeClass('hide');
+        $('.sameh', result).sameh();
       })
     },
 
