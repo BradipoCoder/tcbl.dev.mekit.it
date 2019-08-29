@@ -51,6 +51,9 @@ function template_preprocess_tcbl_sruns_filter(&$vars){
   $js = libraries_get_path('cookie') . '/js.cookie.min.js';
   drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 1));
 
+  $js = libraries_get_path('underscore') . '/underscore-min.js';
+  drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 1));
+
   $js = drupal_get_path('module', 'tcbl_sruns') . '/js/tcbl-sruns.js';
   drupal_add_js( $js , array('group' => JS_LIBRARY, 'weight' => 1));
 

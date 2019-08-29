@@ -47,6 +47,8 @@
       font-size: 20px;
     }
 
+    .i-no,
+    .i-yes,
     .i-skip{
       display: none;
     }
@@ -63,24 +65,62 @@
     }
 
     &.done{
-      color: @gray-light;
-      .i-check{
-        color: @brand-success;
-      }
-      .i-skip{
-        color: @gray-light;
-      }
+      color: @gray-light;  
     }
 
-    &.skip{
+    .i-yes{
+      color: @brand-success;
+    }
+    .i-skip{
+      color: @gray-light;
+    }
+    .i-no{
+      color: @brand-danger;
+    }
+
+    &.answ-skip{
       .i-skip{
         display: block;
       }
-      .i-check{
-        display: none;
+    }
+
+    &.answ-no{
+      .i-no{
+        display: block;
       }
     }
 
+    &.answ-yes{
+      .i-yes{
+        display: block;
+      }
+    }
+
+  }
+}
+
+// ** PROGRESS **
+// --------------
+
+.sruns-progress{
+  background: @gray-lighter;
+  height: 4px;
+}
+
+.s-progress{
+  background: @brand-success;
+  height: 4px;
+}
+
+// ** NEXT **
+// ----------
+
+.sruns-next{
+  .padding-h(1);
+  .padding-v(0.75);
+
+  .btn{
+    width: 100%;
   }
 }
 
@@ -122,5 +162,17 @@
   &--default{
     border: 1px solid @gray-light;
     .color-and-hover(@gray-light);  
+  }
+
+  .i-check{
+    display: none;
+    position: relative;
+    right: -5px;
+  }
+
+  &.checked{
+    .i-check{
+      display: inline;
+    }
   }
 }
