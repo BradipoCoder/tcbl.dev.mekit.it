@@ -18,7 +18,7 @@ class FacebookFeedPlugin extends FeedPlugin implements FeedPluginInterface {
   protected $facebook;
 
   /** @var string */
-  protected $pageId = 'projecttcbl';
+  protected $pageId = 'TCBLFoundation';
 
   /** @var int */
   protected $feed_limit = 5;
@@ -41,7 +41,7 @@ class FacebookFeedPlugin extends FeedPlugin implements FeedPluginInterface {
     try {
       $this->facebook = new Facebook($facebookConfig);
     } catch(FacebookSDKException $e) {
-      watchdog("TCBL Feed", "Facebook SDK error: " . $e->getMessage(), WATCHDOG_WARNING);
+      watchdog("TCBL Feed", "Facebook SDK error: " . $e->getMessage(), array(), WATCHDOG_WARNING);
     }
   }
 
@@ -61,7 +61,7 @@ class FacebookFeedPlugin extends FeedPlugin implements FeedPluginInterface {
       } catch(FacebookSDKException $e) {
         //no response
         watchdog(
-          "TCBL Feed", "Facebook feed error: " . $e->getMessage(), WATCHDOG_WARNING
+          "TCBL Feed", "Facebook feed error: " . $e->getMessage(), array(), WATCHDOG_WARNING
         );
       }
 

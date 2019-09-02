@@ -59,7 +59,7 @@ class TwitterFeedPlugin extends FeedPlugin implements FeedPluginInterface {
                                       ]);
       } catch(\Exception $e) {
         watchdog(
-          "TCBL Feed", "Twitter feed error: " . $e->getMessage(), WATCHDOG_WARNING);
+          "TCBL Feed", "Twitter feed error: " . $e->getMessage(), array(), WATCHDOG_WARNING);
       }
 
       if($tweets) {

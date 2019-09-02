@@ -21,7 +21,7 @@ class InstagramFeedPlugin extends FeedPlugin implements FeedPluginInterface {
   protected $instagram;
 
   /** @var string */
-  protected $pageId = 'tcblproject';
+  protected $pageId = 'tcblfoundation';
 
   /** @var int */
   protected $feed_limit = 5;
@@ -51,7 +51,7 @@ class InstagramFeedPlugin extends FeedPlugin implements FeedPluginInterface {
         $medias = $this->instagram->getMedias($this->pageId, $this->feed_limit);
       } catch (InstagramException $e) {
         watchdog(
-          "TCBL Feed", "Instagram feed error: " . $e->getMessage(), WATCHDOG_WARNING);
+          "TCBL Feed", "Instagram feed error: " . $e->getMessage(), array(), WATCHDOG_WARNING);
       }
 
       if($medias) {
@@ -60,9 +60,9 @@ class InstagramFeedPlugin extends FeedPlugin implements FeedPluginInterface {
         foreach($medias as $media) {
 
           $pictureUrl = $media->getImageLowResolutionUrl();
-          $squareThumbs = $media->getSquareThumbnailsUrl();
-          if(isset($squareThumbs[1])){
-            $pictureUrl = $squareThumbs[1];
+          $squareThumbs = $media->getImageHighResolutionUrl();
+          if($squareThumbs){
+            $pictureUrl = $squareThumbs;
           }
 
           $owner = $media->getOwner();

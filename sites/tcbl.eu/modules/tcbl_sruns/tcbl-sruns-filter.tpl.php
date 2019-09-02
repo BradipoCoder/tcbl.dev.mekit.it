@@ -1,7 +1,7 @@
 <div class="row row-runs">
   <div id="sruns" class="sruns">
     <div id="sruns-filter" class="sruns-filter">
-      <ul class="ul-topics">
+      <ul id="ul-topics" class="ul-topics">
         <?php foreach ($data['progress']['topics'] as $tid => $topic) : ?>
           <li id="li-topic-<?php print $tid; ?>" class="li-topic <?php $topic['on'] ? print 'open' : false ?>" data-tid="<?php print $tid; ?>">
             <?php print $topic['name']; ?>
@@ -15,8 +15,8 @@
         <div class="s-progress"></div>
       </div>
       <div id="sruns-next" class="sruns-next">
-        <p class="help small">Complete all the steps to go on</p>
-        <a href="#" class="btn btn-default disabled">Next</a>
+        <a href="#" class="btn btn-default disabled margin-b-05">Next</a>
+        <p class="help small">Complete all the answers to proceed</p>
       </div>
     </div>
     <div id="sruns-content" class="sruns-content">

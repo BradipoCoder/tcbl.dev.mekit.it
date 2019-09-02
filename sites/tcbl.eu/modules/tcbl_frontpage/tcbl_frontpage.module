@@ -12,6 +12,7 @@ function tcbl_frontpage_preprocess_page(&$vars) {
 
   // News
   $content['news']['#markup'] = views_embed_view('hp_news', 'default');
+  $content['news_more']['#markup'] = views_embed_view('hp_news_more', 'default');
 
   // Se ci sono eventi nel futuro (rispetto ad oggi)
   $view = views_get_view_result('hp_events', 'default');

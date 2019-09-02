@@ -18,6 +18,7 @@
 }
 
 .sruns-content{
+  .padding-h(0.5);
   @media (min-width: @screen-sm-min){
     margin-left: 380px;
     .padding-h(2);
@@ -29,22 +30,48 @@
 // ------------
 
 .ul-topics{
-  list-style: none;
+  list-style-type: none;
   padding: 0;
+  margin: 0;
+
+  @media (max-width: @screen-xs-max){
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-top: 5px;
+  }
 
   li{
     position: relative;
-    .caps;
-    .padding-h(1);
-    .padding-v(0.75);
     cursor: pointer;
+    .caps;
+
+    @media (max-width: @screen-xs-max){
+      flex: 0 0 auto;
+      .padding-h(0.5);
+      .padding-v(0.25);
+      &.done{
+        .padding-r(1);
+      }
+    }
+
+    @media (min-width: @screen-sm-min){
+      .padding-h(1);
+      .padding-v(0.75);  
+    }
 
     i{
-      position: absolute;
-      top: 21px;
-      right: 25px;
       color: @gray-lighter;
-      font-size: 20px;
+      position: absolute;
+      top: 11px;
+      right: 8px;
+      font-size: 14px;
+      @media (min-width: @screen-sm-min){
+        top: 21px;
+        right: 25px;
+        font-size: 20px;
+      }
     }
 
     .i-no,
@@ -53,15 +80,25 @@
       display: none;
     }
 
-    &.open:before{
-      content: ' ';
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 10px;
-      height: 100%;
-      background: @blue;
+    &.open{
+      @media (max-width: @screen-xs-max){
+        background: @gray-lighter;
+        color: @gray-darker;
+      }
+
+      &:before{
+        content: ' ';
+        background: @blue;
+        display: block;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        @media (max-width: @screen-xs-max){
+          display: none;
+        }
+      }
     }
 
     &.done{
@@ -103,6 +140,9 @@
 // --------------
 
 .sruns-progress{
+  @media (max-width: @screen-sm-max){
+    display: none;
+  }
   background: @gray-lighter;
   height: 4px;
 }
@@ -121,6 +161,10 @@
 
   .btn{
     width: 100%;
+  }
+
+  @media (max-width: @screen-xs-max){
+    display: none;
   }
 }
 
@@ -145,6 +189,12 @@
   letter-spacing: 1px;
   font-size: @font-size-h5;
   font-weight: @font-weight-bold;
+
+  @media (max-width: @screen-xs-max){
+    font-size: 12px;
+    .padding-h(0.5);
+  }
+
   border: 1px solid @pink;
   margin-right: 10px;
   cursor: pointer;
@@ -175,4 +225,15 @@
       display: inline;
     }
   }
+}
+
+// ** LABEL **
+// -----------
+
+.sruns-label{
+  background: @pink;
+  color: #fff;
+  .padding-h(1);
+  .padding-v(0.25);
+  .caps;
 }

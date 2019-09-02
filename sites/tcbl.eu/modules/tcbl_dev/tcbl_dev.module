@@ -24,6 +24,14 @@ function tcbl_dev_page($nid){
     '#markup' => '<h2>TCBL DEV</h2>',
   );
 
+  // $generate_feed_options = tcbl_feed_get_default_generation_options();
+  // tcbl_feed_generate_feeds($generate_feed_options);
+
+  return $page;
+
+}
+
+function _tcbl_dev_page_news(){
   $news = _tcbl_dev_get_news(array());
   
   // Bisogna salvarli tutti con tid 27

@@ -223,6 +223,10 @@ function _tcbl_preprocess_node_blog(&$vars){
     _tcbl_add_comments_cta($vars);
   }
 
+  if ($vars['view_mode'] == 'teaser'){
+    $vars['classes_array'][] = 'margin-b-1';  
+  }
+
   if ($vars['view_mode'] == 'child'){
     $vars['classes_array'][] = 'margin-b-1';
 

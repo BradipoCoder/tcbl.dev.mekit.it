@@ -5,6 +5,7 @@
 (function ($, Drupal) {
   Drupal.behaviors.tcblSruns = {
 
+    domUlTopics: false,
     domLiTopics: false,
     domQuestions: false,
     domResults: false,
@@ -45,6 +46,7 @@
     },
 
     setUpVars: function(){
+      this.domUlTopics = $('#ul-topics');
       this.domLiTopics = $('.li-topic');
       this.domQuestions = $('.question');
       this.domResults = $('.results');
@@ -66,6 +68,7 @@
         var tid = $(this).attr('data-tid');
         me.data.current = tid;
         me.renderTopic(tid);
+        me.renderResults(tid);
         me.saveData();
       });  
     },
@@ -89,9 +92,11 @@
 
         me.data.topics[tid] = value;
         me.renderAnswer(tid, value);
+        me.renderResults(tid);
         me.updateProgress();
         me.renderProgress();
         me.saveData();
+        me.checkNextTopic(tid);
       });
     },
 
@@ -111,26 +116,20 @@
       li.removeClass('answ-no').removeClass('answ-yes').removeClass('answ-skip');
       li.addClass('done').addClass('answ-' + value);
 
-      var result = me.getDomItemFromId('result', tid);
-
       // Yes
       if (value == 'yes'){
         li.removeClass('skip');
-        result.addClass('hide');
       }
 
       // No
       if (value == 'no'){
         li.removeClass('skip');
         me.domResults.addClass('hide');
-        result.removeClass('hide');
-        $('.sameh', result).sameh();
       }
 
       // Skip
       if (value == 'skip'){
         li.addClass('skip');
-        result.addClass('hide');
       }
     },
 
@@ -142,19 +141,34 @@
       // Topic active
       var li = this.getDomItemFromId('li-topic', tid);
       li.addClass('open');
+      this.scrollHorizForMobile(li);
 
       var question = this.getDomItemFromId('question', tid);
-      question.hide().removeClass('hide').fadeIn();  
+      question.hide().removeClass('hide').fadeIn(); 
     },
 
     renderProgress: function(){
-      console.debug('Render progress: ' + this.data.progress);
       $('.s-progress', this.domProgress).css('width', this.data.progress + '%');
 
       if (this.data.progress == 100){
         $('.btn', this.domNext).removeClass('disabled').removeClass('btn-default').addClass('btn-success');  
       } else {
         $('.btn', this.domNext).addClass('disabled').removeClass('btn-success').addClass('btn-default'); 
+      }
+    },
+
+    renderResults: function(tid){
+      var value = this.getTopicValue(tid);
+      if (value){
+        this.domResults.addClass('hide');
+        var result = this.getDomItemFromId('result', tid);
+
+        if (value == 'no'){
+          result.hide().removeClass('hide').fadeIn(); 
+          $('.sameh', result).sameh();
+        } else {
+          result.addClass('hide');  
+        }
       }
     },
 
@@ -186,6 +200,7 @@
 
       if (this.data.current){
         me.renderTopic(this.data.current);
+        me.renderResults(this.data.current);
       }
 
       me.renderProgress();
@@ -206,6 +221,44 @@
       scrollTo(element);
     },
 
+    checkNextTopic: function(tid){
+      var me = this;
+      var li = this.getDomItemFromId('li-topic', tid);
+      var value = this.getTopicValue(tid);
+      if (value !== 'no'){
+        var next = li.next();
+        if (next.length !== 0){
+          if (!next.hasClass('done')){
+            var tid = next.attr('data-tid');
+            me.renderTopic(tid);
+          }
+        }  
+      }
+    },
+
+    scrollHorizForMobile: function(li){
+      var me = this;
+      if ($(window).width() < 768){
+        setTimeout(function(){
+          // Posizione attuale dello scrollo
+          var ulPosition = me.domUlTopics.scrollLeft();
+          
+          // Correzion
+          var correction = -10;
+          if (li.is(':last-child') || li.is(':first-child')){
+            correction = 0;
+          }
+
+          // Scostamento dell'item rispetto al genitore
+          var offset = li.position().left + ulPosition + correction;
+
+          me.domUlTopics.animate({
+            scrollLeft: offset,
+          }, 1000, 'easeOutQuad');
+        }, 200); 
+      }
+    },
+
     // ** UTILITY **
     // -------------
     
@@ -218,6 +271,13 @@
       var id = domObject.attr(attributeName);
       var item = this.getDomItemFromId(prefix, id);
       return item;
+    },
+
+    getTopicValue: function(tid){
+      if (this.data.topics[tid] !== undefined){
+        return this.data.topics[tid];
+      }
+      return false;
     },
   };
 })(jQuery, Drupal);

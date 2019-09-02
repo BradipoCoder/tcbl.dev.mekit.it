@@ -90,7 +90,7 @@ function _tcbl_sruns_preprocess_resource(&$vars){
   if (isset($node->field_ref_res_type['und'][0]['tid'])){
     $tid = $node->field_ref_res_type['und'][0]['tid'];
 
-    //$vars['content']['type_tid']['#markup'] = $tid;
+    $vars['type_tid'] = $tid;
     $vars['content']['type_label']['#markup'] = 'Ask for help';
 
     switch ($tid) {

@@ -6,6 +6,7 @@
 /** @type array $tcbl_feeds */
 
 hide($content['forum']);
+hide($content['events']);
 
 ?>
 
@@ -49,17 +50,25 @@ hide($content['forum']);
 
   <div class="wrapper-front-cms">
     <div class="container">
+      <h2 class="h1 h1-front-cms">Latest news</h2>
       <div class="row margin-v-1">
         <div class="col-sm-6 margin-b-1">
-          <h2 class="h1 h1-front-cms">Latest news</h2>
           <div class="margin-md-r-1">
             <?php print render($content['news']); ?>
           </div>
         </div>
         <div class="col-sm-6">
           <div class="margin-md-l-1">
+            <?php print render($content['news_more']); ?>
+            <?php 
+            /*
             <h2 class="h1 h1-front-cms">Upcoming events</h2>
             <?php print render($content['events']); ?>
+            */
+            ?>
+            <div class="text-right margin-v-1">
+              <a href="<?php url('node/312'); ?>" class="btn btn-info">See all news</a>
+            </div>
           </div>
         </div>
       </div>

@@ -356,8 +356,6 @@ function _tcbl_alter_breadcrumbs(&$vars){
         }
       }
 
-
-
       // Country
       if (isset($node->field_location['und'][0]['country']) && $node->field_location['und'][0]['country'] !== ''){
         //dpm($node->field_location['und'][0]);
@@ -377,6 +375,14 @@ function _tcbl_alter_breadcrumbs(&$vars){
       //dpm($bcs);
 
       drupal_set_breadcrumb($bcs);    
+    }
+
+    if ($node->type == 'resource'){
+      $bcs = [];
+      $bcs[] = t('Home');
+      $bcs[] = l('Short Runs', 'shortruns');
+      $bcs[] = l('Form', 'shortruns/process');
+      drupal_set_breadcrumb($bcs);
     }
   }
 }
