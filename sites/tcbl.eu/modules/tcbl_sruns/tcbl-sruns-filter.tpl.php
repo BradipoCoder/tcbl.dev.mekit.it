@@ -1,4 +1,4 @@
-<div class="row row-runs">
+<div class="row row-sruns">
   <div id="sruns" class="sruns">
     <div id="sruns-filter" class="sruns-filter">
       <ul id="ul-topics" class="ul-topics">

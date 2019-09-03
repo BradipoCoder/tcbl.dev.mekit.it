@@ -15,15 +15,15 @@ function tcbl_frontpage_preprocess_page(&$vars) {
   $content['news_more']['#markup'] = views_embed_view('hp_news_more', 'default');
 
   // Se ci sono eventi nel futuro (rispetto ad oggi)
-  $view = views_get_view_result('hp_events', 'default');
-  $result = count($view);
-  if ($result) {
-    // Eventi del futuro
-    $content['events']['#markup'] = views_embed_view('hp_events', 'default');  
-  } else {
-    // Eventi del passato
-    $content['events']['#markup'] = views_embed_view('hp_events_past', 'default'); 
-  }
+  // $view = views_get_view_result('hp_events', 'default');
+  // $result = count($view);
+  // if ($result) {
+  //   // Eventi del futuro
+  //   $content['events']['#markup'] = views_embed_view('hp_events', 'default');  
+  // } else {
+  //   // Eventi del passato
+  //   $content['events']['#markup'] = views_embed_view('hp_events_past', 'default'); 
+  // }
 
   // Forum
   // $content['forum']['#markup'] = views_embed_view('hp_forum', 'default');
