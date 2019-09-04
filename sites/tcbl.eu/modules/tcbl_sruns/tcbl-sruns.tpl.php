@@ -1,5 +1,5 @@
 <div class="row row-sruns-front">
-  <div class="parallax-w" data-bleed="1" data-parallax="scroll" data-image-src="/sites/tcbl.eu/themes/tcbl/img/sruns-header.png" data-position-y="center">
+  <div class="parallax-w" data-bleed="1" data-parallax="scroll" data-image-src="/sites/tcbl.eu/themes/tcbl/img/sruns-cover.jpg" data-position-y="center">
     <div class="sruns-parallax-content">
       <h1 class="text-center text-dark">Produce garments and textiles  in small quantities</h1>
     </div>
@@ -11,7 +11,7 @@
       <div class="card__content clearfix">
         <div class="card-sruns__item">
           <img src="/sites/tcbl.eu/themes/tcbl/img/sruns-card-2.png" class="card-img"/>
-          <h2 class="text-dark">I am a fashion desiger or brand</h2>
+          <h2 class="text-default text-dark">I am a fashion desiger or brand</h2>
           <ul>
             <li>Produce short runs of less than 200 pieces</li>
             <li>Connect with 20k+ suppliers and service providers</li>
@@ -84,8 +84,8 @@
       <p class="lead">Do you have a concrete design or concept?</p>
 
       <div class="sruns-start__btns">
-        <a href="<?php print url('shortruns/form'); ?>" class="btn btn-primary btn-lg">Yes</a>
-        <a href="<?php print url('shortruns/form'); ?>" class="btn btn-default btn-lg">No</a>
+        <a href="<?php print url('shortruns/form'); ?>?first=yes" class="btn btn-primary btn-lg">Yes</a>
+        <a href="<?php print url('shortruns/form'); ?>?first=no" class="btn btn-default btn-lg">No</a>
       </div>
 
     </div>

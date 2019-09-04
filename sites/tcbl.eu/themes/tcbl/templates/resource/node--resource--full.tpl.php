@@ -42,7 +42,7 @@
         </div>
 
         <div class="margin-v-1">
-          <a href="<?php print url('shortruns/form'); ?>"><i class="fa fa-arrow-left"></i> Short Runs form</a>
+          <a href="<?php print url('shortruns/form'); ?>"><i class="fa fa-arrow-left"></i> Short Runs check-list</a>
         </div>
       </div>
     </div>

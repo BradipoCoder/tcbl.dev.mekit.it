@@ -48,7 +48,7 @@ function _tcbl_sruns_get_progress_data(){
     $build['questions'][$tid] = array(
       'title' => $title,
       'tid' => $tid,
-      'build' => node_view($node, 'full'),
+      'build' => node_view($node, 'teaser'),
       'on' => false,
     );
 
@@ -72,7 +72,7 @@ function _tcbl_sruns_get_results_by_tid($tid){
   if ($nids){
     $nodes = node_load_multiple($nids);
     $build = node_view_multiple($nodes, 'teaser');
-    return $build;  
+    return $build;
   }
   return false;
 }

@@ -11,8 +11,14 @@ function tcbl_sruns_menu() {
   );
 
   $items['shortruns/form'] = array(
-    'title' => 'Short Runs',
+    'title' => 'Short Runs - check-list',
     'page callback' => 'tcbl_sruns_filter_page',
+    'access callback' => true,
+  );
+
+  $items['shortruns/search'] = array(
+    'title' => 'Short Runs - search',
+    'page callback' => 'tcbl_sruns_search_page',
     'access callback' => true,
   );
 
@@ -48,13 +54,20 @@ function tcbl_sruns_filter_page(){
   return $build;
 }
 
+function tcbl_sruns_search_page(){
+  $build = array(
+    '#theme' => 'tcbl_sruns_search',
+    '#content' => array(),
+  );
+  return $build;
+}
+
 /**
  * Implementes hook_theme();
  */
 function tcbl_sruns_theme(){
   return array(
     'tcbl_sruns' => array(
-      // use a template and give the template's name.
       'template' => 'tcbl-sruns',
       'variables' => array(
         'content' => NULL,
@@ -62,13 +75,19 @@ function tcbl_sruns_theme(){
       'pattern' => 'tcbl-sruns__',
     ),
     'tcbl_sruns_filter' => array(
-      // use a template and give the template's name.
       'template' => 'tcbl-sruns-filter',
       'variables' => array(
         'content' => NULL,
         'data' => NULL,
       ),
       'pattern' => 'tcbl-sruns-filter__',
+    ),
+    'tcbl_sruns_search' => array(
+      'template' => 'tcbl-sruns-search',
+      'variables' => array(
+        'content' => NULL,
+      ),
+      'pattern' => 'tcbl-sruns-search__',
     ),
   );
 }
@@ -109,6 +128,10 @@ function tcbl_sruns_preprocess_node(&$vars){
     case 'resource':
       _tcbl_sruns_preprocess_resource($vars);
       break;
+
+    case 'question':
+      _tcbl_sruns_preprocess_question($vars);
+      break;
     
     default:
       # code...
@@ -145,5 +168,11 @@ function _tcbl_sruns_preprocess_resource(&$vars){
         # code...
         break;
     }
+  }
+}
+
+function _tcbl_sruns_preprocess_question(&$vars){
+  if ($vars['view_mode'] == 'full'){
+    drupal_goto('shortruns/form');
   }
 }

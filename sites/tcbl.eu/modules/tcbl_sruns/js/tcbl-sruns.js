@@ -11,13 +11,16 @@
     domResults: false,
     domProgress: false,
     domNext: false,
+    domRefresh: false,
 
     topicsCount: false,
+    firstTopicTid: false,
 
     data: {
       topics: {},
       current: false,
       progress: 0,
+      checkArg: true,
     },
 
     attach: function (context, settings) {
@@ -38,10 +41,12 @@
       if (mode == 'firstTime'){
         this.setUpVars();
         this.loadData();
+        this.checkArg();
+        console.debug(this.data);
         this.updateDom();
-
         this.armTopic();
         this.armButtons();
+        this.armRefresh();
       }
     },
 
@@ -51,6 +56,9 @@
       this.domQuestions = $('.question');
       this.domResults = $('.results');
       this.domProgress = $('#sruns-progress');
+      this.domNext = $('#sruns-next');
+      this.domRefresh = $('#sruns-refresh');
+      this.firstTopicTid = this.domLiTopics.first().attr('data-tid');
 
       var current = $('.li-topic.open');
       var currentTid = current.attr('data-tid');
@@ -98,6 +106,21 @@
         me.saveData();
         me.checkNextTopic(tid);
       });
+    },
+
+    armRefresh: function(){
+      var me = this;
+      this.domRefresh.click(function(e){
+        e.preventDefault();
+        me.data = {
+          topics: {},
+          current: me.firstTopicTid,
+          progress: 0,
+          checkArg: true,
+        };
+        me.saveData();
+        me.updateDom();
+      })
     },
 
     // ** RENDER **
@@ -188,16 +211,43 @@
       return false;
     },
 
+    checkArg: function(){
+      if (this.data.checkArg == true){
+        var answ = this.urlParam('first');
+        if (answ){
+          var tid = this.firstTopicTid;
+          this.data.topics[tid] = answ;
+          this.data.checkArg = false;
+          if (answ == 'yes'){
+            var li = this.getDomItemFromId('li-topic', tid);
+            var next = li.next();
+            var nextTid = next.attr('data-tid');
+            this.data.current = nextTid;
+          }
+          this.saveData();
+        }
+      }
+    },
+
     // ** ACTIONS **
     // -------------
 
     updateDom: function(){
       var me = this;
       var topics = this.data.topics;
+      
+      this.domLiTopics
+        .removeClass('done')
+        .removeClass('open')
+        .removeClass('answ-yes')
+        .removeClass('answ-no')
+        .removeClass('answ-skip');
+
       _.each(topics,function(value, tid){
         me.renderAnswer(tid, value);
+        me.renderTopic(tid);
       })
-
+      
       if (this.data.current){
         me.renderTopic(this.data.current);
         me.renderResults(this.data.current);
@@ -222,6 +272,7 @@
     },
 
     checkNextTopic: function(tid){
+      console.debug('checkNextTopic');
       var me = this;
       var li = this.getDomItemFromId('li-topic', tid);
       var value = this.getTopicValue(tid);
@@ -279,5 +330,13 @@
       }
       return false;
     },
+
+    urlParam: function(name){
+      var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+      if (results == null) {
+       return null;
+      } 
+      return decodeURI(results[1]) || 0;
+    }
   };
 })(jQuery, Drupal);

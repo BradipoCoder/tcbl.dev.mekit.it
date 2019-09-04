@@ -381,7 +381,21 @@ function _tcbl_alter_breadcrumbs(&$vars){
       $bcs = [];
       $bcs[] = t('Home');
       $bcs[] = l('Short Runs', 'shortruns');
-      $bcs[] = l('Form', 'shortruns/form');
+      $bcs[] = l('Check-list', 'shortruns/form');
+      drupal_set_breadcrumb($bcs);
+    }
+  }
+
+  if (arg(0) == 'shortruns'){
+    if(arg(1) == 'search'){
+      $bcs = [];
+      $bcs[] = t('Home');
+      $bcs[] = l('Short Runs', 'shortruns');
+      $bcs[] = l('Check-list', 'shortruns/form');
+      drupal_set_breadcrumb($bcs);
+    }
+    if (arg(1) == 'form'){
+      $bcs = [];
       drupal_set_breadcrumb($bcs);
     }
   }

@@ -15,8 +15,9 @@
         <div class="s-progress"></div>
       </div>
       <div id="sruns-next" class="sruns-next">
-        <a href="#" class="btn btn-default disabled margin-b-05">Next</a>
-        <p class="help small">Complete all the answers to proceed</p>
+        <a href="<?php print url('shortruns/search'); ?>" class="btn btn-default disabled margin-b-05">Next</a>
+        <p class="help small copy">Complete the check-list to proceed<br/>
+        <a id="sruns-refresh" href="#">Start again</a></p>
       </div>
     </div>
     <div id="sruns-content" class="sruns-content">
