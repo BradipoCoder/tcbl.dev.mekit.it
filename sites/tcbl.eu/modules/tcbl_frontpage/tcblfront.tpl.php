@@ -38,7 +38,7 @@ hide($content['events']);
 
         <?php if ($show_sign_up) : ?>
         <div class="text-center">
-          <a href="https://tcblsso.ilabt.iminds.be/usermanager/user/register"
+          <a href="https://tcbl.eu/foundation-membership"
              class="btn btn-primary btn-lg" title="Sign up">
             Sign up
           </a>
@@ -111,6 +111,8 @@ hide($content['events']);
     </div>
   </div>
 
+  <?php 
+  /*
   <div class="wrapper-front-feed-zine">
     <div class="container-fluid">
       <div class="front-feed-header text-center">
@@ -122,10 +124,12 @@ hide($content['events']);
       </div>
     </div>
   </div>
+  */
+ ?>
 
   <div class="wrapper-front-feed-social">
     <div class="container">
-      <div class="row margin-v-1">
+      <div class="row margin-v-2">
         <?php print render($tcbl_feeds['social']); ?>
       </div>
     </div>

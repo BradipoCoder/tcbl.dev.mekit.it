@@ -478,6 +478,10 @@ function _tcbl_get_eventbride_url_from_node($node){
       // 2019
       $url = 'https://tcbl2019.eventbrite.com';
       break;
+
+    case '821':
+      $url = 'https://tcbl2020.eventbrite.com';
+      break;
     
     default:
       // 2018

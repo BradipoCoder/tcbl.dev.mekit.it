@@ -17,7 +17,7 @@
             <li>Connect with 20k+ suppliers and service providers</li>
             <li>Save money and time</li>
           </ul>
-          <a href="<?php print url('shortruns/form'); ?>" class="btn btn-info">Get started</a>
+          <a href="<?php print url('node/810'); ?>" class="btn btn-info">Get started</a>
         </div>
         <div class="card-sruns__item">
           <img src="/sites/tcbl.eu/themes/tcbl/img/sruns-card-1.png" class="card-img"/>
@@ -27,7 +27,7 @@
             <li>Receive well-prepared requests</li>
             <li>Reduce risk and increase profit</li>
           </ul>
-          <a href="<?php print url('node/300'); ?>" class="btn btn-info">Learn more</a>
+          <a href="<?php print url('node/811'); ?>" class="btn btn-info">Learn more</a>
         </div>
       </div>
     </div>

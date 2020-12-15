@@ -30,7 +30,7 @@ hide($content['more']);
     </div>
   </div>
 </div>
-<div class="conference-tabs">
+<div id="conference-tabs-<?php print $nid; ?>" class="conference-tabs">
   <div class="container">
     <?php print render($content['tabs']); ?>
   </div>

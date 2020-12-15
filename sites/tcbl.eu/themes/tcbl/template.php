@@ -90,6 +90,7 @@ function tcbl_form_node_form_alter(&$form, $form_state){
   
   // Can see editor field
   $is_editor = _tcbl_is_editor();
+  $is_mentor = _tcbl_is_mentor();
 
   // Field author | Forum topic
   if (isset($form['field_author']['und'][0]['uid'])){
@@ -112,8 +113,9 @@ function tcbl_form_node_form_alter(&$form, $form_state){
     }
   }
 
-  // Chi non è editor non vede il gruppo Admin settings
-  if (!$is_editor){
+  // Chi non è editor o mentor non vede il gruppo Admin settings
+  if ($is_editor || $is_mentor){
+  } else {
     field_group_hide_field_groups($form, array('group_admin', 'group_eval'));  
   }
 
@@ -280,6 +282,7 @@ function tcbl_theme(){
       'variables' => array(
         'content' => array(),
         'path' => NULL,
+        'nid' => NULL,
       ),
       'pattern' => 'confcover__',
       'path' => $path,
@@ -356,12 +359,28 @@ function tcbl_preprocess_sadmin(&$vars){
   if (!$is_editor){
     if (isset($vars['buttons'])){
       foreach ($vars['buttons'] as $key => $l) {
-         if ($l['#path'] == 'node/355'){
-            unset($vars['buttons'][$key]);
-         }
-       } 
+        if ($l['#path'] == 'node/355'){
+          unset($vars['buttons'][$key]);
+        }
+        
+      } 
     }  
   }
+
+  // Se non è uno short runs editor (nascondo la preview di shortruns)
+  if (!$is_editor){
+    $is_sruns_editor = _tcbl_is_sruns_editor();
+    if (!$is_sruns_editor){
+      if (isset($vars['buttons'])){
+        foreach ($vars['buttons'] as $key => $l) {  
+          if ($l['#path'] == 'shortruns'){
+            unset($vars['buttons'][$key]); 
+          }  
+        }
+      }
+    }
+  }
+
 }
 
 function _tcbl_add_conference_cover(&$vars){
@@ -467,6 +486,7 @@ function _tcbl_add_conference_cover(&$vars){
           '#theme' => 'confcover',
           '#content' => $content,
           '#path' => $url_img,
+          '#nid' => $conference->nid,
         );
 
         $js_parallax = libraries_get_path('jquery.parallax') . '/jquery.parallax.min.js';
