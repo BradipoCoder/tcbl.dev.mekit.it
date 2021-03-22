@@ -13,50 +13,69 @@ function tcbl_map_menu(){
 
 function tcbl_map_library() {
 
-  // Library One.
-  $libraries['leafletjs'] = array(
+  // Bisogna riscrivere con questa guida
+  // https://docs.mapbox.com/help/tutorials/use-mapbox-js-as-fallback/
+
+  // New library
+  $libraries['leafletjs'] = [
     'title' => 'Leaflet JS',
     'website' => 'https://leafletjs.com/',
-    'version' => '1.4.0',
-    'js' => array(
-      'https://unpkg.com/leaflet@1.4.0/dist/leaflet.js' => array(
+    'version' => '1.7.1',
+    'js' => [
+      'https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js' => [
         'type' => 'external',
-        'weight' => '2',
+        'weight' => 1,
+      ],
+      'https://unpkg.com/leaflet@1.7.1/dist/leaflet.js' => array(
+        'type' => 'external',
+        'weight' => 4,
       ),
       drupal_get_path('module', 'tcbl_map') . '/js/tcbl-map.js' => array(
         'type' => 'file',
-        'weight' => '3',
+        'weight' => 5,
       ),
-    ),
-    'css' => array(
-      'https://unpkg.com/leaflet@1.4.0/dist/leaflet.css' => array(
+    ],
+    'css' => [
+      'https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' => [
         'type' => 'external',
-        'weight' => '1',
+        'weight' => 1,
+      ],
+      'https://unpkg.com/leaflet@1.7.1/dist/leaflet.css' => array(
+        'type' => 'external',
+        'weight' => 1,
       ),
-    ),
-  );
+    ],
+  ];
 
-  $libraries['leafletjsmulti'] = array(
+  $libraries['leafletjsmulti'] = [
     'title' => 'Leaflet JS',
     'website' => 'https://leafletjs.com/',
-    'version' => '1.4.0',
-    'js' => array(
-      'https://unpkg.com/leaflet@1.4.0/dist/leaflet.js' => array(
+    'version' => '1.7.1',
+    'js' => [
+      'https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js' => [
         'type' => 'external',
-        'weight' => '2',
+        'weight' => 1,
+      ],
+      'https://unpkg.com/leaflet@1.7.1/dist/leaflet.js' => array(
+        'type' => 'external',
+        'weight' => 4,
       ),
       drupal_get_path('module', 'tcbl_map') . '/js/tcbl-map-multiple.js' => array(
         'type' => 'file',
-        'weight' => '3',
+        'weight' => 5,
       ),
-    ),
-    'css' => array(
-      'https://unpkg.com/leaflet@1.4.0/dist/leaflet.css' => array(
+    ],
+    'css' => [
+      'https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' => [
         'type' => 'external',
-        'weight' => '1',
+        'weight' => 1,
+      ],
+      'https://unpkg.com/leaflet@1.7.1/dist/leaflet.css' => array(
+        'type' => 'external',
+        'weight' => 1,
       ),
-    ),
-  );
+    ],
+  ];
 
   return $libraries;
 }

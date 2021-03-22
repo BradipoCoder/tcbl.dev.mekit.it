@@ -25,7 +25,6 @@ jQuery().ready(function(){
         // Build the map
         tcblMapBuilMapCoord(mid, coord, title, plainAddress);  
       } else {
-        
         if (address){
           // Try to get coordinates from address
           tcblMapGetCoordinates(mid, address, title, plainAddress); 
@@ -80,10 +79,12 @@ jQuery().ready(function(){
   function tcblMapBuilMapCoord(mid, coord, title, address){
     var mymap = L.map(mid).setView(coord, 7);
 
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
       maxZoom: 18,
-      id: 'mapbox.streets',
+      id: 'mapbox/streets-v11',
+      tileSize: 512,
+      zoomOffset: -1,
       accessToken: 'pk.eyJ1IjoibHVjYWNhdHRhbmVvIiwiYSI6IkxrZ2wtaDAifQ.0zUmY-XudF0nGTnKzuS7zA'
     }).addTo(mymap);
 
