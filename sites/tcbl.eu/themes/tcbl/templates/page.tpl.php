@@ -147,10 +147,12 @@ hide($header_event['contact']);
   <footer class="footer container-fluid">
     <?php print render($page['footer']); ?>
     <div class="static-footer">
-      <p class="small text-center text-italic">This project has received funding from the European Union's Horizon 2020 Programme for research, technology development, and innovation under grant Agreement n.646133</p>
       <div class="wrapper-footer-img">
-        <img src="/sites/tcbl.eu/files/images/euh2020.png" class="img-responsive"/>
+        <img src="/sites/tcbl.eu/themes/tcbl/img/eu-flag.jpg" class="img-responsive"/>
       </div>
+      <p class="text-center text-italic">
+        This project has received funding from the European Union's Horizon 2020 Programme for research, technology development, and innovation under grant Agreement n.646133
+      </p>
       <div class="privacy-cookie-links text-center text-italic">
         <a href="/privacy">Privacy policy</a> | <a href="/cookies-policy">Cookies Policy</a>
       </div>
