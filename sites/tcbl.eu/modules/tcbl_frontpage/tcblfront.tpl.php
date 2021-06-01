@@ -127,13 +127,13 @@ hide($content['events']);
   */
  ?>
 
-  <div class="wrapper-front-feed-social">
+  <?php /*<div class="wrapper-front-feed-social">
     <div class="container">
       <div class="row margin-v-2">
         <?php print render($tcbl_feeds['social']); ?>
       </div>
     </div>
-  </div>
+  </div> */ ?>
 
   <?php print render($content); ?>
 </div>
