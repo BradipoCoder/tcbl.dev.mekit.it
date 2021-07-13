@@ -29,6 +29,17 @@ function _tcbl_kas_get_fields_name_from_tid($tid){
     case '47': // Social
       $data['prefix'] = 's';
       $data['fields'] = array(
+        'social_groups',
+        'skills_level',
+        'awareness_act',
+        'territorial_scope',
+        'act_production',
+      );
+      break;
+
+    case '49': // Research
+      $data['prefix'] = 'r';
+      $data['fields'] = array(
         'materials',
         'nanotechnology',
         'smart_fun_text',
@@ -36,15 +47,6 @@ function _tcbl_kas_get_fields_name_from_tid($tid){
         'processing',
         'ict',
         'ty_of_res_per',
-      );
-      break;
-
-    case '49': // Research
-      $data['prefix'] = 'r';
-      $data['fields'] = array(
-        'creative',
-        'material',
-        'technical_scient',
       );
       break;
 

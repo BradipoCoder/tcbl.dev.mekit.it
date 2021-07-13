@@ -737,6 +737,7 @@ function _tcbl_company_create_ka_content($vars, $tid){
   $node = $vars['node'];
 
   $data_fields =  _tcbl_kas_get_fields_name_from_tid($tid);
+
   if ($data_fields){
     $prefix = $data_fields['prefix'];
     $fields = $data_fields['fields'];
@@ -806,6 +807,11 @@ function _tcbl_company_create_ka_content($vars, $tid){
             'build' => $itembuild,
           ),
         );
+      } else {
+        // for debugging
+        // if ($prefix == 's'){
+        //   dpm($name);  
+        // }
       }
     }
   }
