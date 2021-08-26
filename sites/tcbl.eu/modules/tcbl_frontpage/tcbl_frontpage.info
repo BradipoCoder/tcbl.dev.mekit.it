@@ -1,6 +1,5 @@
 name = TCBL Frontpage
 description = Front page module
 package = TCBL
-dependencies[] = tcbl_feed
 core = 7.x
 

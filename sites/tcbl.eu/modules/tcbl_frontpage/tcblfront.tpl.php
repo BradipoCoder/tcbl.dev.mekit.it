@@ -112,30 +112,30 @@ hide($content['events']);
   </div>
 
   <?php 
-  /*
-  <div class="wrapper-front-feed-zine">
-    <div class="container-fluid">
-      <div class="front-feed-header text-center">
-        <h2 class="h1-big text-uppercase">TCBL_ZINE</h2>
-        <p>Storytelling, case studies, research and more on the world of textile and clothing in Europe</p>
-      </div>
-      <div class="row margin-v-1 wrapper-zine-sameh">
-        <?php print render($tcbl_feeds['zine']); ?>
-      </div>
-    </div>
-  </div>
-  */
- ?>
-
-  <?php if (isset($_GET['dev']) ) : ?>
-    <div class="wrapper-front-feed-social">
-      <div class="container">
-        <div class="row margin-v-2">
-          <?php print render($tcbl_feeds['social']); ?>
+    /*
+    <div class="wrapper-front-feed-zine">
+      <div class="container-fluid">
+        <div class="front-feed-header text-center">
+          <h2 class="h1-big text-uppercase">TCBL_ZINE</h2>
+          <p>Storytelling, case studies, research and more on the world of textile and clothing in Europe</p>
+        </div>
+        <div class="row margin-v-1 wrapper-zine-sameh">
+          <?php print render($tcbl_feeds['zine']); ?>
         </div>
       </div>
     </div>
-  <?php endif ?>
+    */
+   ?>
+
+  <div class="wrapper-front-feed-social">
+    <div class="container">
+      <div class="row margin-v-2">
+        <div class="socialfeed-list">
+          <?php print render($tcbl_feeds); ?>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <?php print render($content); ?>
 </div>

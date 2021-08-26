@@ -1,0 +1,5 @@
+name = TCBL Simple Feed
+description = Simple Feed module for TCBL
+package = TCBL
+core = 7.x
+

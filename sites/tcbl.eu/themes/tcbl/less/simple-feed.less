@@ -1,0 +1,66 @@
+/* less/simple-feed.less */
+
+.socialfeed-list{
+  display: grid;
+  grid-gap: @grid-gutter-width;
+  grid-template-columns: repeat(2, 1fr);
+  @media (min-width: @screen-md-min){
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.socialfeed-item{
+  position: relative;
+
+  a:after{
+    content: ' ';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: fade(#000, 10%);
+    z-index: 1;
+    opacity: 0;
+    transition: opacity ease-in-out 0.2s;
+  }
+
+  a:hover{
+    &:after{
+      opacity: 1;
+    }
+  }
+}
+
+.socialfeed-frame{
+  position: relative;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  padding-bottom: 100%;
+  overflow: hidden;
+
+  i{
+    position: absolute;
+    top: 8px;
+    right: 5px;
+    color: #fff;
+    font-size: @font-size-large;
+    z-index: 2;
+  }
+}
+
+.feed-links{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li{
+    display: inline-block;
+    font-size: @font-size-large + 2px;
+  }
+
+  i{
+    font-size: 40px;
+  }
+}
