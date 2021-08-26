@@ -13,20 +13,27 @@ function tcbl_feed_get_default_generation_options() {
       "max_items" => 3
     ],
     "plugin" => [
-      "tcbl_zine" => [
-        "max_items" => 4
-      ],
-      "tcbl_labs" => [
-        "max_items" => 3
-      ],
-      "facebook" => [
-        "max_items" => 10,
-        'app_id' => '301393660390585',
-        'app_secret' => 'fa161c64d4663bf34c562c007a02dc59',
-        'default_graph_version' => 'v2.12',
-      ],
+      // "tcbl_zine" => [
+      //   "max_items" => 4
+      // ],
+      // "tcbl_labs" => [
+      //   "max_items" => 3
+      // ],
+      // Facebook è troppo complicato,
+      // nell'agosto del 2021 ci ho nuovamente rinunciato
+      // interfaccia di merda che non lascia togliere dei prodotti (inutili) nella app
+      // "facebook" => [
+      //   "max_items" => 10,
+      //   'app_id' => '301393660390585',
+      //   'app_secret' => 'fa161c64d4663bf34c562c007a02dc59',
+      //   'default_graph_version' => 'v2.12',
+      // ],
       "instagram" => [
         "max_items" => 10,
+        // Added by luca 26 agosto 2021
+        // 'app_id' => '301393660390585',
+        // 'app_secret' => 'fa161c64d4663bf34c562c007a02dc59',
+        // 'access_token' => 'IGQVJVeVRGRlBhVUpBb2NfU2F1dDJnREJxdE9ETXB1YXh3VVVWXzFHUjRacEpzeVRXU2NQTEtHZAjZA6M21ERDdueGh4ckxkSktGbl9WRzItV0F0T0VQY2lsWUpFSk9SeVEtYmp1V1VsamNvUWNIVXFfZAwZDZD',
       ],
       "twitter" => [
         "max_items" => 10,
@@ -75,9 +82,8 @@ function tcbl_feed_get_renderable_feeds($getFeedOptions = []) {
   $answer = [];
 
   //--------------------------------------------FEED GENERATION [NOW DONE BY CRON]
-  //$generate_feed_options = tcbl_feed_get_default_generation_options();
-  //tcbl_feed_generate_feeds($generate_feed_options);
-
+  // $generate_feed_options = tcbl_feed_get_default_generation_options();
+  // tcbl_feed_generate_feeds($generate_feed_options);
 
   $feeds = \Mekit\TcblFeed\FeedFactory::getFeeds($getFeedOptions);
 

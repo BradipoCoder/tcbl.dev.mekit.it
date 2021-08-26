@@ -39,10 +39,32 @@ class InstagramFeedPlugin extends FeedPlugin implements FeedPluginInterface {
     $this->instagram = new Instagram();
   }
 
+  public function fetchFeeds(): array {
+    $feeds = [];
+
+    $url = 'https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp,permalink&limit=5&access_token=IGQVJVeVRGRlBhVUpBb2NfU2F1dDJnREJxdE9ETXB1YXh3VVVWXzFHUjRacEpzeVRXU2NQTEtHZAjZA6M21ERDdueGh4ckxkSktGbl9WRzItV0F0T0VQY2lsWUpFSk9SeVEtYmp1V1VsamNvUWNIVXFfZAwZDZD';
+    
+    $ch = curl_init();
+    // IMPORTANT: the below line is a security risk, read https://paragonie.com/blog/2017/10/certainty-automated-cacert-pem-management-for-php-software
+    // in most cases, you should set it to true
+    // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // curl_setopt($ch, CURLOPT_URL, $url);
+    // $result = curl_exec($ch);
+    // curl_close($ch);
+    // $obj = json_decode($result);
+    // dpm($obj);
+
+    // $obj = json_decode(file_get_contents($url), true);
+    // dpm($obj);
+
+    return $feeds;
+  }
+
   /**
    * @return array
    */
-  public function fetchFeeds(): array {
+  public function fetchFeedsOld(): array {
     $feeds = [];
 
     if($this->instagram) {

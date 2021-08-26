@@ -64,7 +64,7 @@ function tcbl_frontpage_preprocess_page(&$vars) {
   $vars['page']['content']['front'] = [
     '#theme' => 'tcblfront',
     '#content' => $content,
-    '#tcbl_feeds' => _tcbl_frontpage_get_tcbl_feeds(),
+    // '#tcbl_feeds' => _tcbl_frontpage_get_tcbl_feeds(),
     '#show_sign_up' => $show_sign_up,
   ];
 }
@@ -98,7 +98,7 @@ function _tcbl_frontpage_get_tcbl_feeds() {
   //------------------------------------------SOCIAL
   $social_get_feed_opts = [
     "filters" => [
-      "source" => ["facebook", "twitter", "instagram"]
+      "source" => ["twitter", "instagram"] // "facebook"
     ],
     "ordering" => [
       "property" => "creation_date",
@@ -108,8 +108,8 @@ function _tcbl_frontpage_get_tcbl_feeds() {
   ];
 
   return [
-    'zine' => tcbl_feed_get_renderable_feeds($zine_get_feed_opts),
-    'labs' => tcbl_feed_get_renderable_feeds($labs_get_feed_opts),
+    // 'zine' => tcbl_feed_get_renderable_feeds($zine_get_feed_opts),
+    // 'labs' => tcbl_feed_get_renderable_feeds($labs_get_feed_opts),
     'social' => tcbl_feed_get_renderable_feeds($social_get_feed_opts)
   ];
 }
