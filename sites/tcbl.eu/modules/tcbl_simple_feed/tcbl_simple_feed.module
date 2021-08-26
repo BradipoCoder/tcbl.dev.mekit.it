@@ -1,0 +1,93 @@
+<?php
+
+include 'tcbl-simple-feed-keys.php';
+
+function _tcbl_simple_feed_builder(){
+  $feedList = _tcbl_simple_feed_list();
+
+  if (isset($feedList['instagram']['access_token'])){
+    $items = _tcbl_simple_feed_ig_getter($feedList['instagram']['access_token'], $feedList['instagram']['tot']);
+    if ($items){
+      $build = [];
+      foreach ($items as $key => $item) {
+        $build[$key] = _buildInstagramPost($item);
+      }
+      return $build;
+    }
+  }
+
+  return NULL;
+}
+
+function _tcbl_simple_feed_ig_getter($access_token, $tot){
+  $igUrl = 'https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp,permalink&limit=' . $tot . '&access_token=' . $access_token;
+
+  try {
+    $ch = curl_init();
+    // IMPORTANT: the below line is a security risk, read https://paragonie.com/blog/2017/10/certainty-automated-cacert-pem-management-for-php-software
+    // in most cases, you should set it to true
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_URL, $igUrl);
+    $result = curl_exec($ch);
+    curl_close($ch);
+
+    $obj = json_decode($result);
+    
+    if (isset($obj->data)){
+      $list = $obj->data;
+      $list = json_decode(json_encode($list), true);
+      foreach ($list as $key => $item) {
+        $items[$key]['raw'] = $item;
+      }
+      return $items;
+    }
+  } catch (exception $e) {
+    // Under the carpet for now
+  }
+  return NULL;
+}
+
+function _buildInstagramPost($post){
+  $post_link = true;
+  $video_thumbnail = true;
+
+  $theme_type = ($post['raw']['media_type'] == 'VIDEO') ? 'video' : ($post['raw']['media_type'] == 'CAROUSEL_ALBUM' ? 'carousel_album' : 'image');
+
+  // Set the post link.
+  if ($post_link) {
+    $post['post_url'] = $post['raw']['permalink'];
+  }
+
+  if (isset($post['raw']['media_url'])){
+    $post['media_url'] = $post['raw']['media_url'];
+  }
+
+  // Use video thumbnails instead of rendered videos.
+  if ($video_thumbnail && $theme_type == 'video') {
+    $theme_type = 'image';
+    $post['media_url'] = $post['raw']['thumbnail_url'];
+  }
+
+  $build = [
+    '#theme' => 'tcbl_simple_feed_ig_post',
+    '#post' => $post,
+  ];
+
+  return $build;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function tcbl_simple_feed_theme($existing, $type, $theme, $path) {
+  return [
+    'tcbl_simple_feed_ig_post' => [
+      'template' => 'tcbl-simple-feed-ig-post',
+      'variables' => [
+        'post' => NULL,
+      ],
+      'path' => drupal_get_path('module', 'tcbl_simple_feed') . '/templates',
+    ],
+  ];
+}
